@@ -1,0 +1,9761 @@
+{
+ "format": 1,
+ "generated": "2026-10-06",
+ "sources": {
+  "armor": "SRD Magic Items (Armor) via the 3.5 SRD working journal in Axecleft's Shared Data",
+  "weapons": "d20srd.org/srd/magicItems/magicWeapons.htm (Open Game Content)",
+  "materials": "SRD Equipment: Special Materials, via the 3.5 SRD Cross-Linked Reference journal",
+  "mundane": "SRD Table: Mundane Items, via the 3.5 SRD Cross-Linked Reference journal",
+  "d35e": "D35E 3.1.0 compendiums (weapons-and-ammo, armors-and-shields, enhancements, materials, magic-items)"
+ },
+ "pricing": {
+  "weaponBonus": 2000,
+  "armorBonus": 1000,
+  "formula": "bonus^2 x base; total of enhancement + ability bonuses, max +10 (abilities need at least +1)",
+  "masterwork": {
+   "weapon": 300,
+   "doubleWeapon": 600,
+   "ammoEach": 6,
+   "armor": 150,
+   "shield": 150
+  },
+  "magicAmmoBatch": 50,
+  "specialAbilitiesNeedPlusOne": true,
+  "maxTotalBonus": 10
+ },
+ "tables": {
+  "armorAndShields": [
+   {
+    "minor": [
+     1,
+     60
+    ],
+    "medium": [
+     1,
+     5
+    ],
+    "major": null,
+    "result": "shield",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     61,
+     80
+    ],
+    "medium": [
+     6,
+     10
+    ],
+    "major": null,
+    "result": "armor",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     81,
+     85
+    ],
+    "medium": [
+     11,
+     20
+    ],
+    "major": null,
+    "result": "shield",
+    "bonus": 2
+   },
+   {
+    "minor": [
+     86,
+     87
+    ],
+    "medium": [
+     21,
+     30
+    ],
+    "major": null,
+    "result": "armor",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     31,
+     40
+    ],
+    "major": [
+     1,
+     8
+    ],
+    "result": "shield",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": [
+     41,
+     50
+    ],
+    "major": [
+     9,
+     16
+    ],
+    "result": "armor",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": [
+     51,
+     55
+    ],
+    "major": [
+     17,
+     27
+    ],
+    "result": "shield",
+    "bonus": 4
+   },
+   {
+    "minor": null,
+    "medium": [
+     56,
+     57
+    ],
+    "major": [
+     28,
+     38
+    ],
+    "result": "armor",
+    "bonus": 4
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     39,
+     49
+    ],
+    "result": "shield",
+    "bonus": 5
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     50,
+     57
+    ],
+    "result": "armor",
+    "bonus": 5
+   },
+   {
+    "minor": [
+     88,
+     89
+    ],
+    "medium": [
+     58,
+     60
+    ],
+    "major": [
+     58,
+     60
+    ],
+    "result": "specificArmor"
+   },
+   {
+    "minor": [
+     90,
+     91
+    ],
+    "medium": [
+     61,
+     63
+    ],
+    "major": [
+     61,
+     63
+    ],
+    "result": "specificShield"
+   },
+   {
+    "minor": [
+     92,
+     100
+    ],
+    "medium": [
+     64,
+     100
+    ],
+    "major": [
+     64,
+     100
+    ],
+    "result": "abilityAndRollAgain"
+   }
+  ],
+  "armorType": [
+   {
+    "d": [
+     1,
+     1
+    ],
+    "name": "Padded",
+    "d35e": "Padded Armor",
+    "cost": 155
+   },
+   {
+    "d": [
+     2,
+     2
+    ],
+    "name": "Leather",
+    "d35e": "Leather Armor",
+    "cost": 160
+   },
+   {
+    "d": [
+     3,
+     17
+    ],
+    "name": "Studded leather",
+    "d35e": "Studded Leather Armor",
+    "cost": 175
+   },
+   {
+    "d": [
+     18,
+     32
+    ],
+    "name": "Chain shirt",
+    "d35e": "Chain Shirt",
+    "cost": 250
+   },
+   {
+    "d": [
+     33,
+     42
+    ],
+    "name": "Hide",
+    "d35e": "Hide Armor",
+    "cost": 165
+   },
+   {
+    "d": [
+     43,
+     43
+    ],
+    "name": "Scale mail",
+    "d35e": "Scale Mail",
+    "cost": 200
+   },
+   {
+    "d": [
+     44,
+     44
+    ],
+    "name": "Chainmail",
+    "d35e": "Chainmail",
+    "cost": 300
+   },
+   {
+    "d": [
+     45,
+     57
+    ],
+    "name": "Breastplate",
+    "d35e": "Breastplate",
+    "cost": 350
+   },
+   {
+    "d": [
+     58,
+     58
+    ],
+    "name": "Splint mail",
+    "d35e": "Splint Mail",
+    "cost": 350
+   },
+   {
+    "d": [
+     59,
+     59
+    ],
+    "name": "Banded mail",
+    "d35e": "Banded Mail",
+    "cost": 400
+   },
+   {
+    "d": [
+     60,
+     60
+    ],
+    "name": "Half-plate",
+    "d35e": "Half-Plate",
+    "cost": 750
+   },
+   {
+    "d": [
+     61,
+     100
+    ],
+    "name": "Full plate",
+    "d35e": "Full Plate",
+    "cost": 1650
+   }
+  ],
+  "shieldType": [
+   {
+    "d": [
+     1,
+     10
+    ],
+    "name": "Buckler",
+    "d35e": "Buckler",
+    "cost": 165
+   },
+   {
+    "d": [
+     11,
+     15
+    ],
+    "name": "Shield, light, wooden",
+    "d35e": "Light Wooden Shield",
+    "cost": 153
+   },
+   {
+    "d": [
+     16,
+     20
+    ],
+    "name": "Shield, light, steel",
+    "d35e": "Light Steel Shield",
+    "cost": 159
+   },
+   {
+    "d": [
+     21,
+     30
+    ],
+    "name": "Shield, heavy, wooden",
+    "d35e": "Heavy Wooden Shield",
+    "cost": 157
+   },
+   {
+    "d": [
+     31,
+     95
+    ],
+    "name": "Shield, heavy, steel",
+    "d35e": "Heavy Steel Shield",
+    "cost": 170
+   },
+   {
+    "d": [
+     96,
+     100
+    ],
+    "name": "Shield, tower",
+    "d35e": "Tower Shield",
+    "cost": 180
+   }
+  ],
+  "armorAbilities": [
+   {
+    "minor": [
+     1,
+     25
+    ],
+    "medium": [
+     1,
+     5
+    ],
+    "major": [
+     1,
+     3
+    ],
+    "name": "Glamered",
+    "gp": 2700
+   },
+   {
+    "minor": [
+     26,
+     32
+    ],
+    "medium": [
+     6,
+     8
+    ],
+    "major": [
+     4,
+     4
+    ],
+    "name": "Fortification, light",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     33,
+     52
+    ],
+    "medium": [
+     9,
+     11
+    ],
+    "major": null,
+    "name": "Slick",
+    "gp": 3750
+   },
+   {
+    "minor": [
+     53,
+     72
+    ],
+    "medium": [
+     12,
+     14
+    ],
+    "major": null,
+    "name": "Shadow",
+    "gp": 3750
+   },
+   {
+    "minor": [
+     73,
+     92
+    ],
+    "medium": [
+     15,
+     17
+    ],
+    "major": null,
+    "name": "Silent moves",
+    "gp": 3750
+   },
+   {
+    "minor": [
+     93,
+     96
+    ],
+    "medium": [
+     18,
+     19
+    ],
+    "major": null,
+    "name": "Spell resistance (13)",
+    "bonus": 2
+   },
+   {
+    "minor": [
+     97,
+     97
+    ],
+    "medium": [
+     20,
+     29
+    ],
+    "major": [
+     5,
+     7
+    ],
+    "name": "Slick, improved",
+    "gp": 15000
+   },
+   {
+    "minor": [
+     98,
+     98
+    ],
+    "medium": [
+     30,
+     39
+    ],
+    "major": [
+     8,
+     10
+    ],
+    "name": "Shadow, improved",
+    "gp": 15000
+   },
+   {
+    "minor": [
+     99,
+     99
+    ],
+    "medium": [
+     40,
+     49
+    ],
+    "major": [
+     11,
+     13
+    ],
+    "name": "Silent moves, improved",
+    "gp": 15000
+   },
+   {
+    "minor": null,
+    "medium": [
+     50,
+     54
+    ],
+    "major": [
+     14,
+     16
+    ],
+    "name": "Acid resistance",
+    "gp": 18000
+   },
+   {
+    "minor": null,
+    "medium": [
+     55,
+     59
+    ],
+    "major": [
+     17,
+     19
+    ],
+    "name": "Cold resistance",
+    "gp": 18000
+   },
+   {
+    "minor": null,
+    "medium": [
+     60,
+     64
+    ],
+    "major": [
+     20,
+     22
+    ],
+    "name": "Electricity resistance",
+    "gp": 18000
+   },
+   {
+    "minor": null,
+    "medium": [
+     65,
+     69
+    ],
+    "major": [
+     23,
+     25
+    ],
+    "name": "Fire resistance",
+    "gp": 18000
+   },
+   {
+    "minor": null,
+    "medium": [
+     70,
+     74
+    ],
+    "major": [
+     26,
+     28
+    ],
+    "name": "Sonic resistance",
+    "gp": 18000
+   },
+   {
+    "minor": null,
+    "medium": [
+     75,
+     79
+    ],
+    "major": [
+     29,
+     33
+    ],
+    "name": "Ghost touch",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": [
+     80,
+     84
+    ],
+    "major": [
+     34,
+     35
+    ],
+    "name": "Invulnerability",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": [
+     85,
+     89
+    ],
+    "major": [
+     36,
+     40
+    ],
+    "name": "Fortification, moderate",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": [
+     90,
+     94
+    ],
+    "major": [
+     41,
+     42
+    ],
+    "name": "Spell resistance (15)",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": [
+     95,
+     99
+    ],
+    "major": [
+     43,
+     43
+    ],
+    "name": "Wild",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     44,
+     48
+    ],
+    "name": "Slick, greater",
+    "gp": 33750
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     49,
+     53
+    ],
+    "name": "Shadow, greater",
+    "gp": 33750
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     54,
+     58
+    ],
+    "name": "Silent moves, greater",
+    "gp": 33750
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     59,
+     63
+    ],
+    "name": "Acid resistance, improved",
+    "gp": 42000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     64,
+     68
+    ],
+    "name": "Cold resistance, improved",
+    "gp": 42000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     69,
+     73
+    ],
+    "name": "Electricity resistance, improved",
+    "gp": 42000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     74,
+     78
+    ],
+    "name": "Fire resistance, improved",
+    "gp": 42000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     79,
+     83
+    ],
+    "name": "Sonic resistance, improved",
+    "gp": 42000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     84,
+     88
+    ],
+    "name": "Spell resistance (17)",
+    "bonus": 4
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     89,
+     89
+    ],
+    "name": "Etherealness",
+    "gp": 49000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     90,
+     90
+    ],
+    "name": "Undead controlling",
+    "gp": 49000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     91,
+     92
+    ],
+    "name": "Fortification, heavy",
+    "bonus": 5
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     93,
+     94
+    ],
+    "name": "Spell resistance (19)",
+    "bonus": 5
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     95,
+     95
+    ],
+    "name": "Acid resistance, greater",
+    "gp": 66000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     96,
+     96
+    ],
+    "name": "Cold resistance, greater",
+    "gp": 66000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     97,
+     97
+    ],
+    "name": "Electricity resistance, greater",
+    "gp": 66000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     98,
+     98
+    ],
+    "name": "Fire resistance, greater",
+    "gp": 66000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     99,
+     99
+    ],
+    "name": "Sonic resistance, greater",
+    "gp": 66000
+   },
+   {
+    "minor": [
+     100,
+     100
+    ],
+    "medium": [
+     100,
+     100
+    ],
+    "major": [
+     100,
+     100
+    ],
+    "name": "rollTwice"
+   }
+  ],
+  "shieldAbilities": [
+   {
+    "minor": [
+     1,
+     20
+    ],
+    "medium": [
+     1,
+     10
+    ],
+    "major": [
+     1,
+     5
+    ],
+    "name": "Arrow catching",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     21,
+     40
+    ],
+    "medium": [
+     11,
+     20
+    ],
+    "major": [
+     6,
+     8
+    ],
+    "name": "Bashing",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     41,
+     50
+    ],
+    "medium": [
+     21,
+     25
+    ],
+    "major": [
+     9,
+     10
+    ],
+    "name": "Blinding",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     51,
+     75
+    ],
+    "medium": [
+     26,
+     40
+    ],
+    "major": [
+     11,
+     15
+    ],
+    "name": "Fortification, light",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     76,
+     92
+    ],
+    "medium": [
+     41,
+     50
+    ],
+    "major": [
+     16,
+     20
+    ],
+    "name": "Arrow deflection",
+    "bonus": 2
+   },
+   {
+    "minor": [
+     93,
+     97
+    ],
+    "medium": [
+     51,
+     57
+    ],
+    "major": [
+     21,
+     25
+    ],
+    "name": "Animated",
+    "bonus": 2
+   },
+   {
+    "minor": [
+     98,
+     99
+    ],
+    "medium": [
+     58,
+     59
+    ],
+    "major": null,
+    "name": "Spell resistance (13)",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     60,
+     63
+    ],
+    "major": [
+     26,
+     28
+    ],
+    "name": "Acid resistance",
+    "gp": 18000
+   },
+   {
+    "minor": null,
+    "medium": [
+     64,
+     67
+    ],
+    "major": [
+     29,
+     31
+    ],
+    "name": "Cold resistance",
+    "gp": 18000
+   },
+   {
+    "minor": null,
+    "medium": [
+     68,
+     71
+    ],
+    "major": [
+     32,
+     34
+    ],
+    "name": "Electricity resistance",
+    "gp": 18000
+   },
+   {
+    "minor": null,
+    "medium": [
+     72,
+     75
+    ],
+    "major": [
+     35,
+     37
+    ],
+    "name": "Fire resistance",
+    "gp": 18000
+   },
+   {
+    "minor": null,
+    "medium": [
+     76,
+     79
+    ],
+    "major": [
+     38,
+     40
+    ],
+    "name": "Sonic resistance",
+    "gp": 18000
+   },
+   {
+    "minor": null,
+    "medium": [
+     80,
+     85
+    ],
+    "major": [
+     41,
+     46
+    ],
+    "name": "Ghost touch",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": [
+     86,
+     95
+    ],
+    "major": [
+     47,
+     56
+    ],
+    "name": "Fortification, moderate",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": [
+     96,
+     98
+    ],
+    "major": [
+     57,
+     58
+    ],
+    "name": "Spell resistance (15)",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": [
+     99,
+     99
+    ],
+    "major": [
+     59,
+     59
+    ],
+    "name": "Wild",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     60,
+     64
+    ],
+    "name": "Acid resistance, improved",
+    "gp": 42000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     65,
+     69
+    ],
+    "name": "Cold resistance, improved",
+    "gp": 42000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     70,
+     74
+    ],
+    "name": "Electricity resistance, improved",
+    "gp": 42000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     75,
+     79
+    ],
+    "name": "Fire resistance, improved",
+    "gp": 42000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     80,
+     84
+    ],
+    "name": "Sonic resistance, improved",
+    "gp": 42000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     85,
+     86
+    ],
+    "name": "Spell resistance (17)",
+    "bonus": 4
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     87,
+     87
+    ],
+    "name": "Undead controlling",
+    "gp": 49000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     88,
+     91
+    ],
+    "name": "Fortification, heavy",
+    "bonus": 5
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     92,
+     93
+    ],
+    "name": "Reflecting",
+    "bonus": 5
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     94,
+     94
+    ],
+    "name": "Spell resistance (19)",
+    "bonus": 5
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     95,
+     95
+    ],
+    "name": "Acid resistance, greater",
+    "gp": 66000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     96,
+     96
+    ],
+    "name": "Cold resistance, greater",
+    "gp": 66000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     97,
+     97
+    ],
+    "name": "Electricity resistance, greater",
+    "gp": 66000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     98,
+     98
+    ],
+    "name": "Fire resistance, greater",
+    "gp": 66000
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     99,
+     99
+    ],
+    "name": "Sonic resistance, greater",
+    "gp": 66000
+   },
+   {
+    "minor": [
+     100,
+     100
+    ],
+    "medium": [
+     100,
+     100
+    ],
+    "major": [
+     100,
+     100
+    ],
+    "name": "rollTwice"
+   }
+  ],
+  "specificArmors": [
+   {
+    "minor": [
+     1,
+     50
+    ],
+    "medium": [
+     1,
+     25
+    ],
+    "major": null,
+    "name": "Mithral shirt",
+    "price": 1100,
+    "d35e": "Mithral Shirt"
+   },
+   {
+    "minor": [
+     51,
+     80
+    ],
+    "medium": [
+     26,
+     45
+    ],
+    "major": null,
+    "name": "Dragonhide plate",
+    "price": 3300,
+    "d35e": "Dragonhide Plate"
+   },
+   {
+    "minor": [
+     81,
+     100
+    ],
+    "medium": [
+     46,
+     57
+    ],
+    "major": null,
+    "name": "Elven chain",
+    "price": 4150,
+    "d35e": "Elven Chain"
+   },
+   {
+    "minor": null,
+    "medium": [
+     58,
+     67
+    ],
+    "major": null,
+    "name": "Rhino hide",
+    "price": 5165,
+    "d35e": "Rhino Hide"
+   },
+   {
+    "minor": null,
+    "medium": [
+     68,
+     82
+    ],
+    "major": [
+     1,
+     10
+    ],
+    "name": "Adamantine breastplate",
+    "price": 10200,
+    "d35e": "Adamantine Breastplate"
+   },
+   {
+    "minor": null,
+    "medium": [
+     83,
+     97
+    ],
+    "major": [
+     11,
+     20
+    ],
+    "name": "Dwarven plate",
+    "price": 16500,
+    "d35e": "Dwarven Plate"
+   },
+   {
+    "minor": null,
+    "medium": [
+     98,
+     100
+    ],
+    "major": [
+     21,
+     32
+    ],
+    "name": "Banded mail of luck",
+    "price": 18900,
+    "d35e": "Banded Mail of Luck"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     33,
+     50
+    ],
+    "name": "Celestial armor",
+    "price": 22400,
+    "d35e": "Celestial Armor"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     51,
+     60
+    ],
+    "name": "Plate armor of the deep",
+    "price": 24650,
+    "d35e": "Plate Armor of the Deep"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     61,
+     75
+    ],
+    "name": "Breastplate of command",
+    "price": 25400,
+    "d35e": "Breastplate of Command"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     76,
+     90
+    ],
+    "name": "Mithral full plate of speed",
+    "price": 26500,
+    "d35e": "Mithral Full Plate of Speed"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     91,
+     100
+    ],
+    "name": "Demon armor",
+    "price": 52260,
+    "d35e": "Demon Armor"
+   }
+  ],
+  "specificShields": [
+   {
+    "minor": [
+     1,
+     30
+    ],
+    "medium": [
+     1,
+     20
+    ],
+    "major": null,
+    "name": "Darkwood buckler",
+    "price": 205,
+    "d35e": "Darkwood Buckler"
+   },
+   {
+    "minor": [
+     31,
+     80
+    ],
+    "medium": [
+     21,
+     45
+    ],
+    "major": null,
+    "name": "Darkwood shield",
+    "price": 257,
+    "d35e": "Darkwood Shield"
+   },
+   {
+    "minor": [
+     81,
+     95
+    ],
+    "medium": [
+     46,
+     70
+    ],
+    "major": null,
+    "name": "Mithral heavy shield",
+    "price": 1020,
+    "d35e": "Mithral Heavy Shield"
+   },
+   {
+    "minor": [
+     96,
+     100
+    ],
+    "medium": [
+     71,
+     85
+    ],
+    "major": [
+     1,
+     20
+    ],
+    "name": "Caster’s shield",
+    "price": 3153,
+    "d35e": "Caster's Shield"
+   },
+   {
+    "minor": null,
+    "medium": [
+     86,
+     90
+    ],
+    "major": [
+     21,
+     40
+    ],
+    "name": "Spined shield",
+    "price": 5580,
+    "d35e": "Spined Shield"
+   },
+   {
+    "minor": null,
+    "medium": [
+     91,
+     95
+    ],
+    "major": [
+     41,
+     60
+    ],
+    "name": "Lion’s shield",
+    "price": 9170,
+    "d35e": "Lion's Shield"
+   },
+   {
+    "minor": null,
+    "medium": [
+     96,
+     100
+    ],
+    "major": [
+     61,
+     90
+    ],
+    "name": "Winged shield",
+    "price": 17257,
+    "d35e": "Winged Shield"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     91,
+     100
+    ],
+    "name": "Absorbing shield",
+    "price": 50170,
+    "d35e": "Absorbing Shield"
+   }
+  ],
+  "weapons": [
+   {
+    "minor": [
+     1,
+     70
+    ],
+    "medium": [
+     1,
+     10
+    ],
+    "major": null,
+    "result": "weapon",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     71,
+     85
+    ],
+    "medium": [
+     11,
+     29
+    ],
+    "major": null,
+    "result": "weapon",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     30,
+     58
+    ],
+    "major": [
+     1,
+     20
+    ],
+    "result": "weapon",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": [
+     59,
+     62
+    ],
+    "major": [
+     21,
+     38
+    ],
+    "result": "weapon",
+    "bonus": 4
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     39,
+     49
+    ],
+    "result": "weapon",
+    "bonus": 5
+   },
+   {
+    "minor": [
+     86,
+     90
+    ],
+    "medium": [
+     63,
+     68
+    ],
+    "major": [
+     50,
+     63
+    ],
+    "result": "specificWeapon"
+   },
+   {
+    "minor": [
+     91,
+     100
+    ],
+    "medium": [
+     69,
+     100
+    ],
+    "major": [
+     64,
+     100
+    ],
+    "result": "abilityAndRollAgain"
+   }
+  ],
+  "weaponType": [
+   {
+    "d": [
+     1,
+     70
+    ],
+    "table": "commonMelee"
+   },
+   {
+    "d": [
+     71,
+     80
+    ],
+    "table": "uncommon"
+   },
+   {
+    "d": [
+     81,
+     100
+    ],
+    "table": "commonRanged"
+   }
+  ],
+  "commonMelee": [
+   {
+    "d": [
+     1,
+     4
+    ],
+    "name": "Dagger",
+    "cost": 302,
+    "d35e": "Dagger"
+   },
+   {
+    "d": [
+     5,
+     14
+    ],
+    "name": "Greataxe",
+    "cost": 320,
+    "d35e": "Greataxe"
+   },
+   {
+    "d": [
+     15,
+     24
+    ],
+    "name": "Greatsword",
+    "cost": 350,
+    "d35e": "Greatsword"
+   },
+   {
+    "d": [
+     25,
+     28
+    ],
+    "name": "Kama",
+    "cost": 302,
+    "d35e": "Kama"
+   },
+   {
+    "d": [
+     29,
+     41
+    ],
+    "name": "Longsword",
+    "cost": 315,
+    "d35e": "Longsword"
+   },
+   {
+    "d": [
+     42,
+     45
+    ],
+    "name": "Mace, light",
+    "cost": 305,
+    "d35e": "Light Mace"
+   },
+   {
+    "d": [
+     46,
+     50
+    ],
+    "name": "Mace, heavy",
+    "cost": 312,
+    "d35e": "Heavy Mace"
+   },
+   {
+    "d": [
+     51,
+     54
+    ],
+    "name": "Nunchaku",
+    "cost": 302,
+    "d35e": "Nunchaku"
+   },
+   {
+    "d": [
+     55,
+     57
+    ],
+    "name": "Quarterstaff",
+    "cost": 600,
+    "d35e": "Quarterstaff"
+   },
+   {
+    "d": [
+     58,
+     61
+    ],
+    "name": "Rapier",
+    "cost": 320,
+    "d35e": "Rapier"
+   },
+   {
+    "d": [
+     62,
+     66
+    ],
+    "name": "Scimitar",
+    "cost": 315,
+    "d35e": "Scimitar"
+   },
+   {
+    "d": [
+     67,
+     70
+    ],
+    "name": "Shortspear",
+    "cost": 301,
+    "d35e": "Shortspear"
+   },
+   {
+    "d": [
+     71,
+     74
+    ],
+    "name": "Siangham",
+    "cost": 303,
+    "d35e": "Siangham"
+   },
+   {
+    "d": [
+     75,
+     84
+    ],
+    "name": "Sword, bastard",
+    "cost": 335,
+    "d35e": "Bastard Sword"
+   },
+   {
+    "d": [
+     85,
+     89
+    ],
+    "name": "Sword, short",
+    "cost": 310,
+    "d35e": "Shortsword"
+   },
+   {
+    "d": [
+     90,
+     100
+    ],
+    "name": "Waraxe, dwarven",
+    "cost": 330,
+    "d35e": "Dwarven Waraxe"
+   }
+  ],
+  "uncommon": [
+   {
+    "d": [
+     1,
+     3
+    ],
+    "name": "Axe, orc double",
+    "cost": 660,
+    "d35e": "Orc Double Axe"
+   },
+   {
+    "d": [
+     4,
+     7
+    ],
+    "name": "Battleaxe",
+    "cost": 310,
+    "d35e": "Battleaxe"
+   },
+   {
+    "d": [
+     8,
+     10
+    ],
+    "name": "Chain, spiked",
+    "cost": 325,
+    "d35e": "Spiked Chain"
+   },
+   {
+    "d": [
+     11,
+     12
+    ],
+    "name": "Club",
+    "cost": 300,
+    "d35e": "Club"
+   },
+   {
+    "d": [
+     13,
+     16
+    ],
+    "name": "Crossbow, hand",
+    "cost": 400,
+    "d35e": "Hand Crossbow"
+   },
+   {
+    "d": [
+     17,
+     19
+    ],
+    "name": "Crossbow, repeating",
+    "cost": 550,
+    "d35e": "Light Repeating Crossbow"
+   },
+   {
+    "d": [
+     20,
+     21
+    ],
+    "name": "Dagger, punching",
+    "cost": 302,
+    "d35e": "Punching Dagger"
+   },
+   {
+    "d": [
+     22,
+     23
+    ],
+    "name": "Falchion",
+    "cost": 375,
+    "d35e": "Falchion"
+   },
+   {
+    "d": [
+     24,
+     26
+    ],
+    "name": "Flail, dire",
+    "cost": 690,
+    "d35e": "Dire Flail"
+   },
+   {
+    "d": [
+     27,
+     31
+    ],
+    "name": "Flail, heavy",
+    "cost": 315,
+    "d35e": "Heavy Flail"
+   },
+   {
+    "d": [
+     32,
+     35
+    ],
+    "name": "Flail",
+    "cost": 308,
+    "d35e": "Flail"
+   },
+   {
+    "d": [
+     36,
+     37
+    ],
+    "name": "Gauntlet",
+    "cost": 302,
+    "d35e": "Gauntlet"
+   },
+   {
+    "d": [
+     38,
+     39
+    ],
+    "name": "Gauntlet, spiked",
+    "cost": 305,
+    "d35e": "Spiked Gauntlet"
+   },
+   {
+    "d": [
+     40,
+     41
+    ],
+    "name": "Glaive",
+    "cost": 308,
+    "d35e": "Glaive"
+   },
+   {
+    "d": [
+     42,
+     43
+    ],
+    "name": "Greatclub",
+    "cost": 305,
+    "d35e": "Greatclub"
+   },
+   {
+    "d": [
+     44,
+     45
+    ],
+    "name": "Guisarme",
+    "cost": 309,
+    "d35e": "Guisarme"
+   },
+   {
+    "d": [
+     46,
+     48
+    ],
+    "name": "Halberd",
+    "cost": 310,
+    "d35e": "Halberd"
+   },
+   {
+    "d": [
+     49,
+     51
+    ],
+    "name": "Spear",
+    "cost": 302,
+    "d35e": "Spear"
+   },
+   {
+    "d": [
+     52,
+     54
+    ],
+    "name": "Hammer, gnome hooked",
+    "cost": 620,
+    "d35e": "Gnome Hooked Hammer"
+   },
+   {
+    "d": [
+     55,
+     56
+    ],
+    "name": "Hammer, light",
+    "cost": 301,
+    "d35e": "Light Hammer"
+   },
+   {
+    "d": [
+     57,
+     58
+    ],
+    "name": "Handaxe",
+    "cost": 306,
+    "d35e": "Handaxe"
+   },
+   {
+    "d": [
+     59,
+     61
+    ],
+    "name": "Kukri",
+    "cost": 308,
+    "d35e": "Kukri"
+   },
+   {
+    "d": [
+     62,
+     64
+    ],
+    "name": "Lance",
+    "cost": 310,
+    "d35e": "Lance"
+   },
+   {
+    "d": [
+     65,
+     67
+    ],
+    "name": "Longspear",
+    "cost": 305,
+    "d35e": "Longspear"
+   },
+   {
+    "d": [
+     68,
+     70
+    ],
+    "name": "Morningstar",
+    "cost": 308,
+    "d35e": "Morningstar"
+   },
+   {
+    "d": [
+     71,
+     72
+    ],
+    "name": "Net",
+    "cost": 320,
+    "d35e": "Net"
+   },
+   {
+    "d": [
+     73,
+     74
+    ],
+    "name": "Pick, heavy",
+    "cost": 308,
+    "d35e": "Heavy Pick"
+   },
+   {
+    "d": [
+     75,
+     76
+    ],
+    "name": "Pick, light",
+    "cost": 304,
+    "d35e": "Light Pick"
+   },
+   {
+    "d": [
+     77,
+     78
+    ],
+    "name": "Ranseur",
+    "cost": 310,
+    "d35e": "Ranseur"
+   },
+   {
+    "d": [
+     79,
+     80
+    ],
+    "name": "Sap",
+    "cost": 301,
+    "d35e": "Sap"
+   },
+   {
+    "d": [
+     81,
+     82
+    ],
+    "name": "Scythe",
+    "cost": 318,
+    "d35e": "Scythe"
+   },
+   {
+    "d": [
+     83,
+     84
+    ],
+    "name": "Shuriken (50)",
+    "cost": 310,
+    "d35e": "Shuriken",
+    "quantity": 50
+   },
+   {
+    "d": [
+     85,
+     86
+    ],
+    "name": "Sickle",
+    "cost": 306,
+    "d35e": "Sickle"
+   },
+   {
+    "d": [
+     87,
+     89
+    ],
+    "name": "Sword, two-bladed",
+    "cost": 700,
+    "d35e": "Two-Bladed Sword"
+   },
+   {
+    "d": [
+     90,
+     91
+    ],
+    "name": "Trident",
+    "cost": 315,
+    "d35e": "Trident"
+   },
+   {
+    "d": [
+     92,
+     94
+    ],
+    "name": "Urgrosh, dwarven",
+    "cost": 650,
+    "d35e": "Dwarven Urgrosh"
+   },
+   {
+    "d": [
+     95,
+     97
+    ],
+    "name": "Warhammer",
+    "cost": 312,
+    "d35e": "Warhammer"
+   },
+   {
+    "d": [
+     98,
+     100
+    ],
+    "name": "Whip",
+    "cost": 301,
+    "d35e": "Whip"
+   }
+  ],
+  "commonRanged": [
+   {
+    "d": [
+     1,
+     10
+    ],
+    "name": "Ammunition (roll again)",
+    "cost": null,
+    "table": "ammunition"
+   },
+   {
+    "d": [
+     11,
+     15
+    ],
+    "name": "Axe, throwing",
+    "cost": 308,
+    "d35e": "Throwing Axe"
+   },
+   {
+    "d": [
+     16,
+     25
+    ],
+    "name": "Crossbow, heavy",
+    "cost": 350,
+    "d35e": "Heavy Crossbow"
+   },
+   {
+    "d": [
+     26,
+     35
+    ],
+    "name": "Crossbow, light",
+    "cost": 335,
+    "d35e": "Light Crossbow"
+   },
+   {
+    "d": [
+     36,
+     39
+    ],
+    "name": "Dart",
+    "cost": 300.5,
+    "d35e": "Dart"
+   },
+   {
+    "d": [
+     40,
+     41
+    ],
+    "name": "Javelin",
+    "cost": 301,
+    "d35e": "Javelin"
+   },
+   {
+    "d": [
+     42,
+     46
+    ],
+    "name": "Shortbow",
+    "cost": 330,
+    "d35e": "Shortbow"
+   },
+   {
+    "d": [
+     47,
+     51
+    ],
+    "name": "Shortbow, composite (+0 Str bonus)",
+    "cost": 375,
+    "d35e": "Shortbow",
+    "rename": "Composite Shortbow",
+    "price": 75
+   },
+   {
+    "d": [
+     52,
+     56
+    ],
+    "name": "Shortbow, composite (+1 Str bonus)",
+    "cost": 450,
+    "d35e": "Composite Shortbow (+1)"
+   },
+   {
+    "d": [
+     57,
+     61
+    ],
+    "name": "Shortbow, composite (+2 Str bonus)",
+    "cost": 525,
+    "d35e": "Composite Shortbow (+2)"
+   },
+   {
+    "d": [
+     62,
+     65
+    ],
+    "name": "Sling",
+    "cost": 300,
+    "d35e": "Sling"
+   },
+   {
+    "d": [
+     66,
+     75
+    ],
+    "name": "Longbow",
+    "cost": 375,
+    "d35e": "Longbow"
+   },
+   {
+    "d": [
+     76,
+     80
+    ],
+    "name": "Longbow, composite",
+    "cost": 400,
+    "d35e": "Longbow",
+    "rename": "Composite Longbow",
+    "price": 100
+   },
+   {
+    "d": [
+     81,
+     85
+    ],
+    "name": "Longbow, composite (+1 Str bonus)",
+    "cost": 500,
+    "d35e": "Composite Longbow (+1)"
+   },
+   {
+    "d": [
+     86,
+     90
+    ],
+    "name": "Longbow, composite (+2 Str bonus)",
+    "cost": 600,
+    "d35e": "Composite Longbow (+2)"
+   },
+   {
+    "d": [
+     91,
+     95
+    ],
+    "name": "Longbow, composite (+3 Str bonus)",
+    "cost": 700,
+    "d35e": "Composite Longbow (+3)"
+   },
+   {
+    "d": [
+     96,
+     100
+    ],
+    "name": "Longbow, composite (+4 Str bonus)",
+    "cost": 800,
+    "d35e": "Composite Longbow (+4)"
+   }
+  ],
+  "ammunition": [
+   {
+    "d": [
+     1,
+     50
+    ],
+    "name": "Arrows (50)",
+    "cost": 302.5,
+    "d35e": "Arrow",
+    "quantity": 50
+   },
+   {
+    "d": [
+     51,
+     75
+    ],
+    "name": "Bolts, crossbow (50)",
+    "cost": 305,
+    "d35e": "Crossbow Bolt",
+    "quantity": 50
+   },
+   {
+    "d": [
+     76,
+     80
+    ],
+    "name": "Bolts, repeating crossbow (50)",
+    "cost": 310,
+    "d35e": "Repeating Crossbow Bolt",
+    "quantity": 50
+   },
+   {
+    "d": [
+     81,
+     100
+    ],
+    "name": "Bullets, sling (50)",
+    "cost": 300.5,
+    "d35e": "Sling Bullet",
+    "quantity": 50
+   }
+  ],
+  "meleeAbilities": [
+   {
+    "minor": [
+     1,
+     10
+    ],
+    "medium": [
+     1,
+     6
+    ],
+    "major": [
+     1,
+     3
+    ],
+    "name": "Bane",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     11,
+     17
+    ],
+    "medium": [
+     7,
+     12
+    ],
+    "major": null,
+    "name": "Defending",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     18,
+     27
+    ],
+    "medium": [
+     13,
+     19
+    ],
+    "major": [
+     4,
+     6
+    ],
+    "name": "Flaming",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     28,
+     37
+    ],
+    "medium": [
+     20,
+     26
+    ],
+    "major": [
+     7,
+     9
+    ],
+    "name": "Frost",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     38,
+     47
+    ],
+    "medium": [
+     27,
+     33
+    ],
+    "major": [
+     10,
+     12
+    ],
+    "name": "Shock",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     48,
+     56
+    ],
+    "medium": [
+     34,
+     38
+    ],
+    "major": [
+     13,
+     15
+    ],
+    "name": "Ghost touch",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     57,
+     67
+    ],
+    "medium": [
+     39,
+     44
+    ],
+    "major": null,
+    "name": "Keen",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     68,
+     71
+    ],
+    "medium": [
+     45,
+     48
+    ],
+    "major": [
+     16,
+     19
+    ],
+    "name": "Ki focus",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     72,
+     75
+    ],
+    "medium": [
+     49,
+     50
+    ],
+    "major": null,
+    "name": "Merciful",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     76,
+     82
+    ],
+    "medium": [
+     51,
+     54
+    ],
+    "major": [
+     20,
+     21
+    ],
+    "name": "Mighty cleaving",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     83,
+     87
+    ],
+    "medium": [
+     55,
+     59
+    ],
+    "major": [
+     22,
+     24
+    ],
+    "name": "Spell storing",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     88,
+     91
+    ],
+    "medium": [
+     60,
+     63
+    ],
+    "major": [
+     25,
+     28
+    ],
+    "name": "Throwing",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     92,
+     95
+    ],
+    "medium": [
+     64,
+     65
+    ],
+    "major": [
+     29,
+     32
+    ],
+    "name": "Thundering",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     96,
+     99
+    ],
+    "medium": [
+     66,
+     69
+    ],
+    "major": [
+     33,
+     36
+    ],
+    "name": "Vicious",
+    "bonus": 1
+   },
+   {
+    "minor": null,
+    "medium": [
+     70,
+     72
+    ],
+    "major": [
+     37,
+     41
+    ],
+    "name": "Anarchic",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     73,
+     75
+    ],
+    "major": [
+     42,
+     46
+    ],
+    "name": "Axiomatic",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     76,
+     78
+    ],
+    "major": [
+     47,
+     49
+    ],
+    "name": "Disruption",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     79,
+     81
+    ],
+    "major": [
+     50,
+     54
+    ],
+    "name": "Flaming burst",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     82,
+     84
+    ],
+    "major": [
+     55,
+     59
+    ],
+    "name": "Icy burst",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     85,
+     87
+    ],
+    "major": [
+     60,
+     64
+    ],
+    "name": "Holy",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     88,
+     90
+    ],
+    "major": [
+     65,
+     69
+    ],
+    "name": "Shocking burst",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     91,
+     93
+    ],
+    "major": [
+     70,
+     74
+    ],
+    "name": "Unholy",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     94,
+     95
+    ],
+    "major": [
+     75,
+     78
+    ],
+    "name": "Wounding",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     79,
+     83
+    ],
+    "name": "Speed",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     84,
+     86
+    ],
+    "name": "Brilliant energy",
+    "bonus": 4
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     87,
+     88
+    ],
+    "name": "Dancing",
+    "bonus": 4
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     89,
+     90
+    ],
+    "name": "Vorpal",
+    "bonus": 5
+   },
+   {
+    "minor": [
+     100,
+     100
+    ],
+    "medium": [
+     96,
+     100
+    ],
+    "major": [
+     91,
+     100
+    ],
+    "name": "rollTwice"
+   }
+  ],
+  "rangedAbilities": [
+   {
+    "minor": [
+     1,
+     12
+    ],
+    "medium": [
+     1,
+     8
+    ],
+    "major": [
+     1,
+     4
+    ],
+    "name": "Bane",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     13,
+     25
+    ],
+    "medium": [
+     9,
+     16
+    ],
+    "major": [
+     5,
+     8
+    ],
+    "name": "Distance",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     26,
+     40
+    ],
+    "medium": [
+     17,
+     28
+    ],
+    "major": [
+     9,
+     12
+    ],
+    "name": "Flaming",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     41,
+     55
+    ],
+    "medium": [
+     29,
+     40
+    ],
+    "major": [
+     13,
+     16
+    ],
+    "name": "Frost",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     56,
+     60
+    ],
+    "medium": [
+     41,
+     42
+    ],
+    "major": null,
+    "name": "Merciful",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     61,
+     68
+    ],
+    "medium": [
+     43,
+     47
+    ],
+    "major": [
+     17,
+     21
+    ],
+    "name": "Returning",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     69,
+     83
+    ],
+    "medium": [
+     48,
+     59
+    ],
+    "major": [
+     22,
+     25
+    ],
+    "name": "Shock",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     84,
+     93
+    ],
+    "medium": [
+     60,
+     64
+    ],
+    "major": [
+     26,
+     27
+    ],
+    "name": "Seeking",
+    "bonus": 1
+   },
+   {
+    "minor": [
+     94,
+     99
+    ],
+    "medium": [
+     65,
+     68
+    ],
+    "major": [
+     28,
+     29
+    ],
+    "name": "Thundering",
+    "bonus": 1
+   },
+   {
+    "minor": null,
+    "medium": [
+     69,
+     71
+    ],
+    "major": [
+     30,
+     34
+    ],
+    "name": "Anarchic",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     72,
+     74
+    ],
+    "major": [
+     35,
+     39
+    ],
+    "name": "Axiomatic",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     75,
+     79
+    ],
+    "major": [
+     40,
+     49
+    ],
+    "name": "Flaming burst",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     80,
+     82
+    ],
+    "major": [
+     50,
+     54
+    ],
+    "name": "Holy",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     83,
+     87
+    ],
+    "major": [
+     55,
+     64
+    ],
+    "name": "Icy burst",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     88,
+     92
+    ],
+    "major": [
+     65,
+     74
+    ],
+    "name": "Shocking burst",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": [
+     93,
+     95
+    ],
+    "major": [
+     75,
+     79
+    ],
+    "name": "Unholy",
+    "bonus": 2
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     80,
+     84
+    ],
+    "name": "Speed",
+    "bonus": 3
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     85,
+     90
+    ],
+    "name": "Brilliant energy",
+    "bonus": 4
+   },
+   {
+    "minor": [
+     100,
+     100
+    ],
+    "medium": [
+     96,
+     100
+    ],
+    "major": [
+     91,
+     100
+    ],
+    "name": "rollTwice"
+   }
+  ],
+  "baneFoes": [
+   {
+    "d": [
+     1,
+     5
+    ],
+    "foe": "Aberrations",
+    "d35e": "Bane of Aberrations"
+   },
+   {
+    "d": [
+     6,
+     9
+    ],
+    "foe": "Animals",
+    "d35e": "Bane of Animals"
+   },
+   {
+    "d": [
+     10,
+     16
+    ],
+    "foe": "Constructs",
+    "d35e": "Bane of Constructs"
+   },
+   {
+    "d": [
+     17,
+     22
+    ],
+    "foe": "Dragons",
+    "d35e": "Bane of Dragons"
+   },
+   {
+    "d": [
+     23,
+     27
+    ],
+    "foe": "Elementals",
+    "d35e": "Bane of Elementals"
+   },
+   {
+    "d": [
+     28,
+     32
+    ],
+    "foe": "Fey",
+    "d35e": "Bane of Fey"
+   },
+   {
+    "d": [
+     33,
+     39
+    ],
+    "foe": "Giants",
+    "d35e": "Bane of Giants"
+   },
+   {
+    "d": [
+     40,
+     40
+    ],
+    "foe": "Humanoids (aquatic)",
+    "d35e": "Bane of Humanoids"
+   },
+   {
+    "d": [
+     41,
+     42
+    ],
+    "foe": "Humanoids (dwarf)",
+    "d35e": "Bane of Humanoids"
+   },
+   {
+    "d": [
+     43,
+     44
+    ],
+    "foe": "Humanoids (elf)",
+    "d35e": "Bane of Humanoids"
+   },
+   {
+    "d": [
+     45,
+     45
+    ],
+    "foe": "Humanoids (gnoll)",
+    "d35e": "Bane of Humanoids"
+   },
+   {
+    "d": [
+     46,
+     46
+    ],
+    "foe": "Humanoids (gnome)",
+    "d35e": "Bane of Humanoids"
+   },
+   {
+    "d": [
+     47,
+     49
+    ],
+    "foe": "Humanoids (goblinoid)",
+    "d35e": "Bane of Humanoids"
+   },
+   {
+    "d": [
+     50,
+     50
+    ],
+    "foe": "Humanoids (halfling)",
+    "d35e": "Bane of Humanoids"
+   },
+   {
+    "d": [
+     51,
+     54
+    ],
+    "foe": "Humanoids (human)",
+    "d35e": "Bane of Humanoids"
+   },
+   {
+    "d": [
+     55,
+     57
+    ],
+    "foe": "Humanoids (reptilian)",
+    "d35e": "Bane of Humanoids"
+   },
+   {
+    "d": [
+     58,
+     60
+    ],
+    "foe": "Humanoids (orc)",
+    "d35e": "Bane of Humanoids"
+   },
+   {
+    "d": [
+     61,
+     65
+    ],
+    "foe": "Magical beasts",
+    "d35e": "Bane of Magical Beasts"
+   },
+   {
+    "d": [
+     66,
+     70
+    ],
+    "foe": "Monstrous humanoids",
+    "d35e": "Bane of Monstrous Humanoids"
+   },
+   {
+    "d": [
+     71,
+     72
+    ],
+    "foe": "Oozes",
+    "d35e": "Bane of Oozes"
+   },
+   {
+    "d": [
+     73,
+     73
+    ],
+    "foe": "Outsiders (air)",
+    "d35e": "Bane of Outsiders"
+   },
+   {
+    "d": [
+     74,
+     76
+    ],
+    "foe": "Outsiders (chaotic)",
+    "d35e": "Bane of Outsiders"
+   },
+   {
+    "d": [
+     77,
+     77
+    ],
+    "foe": "Outsiders (earth)",
+    "d35e": "Bane of Outsiders"
+   },
+   {
+    "d": [
+     78,
+     80
+    ],
+    "foe": "Outsiders (evil)",
+    "d35e": "Bane of Outsiders"
+   },
+   {
+    "d": [
+     81,
+     81
+    ],
+    "foe": "Outsiders (fire)",
+    "d35e": "Bane of Outsiders"
+   },
+   {
+    "d": [
+     82,
+     84
+    ],
+    "foe": "Outsiders (good)",
+    "d35e": "Bane of Outsiders"
+   },
+   {
+    "d": [
+     85,
+     87
+    ],
+    "foe": "Outsiders (lawful)",
+    "d35e": "Bane of Outsiders"
+   },
+   {
+    "d": [
+     88,
+     88
+    ],
+    "foe": "Outsiders (water)",
+    "d35e": "Bane of Outsiders"
+   },
+   {
+    "d": [
+     89,
+     90
+    ],
+    "foe": "Plants",
+    "d35e": "Bane of Plants"
+   },
+   {
+    "d": [
+     91,
+     98
+    ],
+    "foe": "Undead",
+    "d35e": "Bane of Undead"
+   },
+   {
+    "d": [
+     99,
+     100
+    ],
+    "foe": "Vermin",
+    "d35e": "Bane of Vermin"
+   }
+  ],
+  "specificWeapons": [
+   {
+    "minor": [
+     1,
+     15
+    ],
+    "medium": null,
+    "major": null,
+    "name": "Sleep arrow",
+    "price": 132,
+    "d35e": "Sleep Arrow"
+   },
+   {
+    "minor": [
+     16,
+     25
+    ],
+    "medium": null,
+    "major": null,
+    "name": "Screaming bolt",
+    "price": 267,
+    "d35e": "Screaming Bolt"
+   },
+   {
+    "minor": [
+     26,
+     45
+    ],
+    "medium": null,
+    "major": null,
+    "name": "Silver dagger, masterwork",
+    "price": 322,
+    "d35e": "Silver Dagger, Masterwork"
+   },
+   {
+    "minor": [
+     46,
+     65
+    ],
+    "medium": null,
+    "major": null,
+    "name": "Cold iron longsword, masterwork",
+    "price": 330,
+    "d35e": "Masterwork Cold Iron Longsword"
+   },
+   {
+    "minor": [
+     66,
+     75
+    ],
+    "medium": [
+     1,
+     9
+    ],
+    "major": null,
+    "name": "Javelin of lightning",
+    "price": 1500,
+    "d35e": "Javelin of Lightning"
+   },
+   {
+    "minor": [
+     76,
+     80
+    ],
+    "medium": [
+     10,
+     15
+    ],
+    "major": null,
+    "name": "Slaying arrow",
+    "price": 2282,
+    "d35e": "Arrow of Death"
+   },
+   {
+    "minor": [
+     81,
+     90
+    ],
+    "medium": [
+     16,
+     24
+    ],
+    "major": null,
+    "name": "Adamantine dagger",
+    "price": 3002,
+    "d35e": "Adamantine Dagger"
+   },
+   {
+    "minor": [
+     91,
+     100
+    ],
+    "medium": [
+     25,
+     33
+    ],
+    "major": null,
+    "name": "Adamantine battleaxe",
+    "price": 3010,
+    "d35e": "Adamantine Battleaxe"
+   },
+   {
+    "minor": null,
+    "medium": [
+     34,
+     37
+    ],
+    "major": null,
+    "name": "Slaying arrow (greater)",
+    "price": 4057,
+    "d35e": "Slaying Arrow, Greater"
+   },
+   {
+    "minor": null,
+    "medium": [
+     38,
+     40
+    ],
+    "major": null,
+    "name": "Shatterspike",
+    "price": 4315,
+    "d35e": "Shatterspike"
+   },
+   {
+    "minor": null,
+    "medium": [
+     41,
+     46
+    ],
+    "major": null,
+    "name": "Dagger of venom",
+    "price": 8302,
+    "d35e": "Dagger of Venom"
+   },
+   {
+    "minor": null,
+    "medium": [
+     47,
+     51
+    ],
+    "major": null,
+    "name": "Trident of warning",
+    "price": 10115,
+    "d35e": "Trident of Warning"
+   },
+   {
+    "minor": null,
+    "medium": [
+     52,
+     57
+    ],
+    "major": [
+     1,
+     4
+    ],
+    "name": "Assassin's dagger",
+    "price": 10302,
+    "d35e": "Assassin's Dagger"
+   },
+   {
+    "minor": null,
+    "medium": [
+     58,
+     62
+    ],
+    "major": [
+     5,
+     7
+    ],
+    "name": "Shifter's sorrow",
+    "price": 12780,
+    "d35e": "Shifter's Sorrow"
+   },
+   {
+    "minor": null,
+    "medium": [
+     63,
+     66
+    ],
+    "major": [
+     8,
+     9
+    ],
+    "name": "Trident of fish command",
+    "price": 18650,
+    "d35e": "Trident of Fish Command"
+   },
+   {
+    "minor": null,
+    "medium": [
+     67,
+     74
+    ],
+    "major": [
+     10,
+     13
+    ],
+    "name": "Flame tongue",
+    "price": 20715,
+    "d35e": "Flame Tongue"
+   },
+   {
+    "minor": null,
+    "medium": [
+     75,
+     79
+    ],
+    "major": [
+     14,
+     17
+    ],
+    "name": "Luck blade (0 wishes)",
+    "price": 22060,
+    "d35e": "Luck Blade"
+   },
+   {
+    "minor": null,
+    "medium": [
+     80,
+     86
+    ],
+    "major": [
+     18,
+     24
+    ],
+    "name": "Sword of subtlety",
+    "price": 22310,
+    "d35e": "Sword of Subtlety"
+   },
+   {
+    "minor": null,
+    "medium": [
+     87,
+     91
+    ],
+    "major": [
+     25,
+     31
+    ],
+    "name": "Sword of the planes",
+    "price": 22315,
+    "d35e": "Sword of the Planes"
+   },
+   {
+    "minor": null,
+    "medium": [
+     92,
+     95
+    ],
+    "major": [
+     32,
+     37
+    ],
+    "name": "Nine lives stealer",
+    "price": 23057,
+    "d35e": "Nine Lives Stealer"
+   },
+   {
+    "minor": null,
+    "medium": [
+     96,
+     98
+    ],
+    "major": [
+     38,
+     42
+    ],
+    "name": "Sword of life stealing",
+    "price": 25715,
+    "d35e": "Sword of Life Stealing"
+   },
+   {
+    "minor": null,
+    "medium": [
+     99,
+     100
+    ],
+    "major": [
+     43,
+     46
+    ],
+    "name": "Oathbow",
+    "price": 25600,
+    "d35e": "Oathbow"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     47,
+     51
+    ],
+    "name": "Mace of terror",
+    "price": 38552,
+    "d35e": "Mace of Terror"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     52,
+     57
+    ],
+    "name": "Life-drinker",
+    "price": 40320,
+    "d35e": "Life-Drinker"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     58,
+     62
+    ],
+    "name": "Sylvan scimitar",
+    "price": 47315,
+    "d35e": "Sylvan Scimitar"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     63,
+     67
+    ],
+    "name": "Rapier of puncturing",
+    "price": 50320,
+    "d35e": "Rapier of Puncturing"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     68,
+     73
+    ],
+    "name": "Sun blade",
+    "price": 50335,
+    "d35e": "Sun Blade"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     74,
+     79
+    ],
+    "name": "Frost brand",
+    "price": 54475,
+    "d35e": "Frost Brand"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     80,
+     84
+    ],
+    "name": "Dwarven thrower",
+    "price": 60312,
+    "d35e": "Dwarven Thrower"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     85,
+     91
+    ],
+    "name": "Luck blade (1 wish)",
+    "price": 62360,
+    "d35e": "Luck Blade"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     92,
+     95
+    ],
+    "name": "Mace of smiting",
+    "price": 75312,
+    "d35e": "Mace of Smiting"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     96,
+     97
+    ],
+    "name": "Luck blade (2 wishes)",
+    "price": 102660,
+    "d35e": "Luck Blade"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     98,
+     99
+    ],
+    "name": "Holy avenger",
+    "price": 120630,
+    "d35e": "Holy Avenger"
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     100,
+     100
+    ],
+    "name": "Luck blade (3 wishes)",
+    "price": 142960,
+    "d35e": "Luck Blade"
+   }
+  ],
+  "mundane": {
+   "armorSize": [
+    {
+     "d": [
+      1,
+      10
+     ],
+     "size": "sm"
+    },
+    {
+     "d": [
+      11,
+      100
+     ],
+     "size": "med"
+    }
+   ],
+   "armor": [
+    {
+     "d": [
+      1,
+      12
+     ],
+     "name": "Chain shirt",
+     "d35e": "Chain Shirt",
+     "price": 100
+    },
+    {
+     "d": [
+      13,
+      18
+     ],
+     "name": "Masterwork studded leather",
+     "d35e": "Studded Leather Armor",
+     "masterwork": true,
+     "price": 175
+    },
+    {
+     "d": [
+      19,
+      26
+     ],
+     "name": "Breastplate",
+     "d35e": "Breastplate",
+     "price": 200
+    },
+    {
+     "d": [
+      27,
+      34
+     ],
+     "name": "Banded mail",
+     "d35e": "Banded Mail",
+     "price": 250
+    },
+    {
+     "d": [
+      35,
+      54
+     ],
+     "name": "Half-plate",
+     "d35e": "Half-Plate",
+     "price": 600
+    },
+    {
+     "d": [
+      55,
+      80
+     ],
+     "name": "Full plate",
+     "d35e": "Full Plate",
+     "price": 1500
+    },
+    {
+     "d": [
+      81,
+      90
+     ],
+     "table": "darkwood"
+    },
+    {
+     "d": [
+      91,
+      100
+     ],
+     "table": "masterworkShield"
+    }
+   ],
+   "darkwood": [
+    {
+     "d": [
+      1,
+      50
+     ],
+     "name": "Darkwood buckler",
+     "specific": "Darkwood buckler",
+     "price": 205
+    },
+    {
+     "d": [
+      51,
+      100
+     ],
+     "name": "Darkwood shield",
+     "specific": "Darkwood shield",
+     "price": 257
+    }
+   ],
+   "masterworkShield": [
+    {
+     "d": [
+      1,
+      17
+     ],
+     "name": "Buckler",
+     "d35e": "Buckler",
+     "masterwork": true,
+     "price": 165
+    },
+    {
+     "d": [
+      18,
+      40
+     ],
+     "name": "Light wooden shield",
+     "d35e": "Light Wooden Shield",
+     "masterwork": true,
+     "price": 153
+    },
+    {
+     "d": [
+      41,
+      60
+     ],
+     "name": "Light steel shield",
+     "d35e": "Light Steel Shield",
+     "masterwork": true,
+     "price": 159
+    },
+    {
+     "d": [
+      61,
+      83
+     ],
+     "name": "Heavy wooden shield",
+     "d35e": "Heavy Wooden Shield",
+     "masterwork": true,
+     "price": 157
+    },
+    {
+     "d": [
+      84,
+      100
+     ],
+     "name": "Heavy steel shield",
+     "d35e": "Heavy Steel Shield",
+     "masterwork": true,
+     "price": 170
+    }
+   ],
+   "weapons": [
+    {
+     "d": [
+      1,
+      50
+     ],
+     "table": "commonMelee",
+     "masterwork": true
+    },
+    {
+     "d": [
+      51,
+      70
+     ],
+     "table": "uncommon",
+     "masterwork": true
+    },
+    {
+     "d": [
+      71,
+      100
+     ],
+     "table": "commonRanged",
+     "masterwork": true
+    }
+   ]
+  },
+  "rollRules": {
+   "abilityAndRollAgain": "Roll one special ability (by grade, on the table for the item kind), then roll again on the main table; a second \"special ability\" result adds another ability.",
+   "rollTwice": "Roll twice more on the ability table. Reroll duplicates, incompatible abilities, and anything that would take the total past +10.",
+   "abilityRestrictions": "Keen: piercing or slashing. Vorpal: slashing. Disruption: bludgeoning. Throwing: melee only. Returning: thrown weapons only. Reroll if randomly generated for the wrong weapon.",
+   "betterVersion": "If two versions of the same armor/shield ability are rolled, keep the better one."
+  },
+  "psionicMeleeAbilities": [
+   {
+    "minor": [
+     1,
+     15
+    ],
+    "medium": [
+     1,
+     10
+    ],
+    "major": null,
+    "name": "Psychokinetic",
+    "bonus": 1,
+    "psionic": true
+   },
+   {
+    "minor": [
+     16,
+     45
+    ],
+    "medium": [
+     11,
+     25
+    ],
+    "major": [
+     1,
+     9
+    ],
+    "name": "Dissipater",
+    "bonus": 1,
+    "psionic": true
+   },
+   {
+    "minor": [
+     46,
+     55
+    ],
+    "medium": [
+     26,
+     30
+    ],
+    "major": [
+     10,
+     12
+    ],
+    "name": "Lucky",
+    "bonus": 1,
+    "psionic": true
+   },
+   {
+    "minor": [
+     56,
+     70
+    ],
+    "medium": [
+     31,
+     40
+    ],
+    "major": [
+     13,
+     17
+    ],
+    "name": "Sundering",
+    "bonus": 1,
+    "psionic": true
+   },
+   {
+    "minor": [
+     71,
+     80
+    ],
+    "medium": [
+     41,
+     46
+    ],
+    "major": [
+     18,
+     21
+    ],
+    "name": "Power storing",
+    "bonus": 1,
+    "psionic": true
+   },
+   {
+    "minor": [
+     81,
+     99
+    ],
+    "medium": [
+     51,
+     56
+    ],
+    "major": [
+     22,
+     30
+    ],
+    "name": "Collision",
+    "bonus": 2,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     57,
+     65
+    ],
+    "major": [
+     31,
+     37
+    ],
+    "name": "Mindcrusher",
+    "bonus": 2,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     66,
+     71
+    ],
+    "major": [
+     38,
+     41
+    ],
+    "name": "Psychokinetic burst",
+    "bonus": 2,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     72,
+     75
+    ],
+    "major": [
+     42,
+     49
+    ],
+    "name": "Suppression",
+    "bonus": 2,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     76,
+     78
+    ],
+    "major": [
+     50,
+     58
+    ],
+    "name": "Psibane",
+    "bonus": 2,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     79,
+     81
+    ],
+    "major": [
+     59,
+     61
+    ],
+    "name": "Parrying",
+    "gp": 8000,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     82,
+     85
+    ],
+    "major": [
+     62,
+     65
+    ],
+    "name": "Manifester",
+    "gp": 16000,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     86,
+     88
+    ],
+    "major": [
+     66,
+     71
+    ],
+    "name": "Bodyfeeder",
+    "bonus": 3,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     89,
+     91
+    ],
+    "major": [
+     72,
+     77
+    ],
+    "name": "Mindfeeder",
+    "bonus": 3,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     92,
+     93
+    ],
+    "major": [
+     78,
+     83
+    ],
+    "name": "Soulbreaker",
+    "bonus": 3,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     94,
+     94
+    ],
+    "major": [
+     84,
+     86
+    ],
+    "name": "Psychic",
+    "gp": 35000,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     95,
+     95
+    ],
+    "major": [
+     87,
+     90
+    ],
+    "name": "Coup de grace",
+    "bonus": 5,
+    "psionic": true
+   },
+   {
+    "minor": [
+     100,
+     100
+    ],
+    "medium": [
+     96,
+     100
+    ],
+    "major": [
+     91,
+     100
+    ],
+    "name": "rollTwice",
+    "psionic": true
+   }
+  ],
+  "psionicRangedAbilities": [
+   {
+    "minor": [
+     1,
+     20
+    ],
+    "medium": [
+     1,
+     15
+    ],
+    "major": null,
+    "name": "Teleporting",
+    "bonus": 1,
+    "psionic": true
+   },
+   {
+    "minor": [
+     21,
+     40
+    ],
+    "medium": [
+     16,
+     30
+    ],
+    "major": null,
+    "name": "Psychokinetic",
+    "bonus": 1,
+    "psionic": true
+   },
+   {
+    "minor": [
+     41,
+     100
+    ],
+    "medium": [
+     31,
+     45
+    ],
+    "major": [
+     1,
+     30
+    ],
+    "name": "Collision",
+    "bonus": 2,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     46,
+     50
+    ],
+    "major": [
+     31,
+     40
+    ],
+    "name": "Suppression",
+    "bonus": 2,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     51,
+     66
+    ],
+    "major": [
+     41,
+     65
+    ],
+    "name": "Psychokinetic burst",
+    "bonus": 2,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     67,
+     74
+    ],
+    "major": [
+     66,
+     69
+    ],
+    "name": "Psibane",
+    "bonus": 2,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     75,
+     78
+    ],
+    "major": [
+     70,
+     73
+    ],
+    "name": "Manifester",
+    "gp": 16000,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     79,
+     82
+    ],
+    "major": [
+     74,
+     79
+    ],
+    "name": "Dislocator",
+    "bonus": 3,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     83,
+     98
+    ],
+    "major": [
+     80,
+     90
+    ],
+    "name": "Great dislocator",
+    "bonus": 4,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     91,
+     97
+    ],
+    "name": "Coup de grace",
+    "bonus": 5,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     99,
+     100
+    ],
+    "major": [
+     98,
+     100
+    ],
+    "name": "rollTwice",
+    "psionic": true
+   }
+  ],
+  "psionicArmorAbilities": [
+   {
+    "minor": [
+     1,
+     30
+    ],
+    "medium": [
+     1,
+     7
+    ],
+    "major": [
+     1,
+     3
+    ],
+    "name": "Quickness",
+    "bonus": 1,
+    "psionic": true
+   },
+   {
+    "minor": [
+     31,
+     74
+    ],
+    "medium": [
+     8,
+     30
+    ],
+    "major": [
+     4,
+     5
+    ],
+    "name": "Landing",
+    "gp": 4000,
+    "psionic": true
+   },
+   {
+    "minor": [
+     75,
+     80
+    ],
+    "medium": [
+     31,
+     46
+    ],
+    "major": [
+     6,
+     10
+    ],
+    "name": "Floating",
+    "gp": 4000,
+    "psionic": true
+   },
+   {
+    "minor": [
+     81,
+     96
+    ],
+    "medium": [
+     47,
+     55
+    ],
+    "major": [
+     11,
+     20
+    ],
+    "name": "Linked",
+    "gp": 6000,
+    "psionic": true
+   },
+   {
+    "minor": [
+     97,
+     97
+    ],
+    "medium": [
+     56,
+     66
+    ],
+    "major": [
+     21,
+     30
+    ],
+    "name": "Seeing",
+    "gp": 6000,
+    "psionic": true
+   },
+   {
+    "minor": [
+     98,
+     98
+    ],
+    "medium": [
+     67,
+     75
+    ],
+    "major": [
+     31,
+     40
+    ],
+    "name": "Power resistance (13)",
+    "bonus": 2,
+    "psionic": true
+   },
+   {
+    "minor": [
+     99,
+     99
+    ],
+    "medium": [
+     76,
+     83
+    ],
+    "major": [
+     41,
+     50
+    ],
+    "name": "Ectoplasmic",
+    "gp": 10800,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     84,
+     89
+    ],
+    "major": [
+     51,
+     60
+    ],
+    "name": "Gleaming",
+    "bonus": 3,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     90,
+     94
+    ],
+    "major": [
+     61,
+     70
+    ],
+    "name": "Power resistance (15)",
+    "bonus": 3,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     95,
+     98
+    ],
+    "major": [
+     71,
+     77
+    ],
+    "name": "Vanishing",
+    "bonus": 3,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     99,
+     99
+    ],
+    "major": [
+     78,
+     83
+    ],
+    "name": "Mindarmor",
+    "gp": 24000,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     84,
+     89
+    ],
+    "name": "Power resistance (17)",
+    "bonus": 4,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     90,
+     94
+    ],
+    "name": "Radiant",
+    "bonus": 4,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     95,
+     96
+    ],
+    "name": "Aporter",
+    "gp": 40320,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     97,
+     98
+    ],
+    "name": "Power resistance (19)",
+    "bonus": 5,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     99,
+     99
+    ],
+    "name": "Phasing",
+    "gp": 65520,
+    "psionic": true
+   },
+   {
+    "minor": [
+     100,
+     100
+    ],
+    "medium": [
+     100,
+     100
+    ],
+    "major": [
+     100,
+     100
+    ],
+    "name": "rollTwice",
+    "psionic": true
+   }
+  ],
+  "psionicShieldAbilities": [
+   {
+    "minor": [
+     1,
+     35
+    ],
+    "medium": [
+     1,
+     5
+    ],
+    "major": [
+     1,
+     3
+    ],
+    "name": "Heartening",
+    "gp": 720,
+    "psionic": true
+   },
+   {
+    "minor": [
+     36,
+     60
+    ],
+    "medium": [
+     6,
+     10
+    ],
+    "major": [
+     4,
+     5
+    ],
+    "name": "Ranged",
+    "bonus": 1,
+    "psionic": true
+   },
+   {
+    "minor": [
+     61,
+     89
+    ],
+    "medium": [
+     11,
+     15
+    ],
+    "major": [
+     6,
+     10
+    ],
+    "name": "Linked",
+    "gp": 6000,
+    "psionic": true
+   },
+   {
+    "minor": [
+     90,
+     97
+    ],
+    "medium": [
+     16,
+     35
+    ],
+    "major": [
+     11,
+     24
+    ],
+    "name": "Power resistance (13)",
+    "bonus": 2,
+    "psionic": true
+   },
+   {
+    "minor": [
+     98,
+     98
+    ],
+    "medium": [
+     36,
+     58
+    ],
+    "major": [
+     25,
+     34
+    ],
+    "name": "Manifester",
+    "gp": 10800,
+    "psionic": true
+   },
+   {
+    "minor": [
+     99,
+     99
+    ],
+    "medium": [
+     69,
+     88
+    ],
+    "major": [
+     35,
+     44
+    ],
+    "name": "Averter",
+    "gp": 12960,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     89,
+     92
+    ],
+    "major": [
+     45,
+     54
+    ],
+    "name": "Vanishing",
+    "bonus": 3,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     93,
+     96
+    ],
+    "major": [
+     55,
+     64
+    ],
+    "name": "Power resistance (15)",
+    "bonus": 3,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     97,
+     98
+    ],
+    "major": [
+     65,
+     74
+    ],
+    "name": "Wall",
+    "gp": 20160,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": [
+     99,
+     99
+    ],
+    "major": [
+     75,
+     81
+    ],
+    "name": "Mindarmor",
+    "gp": 24000,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     82,
+     88
+    ],
+    "name": "Power resistance (17)",
+    "bonus": 4,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     89,
+     93
+    ],
+    "name": "Aporter",
+    "gp": 40320,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     94,
+     96
+    ],
+    "name": "Time buttress",
+    "bonus": 5,
+    "psionic": true
+   },
+   {
+    "minor": null,
+    "medium": null,
+    "major": [
+     97,
+     99
+    ],
+    "name": "Power resistance (19)",
+    "bonus": 5,
+    "psionic": true
+   },
+   {
+    "minor": [
+     100,
+     100
+    ],
+    "medium": [
+     100,
+     100
+    ],
+    "major": [
+     100,
+     100
+    ],
+    "name": "rollTwice",
+    "psionic": true
+   }
+  ],
+  "epicWeapons": [
+   {
+    "epic": [
+     1,
+     3
+    ],
+    "result": "weapon",
+    "bonus": 1
+   },
+   {
+    "epic": [
+     4,
+     7
+    ],
+    "result": "weapon",
+    "bonus": 2
+   },
+   {
+    "epic": [
+     8,
+     13
+    ],
+    "result": "weapon",
+    "bonus": 3
+   },
+   {
+    "epic": [
+     14,
+     20
+    ],
+    "result": "weapon",
+    "bonus": 4
+   },
+   {
+    "epic": [
+     21,
+     28
+    ],
+    "result": "weapon",
+    "bonus": 5
+   },
+   {
+    "epic": [
+     29,
+     36
+    ],
+    "result": "weapon",
+    "bonus": 6
+   },
+   {
+    "epic": [
+     37,
+     43
+    ],
+    "result": "weapon",
+    "bonus": 7
+   },
+   {
+    "epic": [
+     44,
+     49
+    ],
+    "result": "weapon",
+    "bonus": 8
+   },
+   {
+    "epic": [
+     50,
+     53
+    ],
+    "result": "weapon",
+    "bonus": 9
+   },
+   {
+    "epic": [
+     54,
+     56
+    ],
+    "result": "weapon",
+    "bonus": 10
+   },
+   {
+    "epic": [
+     57,
+     61
+    ],
+    "result": "specificWeapon"
+   },
+   {
+    "epic": [
+     62,
+     80
+    ],
+    "result": "meleeAbilityAndRollAgain"
+   },
+   {
+    "epic": [
+     81,
+     99
+    ],
+    "result": "rangedAbilityAndRollAgain"
+   },
+   {
+    "epic": [
+     100,
+     100
+    ],
+    "result": "epicBonus"
+   }
+  ],
+  "epicWeaponBonus": [
+   {
+    "d": [
+     1,
+     21
+    ],
+    "bonus": 11
+   },
+   {
+    "d": [
+     22,
+     39
+    ],
+    "bonus": 12
+   },
+   {
+    "d": [
+     40,
+     54
+    ],
+    "bonus": 13
+   },
+   {
+    "d": [
+     55,
+     66
+    ],
+    "bonus": 14
+   },
+   {
+    "d": [
+     67,
+     76
+    ],
+    "bonus": 15
+   },
+   {
+    "d": [
+     77,
+     84
+    ],
+    "bonus": 16
+   },
+   {
+    "d": [
+     85,
+     90
+    ],
+    "bonus": 17
+   },
+   {
+    "d": [
+     91,
+     94
+    ],
+    "bonus": 18
+   },
+   {
+    "d": [
+     95,
+     97
+    ],
+    "bonus": 19
+   },
+   {
+    "d": [
+     98,
+     99
+    ],
+    "bonus": 20
+   },
+   {
+    "d": [
+     100,
+     100
+    ],
+    "rollAgainAdd": 10
+   }
+  ],
+  "epicArmorBonus": [
+   {
+    "d": [
+     1,
+     21
+    ],
+    "bonus": 11
+   },
+   {
+    "d": [
+     22,
+     39
+    ],
+    "bonus": 12
+   },
+   {
+    "d": [
+     40,
+     54
+    ],
+    "bonus": 13
+   },
+   {
+    "d": [
+     55,
+     66
+    ],
+    "bonus": 14
+   },
+   {
+    "d": [
+     67,
+     76
+    ],
+    "bonus": 15
+   },
+   {
+    "d": [
+     77,
+     84
+    ],
+    "bonus": 16
+   },
+   {
+    "d": [
+     85,
+     90
+    ],
+    "bonus": 17
+   },
+   {
+    "d": [
+     91,
+     94
+    ],
+    "bonus": 18
+   },
+   {
+    "d": [
+     95,
+     97
+    ],
+    "bonus": 19
+   },
+   {
+    "d": [
+     98,
+     99
+    ],
+    "bonus": 20
+   },
+   {
+    "d": [
+     100,
+     100
+    ],
+    "rollAgainAdd": 10
+   }
+  ],
+  "epicArmorAndShields": [
+   {
+    "epic": [
+     1,
+     1
+    ],
+    "result": "shield",
+    "bonus": 1
+   },
+   {
+    "epic": [
+     2,
+     2
+    ],
+    "result": "armor",
+    "bonus": 1
+   },
+   {
+    "epic": [
+     3,
+     3
+    ],
+    "result": "shield",
+    "bonus": 2
+   },
+   {
+    "epic": [
+     4,
+     4
+    ],
+    "result": "armor",
+    "bonus": 2
+   },
+   {
+    "epic": [
+     5,
+     6
+    ],
+    "result": "shield",
+    "bonus": 3
+   },
+   {
+    "epic": [
+     7,
+     8
+    ],
+    "result": "armor",
+    "bonus": 3
+   },
+   {
+    "epic": [
+     9,
+     12
+    ],
+    "result": "shield",
+    "bonus": 4
+   },
+   {
+    "epic": [
+     13,
+     16
+    ],
+    "result": "armor",
+    "bonus": 4
+   },
+   {
+    "epic": [
+     17,
+     21
+    ],
+    "result": "shield",
+    "bonus": 5
+   },
+   {
+    "epic": [
+     22,
+     26
+    ],
+    "result": "armor",
+    "bonus": 5
+   },
+   {
+    "epic": [
+     27,
+     30
+    ],
+    "result": "shield",
+    "bonus": 6
+   },
+   {
+    "epic": [
+     31,
+     34
+    ],
+    "result": "armor",
+    "bonus": 6
+   },
+   {
+    "epic": [
+     35,
+     38
+    ],
+    "result": "shield",
+    "bonus": 7
+   },
+   {
+    "epic": [
+     39,
+     42
+    ],
+    "result": "armor",
+    "bonus": 7
+   },
+   {
+    "epic": [
+     43,
+     45
+    ],
+    "result": "shield",
+    "bonus": 8
+   },
+   {
+    "epic": [
+     46,
+     48
+    ],
+    "result": "armor",
+    "bonus": 8
+   },
+   {
+    "epic": [
+     49,
+     50
+    ],
+    "result": "shield",
+    "bonus": 9
+   },
+   {
+    "epic": [
+     51,
+     52
+    ],
+    "result": "armor",
+    "bonus": 9
+   },
+   {
+    "epic": [
+     53,
+     54
+    ],
+    "result": "shield",
+    "bonus": 10
+   },
+   {
+    "epic": [
+     55,
+     56
+    ],
+    "result": "armor",
+    "bonus": 10
+   },
+   {
+    "epic": [
+     57,
+     62
+    ],
+    "result": "specificArmorOrShield"
+   },
+   {
+    "epic": [
+     63,
+     75
+    ],
+    "result": "armorAbilityAndRollAgain"
+   },
+   {
+    "epic": [
+     76,
+     98
+    ],
+    "result": "shieldAbilityAndRollAgain"
+   },
+   {
+    "epic": [
+     99,
+     99
+    ],
+    "result": "epicShield"
+   },
+   {
+    "epic": [
+     100,
+     100
+    ],
+    "result": "epicArmor"
+   }
+  ],
+  "epicMeleeAbilities": [
+   {
+    "epic": [
+     1,
+     8
+    ],
+    "name": "Acidic blast",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     9,
+     16
+    ],
+    "name": "Fiery blast",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     17,
+     24
+    ],
+    "name": "Icy blast",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     25,
+     32
+    ],
+    "name": "Lightning blast",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     33,
+     40
+    ],
+    "name": "Mighty disruption",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     41,
+     48
+    ],
+    "name": "Sonic blast",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     49,
+     56
+    ],
+    "name": "Dread",
+    "bonus": 7,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     57,
+     61
+    ],
+    "name": "Anarchic power",
+    "bonus": 8,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     62,
+     66
+    ],
+    "name": "Everdancing",
+    "bonus": 8,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     67,
+     71
+    ],
+    "name": "Holy power",
+    "bonus": 8,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     72,
+     76
+    ],
+    "name": "Axiomatic power",
+    "bonus": 8,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     77,
+     81
+    ],
+    "name": "Unholy power",
+    "bonus": 8,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     82,
+     89
+    ],
+    "name": "nonepicThenAgain"
+   },
+   {
+    "epic": [
+     90,
+     97
+    ],
+    "name": "twiceNonepic"
+   },
+   {
+    "epic": [
+     98,
+     100
+    ],
+    "name": "rollTwice"
+   }
+  ],
+  "epicRangedAbilities": [
+   {
+    "epic": [
+     1,
+     7
+    ],
+    "name": "Acidic blast",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     8,
+     14
+    ],
+    "name": "Distant shot",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     15,
+     21
+    ],
+    "name": "Fiery blast",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     22,
+     28
+    ],
+    "name": "Icy blast",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     29,
+     35
+    ],
+    "name": "Lightning blast",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     36,
+     41
+    ],
+    "name": "Sonic blast",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     42,
+     48
+    ],
+    "name": "Triple-throw",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     49,
+     53
+    ],
+    "name": "Unerring accuracy",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     54,
+     60
+    ],
+    "name": "Dread",
+    "bonus": 7,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     61,
+     65
+    ],
+    "name": "Anarchic power",
+    "bonus": 8,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     66,
+     70
+    ],
+    "name": "Holy power",
+    "bonus": 8,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     71,
+     75
+    ],
+    "name": "Axiomatic power",
+    "bonus": 8,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     76,
+     80
+    ],
+    "name": "Unholy power",
+    "bonus": 8,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     81,
+     88
+    ],
+    "name": "nonepicThenAgain"
+   },
+   {
+    "epic": [
+     89,
+     96
+    ],
+    "name": "twiceNonepic"
+   },
+   {
+    "epic": [
+     97,
+     100
+    ],
+    "name": "rollTwice"
+   }
+  ],
+  "epicArmorAbilities": [
+   {
+    "epic": [
+     1,
+     6
+    ],
+    "name": "Great invulnerability (10/magic)",
+    "bonus": 4,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     7,
+     11
+    ],
+    "name": "Great invulnerability (15/magic)",
+    "bonus": 5,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     12,
+     19
+    ],
+    "name": "Negating",
+    "bonus": 5,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     20,
+     26
+    ],
+    "name": "Acid warding",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     27,
+     33
+    ],
+    "name": "Cold warding",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     34,
+     40
+    ],
+    "name": "Fire warding",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     41,
+     44
+    ],
+    "name": "Great invulnerability (5/epic)",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     45,
+     50
+    ],
+    "name": "Great spell resistance (21)",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     51,
+     57
+    ],
+    "name": "Lightning warding",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     58,
+     64
+    ],
+    "name": "Sonic warding",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     65,
+     67
+    ],
+    "name": "Great invulnerability (10/epic)",
+    "bonus": 7,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     68,
+     72
+    ],
+    "name": "Great spell resistance (23)",
+    "bonus": 7,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     73,
+     76
+    ],
+    "name": "Great spell resistance (25)",
+    "bonus": 8,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     77,
+     79
+    ],
+    "name": "Great spell resistance (27)",
+    "bonus": 9,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     80,
+     87
+    ],
+    "name": "nonepicThenAgain"
+   },
+   {
+    "epic": [
+     88,
+     95
+    ],
+    "name": "twiceNonepic"
+   },
+   {
+    "epic": [
+     96,
+     100
+    ],
+    "name": "rollTwice"
+   }
+  ],
+  "epicShieldAbilities": [
+   {
+    "epic": [
+     1,
+     6
+    ],
+    "name": "Great invulnerability (10/magic)",
+    "bonus": 4,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     7,
+     12
+    ],
+    "name": "Great invulnerability (15/magic)",
+    "bonus": 5,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     13,
+     19
+    ],
+    "name": "Acid warding",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     20,
+     26
+    ],
+    "name": "Cold warding",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     27,
+     33
+    ],
+    "name": "Fire warding",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     34,
+     37
+    ],
+    "name": "Great invulnerability (5/epic)",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     38,
+     43
+    ],
+    "name": "Great spell resistance (21)",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     44,
+     46
+    ],
+    "name": "Infinite arrow deflection",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     47,
+     53
+    ],
+    "name": "Lightning warding",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     54,
+     60
+    ],
+    "name": "Sonic warding",
+    "bonus": 6,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     61,
+     63
+    ],
+    "name": "Great invulnerability (10/epic)",
+    "bonus": 7,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     64,
+     68
+    ],
+    "name": "Great spell resistance (23)",
+    "bonus": 7,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     69,
+     71
+    ],
+    "name": "Exceptional arrow deflection",
+    "bonus": 8,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     72,
+     75
+    ],
+    "name": "Great spell resistance (25)",
+    "bonus": 8,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     76,
+     78
+    ],
+    "name": "Great spell resistance (27)",
+    "bonus": 9,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     79,
+     79
+    ],
+    "name": "Great reflection",
+    "bonus": 10,
+    "epicAbility": true
+   },
+   {
+    "epic": [
+     80,
+     87
+    ],
+    "name": "nonepicThenAgain"
+   },
+   {
+    "epic": [
+     88,
+     95
+    ],
+    "name": "twiceNonepic"
+   },
+   {
+    "epic": [
+     96,
+     100
+    ],
+    "name": "rollTwice"
+   }
+  ],
+  "epicSpecificWeapons": [
+   {
+    "d": [
+     1,
+     18
+    ],
+    "name": "Stormbrand",
+    "d35e": "Stormbrand",
+    "price": 235350
+   },
+   {
+    "d": [
+     19,
+     33
+    ],
+    "name": "Quarterstaff of Alacrity",
+    "d35e": "Quarterstaff of Alacrity",
+    "price": 462600
+   },
+   {
+    "d": [
+     34,
+     48
+    ],
+    "name": "Souldrinker",
+    "d35e": "Souldrinker",
+    "price": 478335
+   },
+   {
+    "d": [
+     49,
+     60
+    ],
+    "name": "Backstabber",
+    "d35e": "Backstabber",
+    "price": 770310
+   },
+   {
+    "d": [
+     61,
+     68
+    ],
+    "name": "Mace of Ruin",
+    "d35e": "Mace of Ruin",
+    "price": 1000312
+   },
+   {
+    "d": [
+     69,
+     72
+    ],
+    "name": "Gripsoul",
+    "d35e": "Gripsoul",
+    "price": 1856500
+   },
+   {
+    "d": [
+     73,
+     78
+    ],
+    "name": "Elven Greatbow",
+    "d35e": "Elven Greatbow",
+    "price": 2900400
+   },
+   {
+    "d": [
+     79,
+     84
+    ],
+    "name": "Finaldeath",
+    "d35e": "Finaldeath",
+    "price": 3580308
+   },
+   {
+    "d": [
+     85,
+     90
+    ],
+    "name": "Chaosbringer",
+    "d35e": "Chaosbringer",
+    "price": 4025350
+   },
+   {
+    "d": [
+     91,
+     94
+    ],
+    "name": "Holy Devastator",
+    "d35e": "Holy Devastator",
+    "price": 4620315
+   },
+   {
+    "d": [
+     95,
+     98
+    ],
+    "name": "Unholy Despoiler",
+    "d35e": "Unholy Despoiler",
+    "price": 4620315
+   },
+   {
+    "d": [
+     99,
+     100
+    ],
+    "name": "Everwhirling Chain",
+    "d35e": "Everwhirling Chain",
+    "price": 5220325
+   }
+  ],
+  "epicSpecificArmors": [
+   {
+    "d": [
+     1,
+     20
+    ],
+    "name": "Shapeshifter's Armor",
+    "d35e": "Shapeshifter's Armor",
+    "price": 400165
+   },
+   {
+    "d": [
+     21,
+     40
+    ],
+    "name": "Warlord's Breastplate",
+    "d35e": "Warlord's Breastplate",
+    "price": 416200
+   },
+   {
+    "d": [
+     41,
+     57
+    ],
+    "name": "Dragonskin Armor",
+    "d35e": "Dragonskin Armor",
+    "price": 564550
+   },
+   {
+    "d": [
+     58,
+     71
+    ],
+    "name": "Armor of the Celestial Battalion",
+    "d35e": "Armor of the Celestial Battalion",
+    "price": 616300
+   },
+   {
+    "d": [
+     72,
+     82
+    ],
+    "name": "Armor of the Abyssal Horde",
+    "d35e": "Armor of the Abyssal Horde",
+    "price": 768260
+   },
+   {
+    "d": [
+     83,
+     93
+    ],
+    "name": "Antimagic Armor",
+    "d35e": "Antimagic Armor",
+    "price": 871500
+   },
+   {
+    "d": [
+     94,
+     100
+    ],
+    "name": "Bulwark of the Great Dragon",
+    "d35e": "Bulwark of the Great Dragon",
+    "price": 1612980
+   }
+  ]
+ },
+ "abilities": {
+  "weapon": {
+   "Bane": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "note": "D35E enhancement chosen from Bane designated foe table",
+    "craft": {
+     "cl": 8,
+     "spells": [
+      [
+       "summon monster I"
+      ]
+     ],
+     "text": "CL 8; Craft Magic Arms and Armor, summon monster I"
+    }
+   },
+   "Defending": {
+    "d35e": "Defending",
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "craft": {
+     "cl": 8,
+     "spells": [
+      [
+       "shield",
+       "shield of faith"
+      ]
+     ],
+     "text": "CL 8; Craft Magic Arms and Armor, shield or shield of faith"
+    }
+   },
+   "Flaming": {
+    "d35e": "Flaming",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 10,
+     "spells": [
+      [
+       "flame blade",
+       "flame strike",
+       "fireball"
+      ]
+     ],
+     "text": "CL 10; Craft Magic Arms and Armor, flame blade, flame strike, or fireball"
+    }
+   },
+   "Frost": {
+    "d35e": "Frost",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 8,
+     "spells": [
+      [
+       "chill metal",
+       "ice storm"
+      ]
+     ],
+     "text": "CL 8; Craft Magic Arms and Armor, chill metal or ice storm"
+    }
+   },
+   "Shock": {
+    "d35e": "Shock",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 8,
+     "spells": [
+      [
+       "call lightning",
+       "lightning bolt"
+      ]
+     ],
+     "text": "CL 8; Craft Magic Arms and Armor, call lightning or lightning bolt"
+    }
+   },
+   "Ghost touch": {
+    "d35e": "Ghost Touch, Weapon",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 9,
+     "spells": [
+      [
+       "plane shift"
+      ]
+     ],
+     "text": "CL 9; Craft Magic Arms and Armor, plane shift"
+    }
+   },
+   "Keen": {
+    "d35e": "Keen",
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "damageTypes": [
+     "P",
+     "S"
+    ],
+    "craft": {
+     "cl": 10,
+     "spells": [
+      [
+       "keen edge"
+      ]
+     ],
+     "text": "CL 10; Craft Magic Arms and Armor, keen edge"
+    }
+   },
+   "Ki focus": {
+    "d35e": "Ki Focus",
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "craft": {
+     "cl": 8,
+     "spells": [],
+     "text": "CL 8; Craft Magic Arms and Armor, creator must be a monk",
+     "cls": "monk"
+    }
+   },
+   "Merciful": {
+    "d35e": "Merciful",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "cure light wounds"
+      ]
+     ],
+     "text": "CL 5; Craft Magic Arms and Armor, cure light wounds"
+    }
+   },
+   "Mighty cleaving": {
+    "d35e": "Mighty Cleaving",
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "craft": {
+     "cl": 8,
+     "spells": [
+      [
+       "divine power"
+      ]
+     ],
+     "text": "CL 8; Craft Magic Arms and Armor, divine power"
+    }
+   },
+   "Spell storing": {
+    "d35e": "Spell Storing",
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "craft": {
+     "cl": 12,
+     "spells": [],
+     "text": "CL 12; Craft Magic Arms and Armor, creator must be a caster of at least 12th level"
+    }
+   },
+   "Throwing": {
+    "d35e": "Throwing",
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "magic stone"
+      ]
+     ],
+     "text": "CL 5; Craft Magic Arms and Armor, magic stone"
+    }
+   },
+   "Thundering": {
+    "d35e": "Thundering",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "blindness/deafness"
+      ]
+     ],
+     "text": "CL 5; Craft Magic Arms and Armor, blindness/deafness"
+    }
+   },
+   "Vicious": {
+    "d35e": "Vicious",
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "craft": {
+     "cl": 9,
+     "spells": [
+      [
+       "enervation"
+      ]
+     ],
+     "text": "CL 9; Craft Magic Arms and Armor, enervation"
+    }
+   },
+   "Anarchic": {
+    "d35e": "Anarchic",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 7,
+     "spells": [
+      [
+       "chaos hammer"
+      ]
+     ],
+     "text": "CL 7; Craft Magic Arms and Armor, chaos hammer, creator must be chaotic",
+     "align": "chaotic"
+    }
+   },
+   "Axiomatic": {
+    "d35e": "Axiomatic",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 7,
+     "spells": [
+      [
+       "order's wrath"
+      ]
+     ],
+     "text": "CL 7; Craft Magic Arms and Armor, order's wrath, creator must be lawful",
+     "align": "lawful"
+    }
+   },
+   "Disruption": {
+    "d35e": "Disruption",
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "damageTypes": [
+     "B"
+    ],
+    "craft": {
+     "cl": 14,
+     "spells": [
+      [
+       "heal"
+      ]
+     ],
+     "text": "CL 14; Craft Magic Arms and Armor, heal"
+    }
+   },
+   "Flaming burst": {
+    "d35e": "Flaming Burst",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 12,
+     "spells": [
+      [
+       "flame blade",
+       "flame strike",
+       "fireball"
+      ]
+     ],
+     "text": "CL 12; Craft Magic Arms and Armor, flame blade, flame strike, or fireball"
+    }
+   },
+   "Icy burst": {
+    "d35e": "Icy Burst",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 10,
+     "spells": [
+      [
+       "chill metal",
+       "ice storm"
+      ]
+     ],
+     "text": "CL 10; Craft Magic Arms and Armor, chill metal or ice storm"
+    }
+   },
+   "Holy": {
+    "d35e": "Holy",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 7,
+     "spells": [
+      [
+       "holy smite"
+      ]
+     ],
+     "text": "CL 7; Craft Magic Arms and Armor, holy smite, creator must be good",
+     "align": "good"
+    }
+   },
+   "Shocking burst": {
+    "d35e": "Shocking Burst",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 10,
+     "spells": [
+      [
+       "call lightning",
+       "lightning bolt"
+      ]
+     ],
+     "text": "CL 10; Craft Magic Arms and Armor, call lightning or lightning bolt"
+    }
+   },
+   "Unholy": {
+    "d35e": "Unholy",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 7,
+     "spells": [
+      [
+       "unholy blight"
+      ]
+     ],
+     "text": "CL 7; Craft Magic Arms and Armor, unholy blight, creator must be evil",
+     "align": "evil"
+    }
+   },
+   "Wounding": {
+    "d35e": "Wounding",
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "craft": {
+     "cl": 10,
+     "spells": [
+      [
+       "mage's sword"
+      ]
+     ],
+     "text": "CL 10; Craft Magic Arms and Armor, mage's sword"
+    }
+   },
+   "Speed": {
+    "d35e": "Speed",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged"
+    ],
+    "craft": {
+     "cl": 7,
+     "spells": [
+      [
+       "haste"
+      ]
+     ],
+     "text": "CL 7; Craft Magic Arms and Armor, haste"
+    }
+   },
+   "Brilliant energy": {
+    "d35e": "Brilliant Energy",
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "craft": {
+     "cl": 16,
+     "spells": [
+      [
+       "gaseous form"
+      ],
+      [
+       "continual flame"
+      ]
+     ],
+     "text": "CL 16; Craft Magic Arms and Armor, gaseous form, continual flame"
+    }
+   },
+   "Dancing": {
+    "d35e": "Dancing",
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "craft": {
+     "cl": 15,
+     "spells": [
+      [
+       "animate objects"
+      ]
+     ],
+     "text": "CL 15; Craft Magic Arms and Armor, animate objects"
+    }
+   },
+   "Vorpal": {
+    "d35e": "Vorpal",
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "damageTypes": [
+     "S"
+    ],
+    "craft": {
+     "cl": 18,
+     "spells": [
+      [
+       "circle of death"
+      ],
+      [
+       "keen edge"
+      ]
+     ],
+     "text": "CL 18; Craft Magic Arms and Armor, circle of death, keen edge"
+    }
+   },
+   "Distance": {
+    "d35e": "Distance",
+    "level": 1,
+    "applies": [
+     "ranged"
+    ],
+    "craft": {
+     "cl": 6,
+     "spells": [
+      [
+       "clairaudience/clairvoyance"
+      ]
+     ],
+     "text": "CL 6; Craft Magic Arms and Armor, clairaudience/clairvoyance"
+    }
+   },
+   "Returning": {
+    "d35e": "Returning",
+    "level": 1,
+    "applies": [
+     "thrown"
+    ],
+    "craft": {
+     "cl": 7,
+     "spells": [
+      [
+       "telekinesis"
+      ]
+     ],
+     "text": "CL 7; Craft Magic Arms and Armor, telekinesis"
+    }
+   },
+   "Seeking": {
+    "d35e": "Seeking",
+    "level": 1,
+    "applies": [
+     "ranged"
+    ],
+    "craft": {
+     "cl": 12,
+     "spells": [
+      [
+       "true seeing"
+      ]
+     ],
+     "text": "CL 12; Craft Magic Arms and Armor, true seeing"
+    }
+   },
+   "Bodyfeeder": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Bodyfeeder",
+     "enhancementType": "weapon",
+     "enhIncrease": 3,
+     "price": 0,
+     "prefix": "Bodyfeeder",
+     "description": "<p><strong>Bodyfeeder</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong psychometabolism; ML 12th; Craft Psionic Arms and Armor, claws of the vampire; Price +3 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 12,
+     "spells": [
+      [
+       "claws of the vampire"
+      ]
+     ],
+     "text": "Strong psychometabolism; ML 12th; Craft Psionic Arms and Armor, claws of the vampire; Price +3 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Collision": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Collision",
+     "enhancementType": "weapon",
+     "enhIncrease": 2,
+     "price": 0,
+     "prefix": "Collision",
+     "description": "<p><strong>Collision</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Moderate metacreativity; ML 10th; Craft Psionic Arms and Armor, matter manipulation; Price +2 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 10,
+     "spells": [
+      [
+       "matter manipulation"
+      ]
+     ],
+     "text": "Moderate metacreativity; ML 10th; Craft Psionic Arms and Armor, matter manipulation; Price +2 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Coup de grace": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Coup de grace",
+     "enhancementType": "weapon",
+     "enhIncrease": 5,
+     "price": 0,
+     "prefix": "Coup de grace",
+     "description": "<p><strong>Coup de grace</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong telepathy; ML 19th; Craft Psionic Arms and Armor, psionic dominate; Price +5 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 19,
+     "spells": [
+      [
+       "psionic dominate"
+      ]
+     ],
+     "text": "Strong telepathy; ML 19th; Craft Psionic Arms and Armor, psionic dominate; Price +5 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Dislocator": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "ranged",
+     "ammo"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Dislocator",
+     "enhancementType": "weapon",
+     "enhIncrease": 3,
+     "price": 0,
+     "prefix": "Dislocator",
+     "description": "<p><strong>Dislocator</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong psychoportation; ML 12th; Craft Psionic Arms and Armor, psionic teleport; Price +3 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 12,
+     "spells": [
+      [
+       "psionic teleport"
+      ]
+     ],
+     "text": "Strong psychoportation; ML 12th; Craft Psionic Arms and Armor, psionic teleport; Price +3 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Dissipater": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Dissipater",
+     "enhancementType": "weapon",
+     "enhIncrease": 1,
+     "price": 0,
+     "prefix": "Dissipater",
+     "description": "<p><strong>Dissipater</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong metacreativity; ML 12th; Craft Psionic Arms and Armor, dismiss ectoplasm; Price +1 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 12,
+     "spells": [
+      [
+       "dismiss ectoplasm"
+      ]
+     ],
+     "text": "Strong metacreativity; ML 12th; Craft Psionic Arms and Armor, dismiss ectoplasm; Price +1 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Great dislocator": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "ranged",
+     "ammo"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Great dislocator",
+     "enhancementType": "weapon",
+     "enhIncrease": 4,
+     "price": 0,
+     "prefix": "Great dislocator",
+     "description": "<p><strong>Great dislocator</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong psychoportation; ML 12th; Craft Psionic Arms and Armor, psionic plane shift; Price +4 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 12,
+     "spells": [
+      [
+       "psionic plane shift"
+      ]
+     ],
+     "text": "Strong psychoportation; ML 12th; Craft Psionic Arms and Armor, psionic plane shift; Price +4 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Lucky": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Lucky",
+     "enhancementType": "weapon",
+     "enhIncrease": 1,
+     "price": 0,
+     "prefix": "Lucky",
+     "description": "<p><strong>Lucky</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Moderate clairsentience; ML 8th; Craft Psionic Arms and Armor, fate of one; Price +1 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 8,
+     "spells": [
+      [
+       "fate of one"
+      ]
+     ],
+     "text": "Moderate clairsentience; ML 8th; Craft Psionic Arms and Armor, fate of one; Price +1 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Manifester": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Manifester",
+     "enhancementType": "weapon",
+     "enhIncrease": 0,
+     "price": 16000,
+     "prefix": "Manifester",
+     "description": "<p><strong>Manifester</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Moderate clairsentience; ML 8th; Craft Psionic Arms and Armor, knowledge of any 3rd-level power; Price +16,000 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 8,
+     "spells": [],
+     "text": "Moderate clairsentience; ML 8th; Craft Psionic Arms and Armor, knowledge of any 3rd-level power; Price +16,000 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Mindcrusher": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Mindcrusher",
+     "enhancementType": "weapon",
+     "enhIncrease": 2,
+     "price": 0,
+     "prefix": "Mindcrusher",
+     "description": "<p><strong>Mindcrusher</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong psychometabolism; ML 12th; Craft Psionic Arms and Armor, psychic vampire; Price +2 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 12,
+     "spells": [
+      [
+       "psychic vampire"
+      ]
+     ],
+     "text": "Strong psychometabolism; ML 12th; Craft Psionic Arms and Armor, psychic vampire; Price +2 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Mindfeeder": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Mindfeeder",
+     "enhancementType": "weapon",
+     "enhIncrease": 3,
+     "price": 0,
+     "prefix": "Mindfeeder",
+     "description": "<p><strong>Mindfeeder</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong psychometabolism; ML 15th; Craft Psionic Arms and Armor, psychic vampire; Price +3 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 15,
+     "spells": [
+      [
+       "psychic vampire"
+      ]
+     ],
+     "text": "Strong psychometabolism; ML 15th; Craft Psionic Arms and Armor, psychic vampire; Price +3 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Parrying": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Parrying",
+     "enhancementType": "weapon",
+     "enhIncrease": 0,
+     "price": 8000,
+     "prefix": "Parrying",
+     "description": "<p><strong>Parrying</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint clairsentience; ML 5th; Craft Psionic Arms and Armor, defensive precognition; Price +8,000 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "defensive precognition"
+      ]
+     ],
+     "text": "Faint clairsentience; ML 5th; Craft Psionic Arms and Armor, defensive precognition; Price +8,000 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Power storing": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Power storing",
+     "enhancementType": "weapon",
+     "enhIncrease": 1,
+     "price": 0,
+     "prefix": "Power storing",
+     "description": "<p><strong>Power storing</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong psychokinesis; ML 12th; Craft Psionic Arms and Armor, creator must be a manifester of at least 12th level; Price +1 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 12,
+     "spells": [],
+     "text": "Strong psychokinesis; ML 12th; Craft Psionic Arms and Armor, creator must be a manifester of at least 12th level; Price +1 bonus.",
+     "feat": "Craft Psionic Arms and Armor",
+     "minLevel": 12
+    }
+   },
+   "Psychic": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Psychic",
+     "enhancementType": "weapon",
+     "enhIncrease": 0,
+     "price": 35000,
+     "prefix": "Psychic",
+     "description": "<p><strong>Psychic</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong clairsentience; ML 17th; Craft Psionic Arms and Armor, reality revision; Price +35,000 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 17,
+     "spells": [
+      [
+       "reality revision"
+      ]
+     ],
+     "text": "Strong clairsentience; ML 17th; Craft Psionic Arms and Armor, reality revision; Price +35,000 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Psychokinetic": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Psychokinetic",
+     "enhancementType": "weapon",
+     "enhIncrease": 1,
+     "price": 0,
+     "prefix": "Psychokinetic",
+     "description": "<p><strong>Psychokinetic</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Moderate psychokinesis; ML 10th; Craft Psionic Arms and Armor, concussion blast; Price +1 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 10,
+     "spells": [
+      [
+       "concussion blast"
+      ]
+     ],
+     "text": "Moderate psychokinesis; ML 10th; Craft Psionic Arms and Armor, concussion blast; Price +1 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Psychokinetic burst": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Psychokinetic burst",
+     "enhancementType": "weapon",
+     "enhIncrease": 2,
+     "price": 0,
+     "prefix": "Psychokinetic burst",
+     "description": "<p><strong>Psychokinetic burst</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong psychokinesis; ML 12th; Craft Psionic Arms and Armor, concussion blast; Price +2 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 12,
+     "spells": [
+      [
+       "concussion blast"
+      ]
+     ],
+     "text": "Strong psychokinesis; ML 12th; Craft Psionic Arms and Armor, concussion blast; Price +2 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Psibane": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Psibane",
+     "enhancementType": "weapon",
+     "enhIncrease": 2,
+     "price": 0,
+     "prefix": "Psibane",
+     "description": "<p><strong>Psibane</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong clairsentience; ML 15th; Craft Psionic Arms and Armor, bend reality; Price +2 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 15,
+     "spells": [
+      [
+       "bend reality"
+      ]
+     ],
+     "text": "Strong clairsentience; ML 15th; Craft Psionic Arms and Armor, bend reality; Price +2 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Soulbreaker": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Soulbreaker",
+     "enhancementType": "weapon",
+     "enhIncrease": 3,
+     "price": 0,
+     "prefix": "Soulbreaker",
+     "description": "<p><strong>Soulbreaker</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong telepathy; ML 12th; Craft Psionic Arms and Armor, mindwipe; Price +3 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 12,
+     "spells": [
+      [
+       "mindwipe"
+      ]
+     ],
+     "text": "Strong telepathy; ML 12th; Craft Psionic Arms and Armor, mindwipe; Price +3 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Sundering": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Sundering",
+     "enhancementType": "weapon",
+     "enhIncrease": 1,
+     "price": 0,
+     "prefix": "Sundering",
+     "description": "<p><strong>Sundering</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint metacreativity; ML 5th; Craft Psionic Arms and Armor, Great Sunder, metaphysical weapon; Price +1 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "metaphysical weapon"
+      ]
+     ],
+     "text": "Faint metacreativity; ML 5th; Craft Psionic Arms and Armor, Great Sunder, metaphysical weapon; Price +1 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Suppression": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "ammo"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Suppression",
+     "enhancementType": "weapon",
+     "enhIncrease": 2,
+     "price": 0,
+     "prefix": "Suppression",
+     "description": "<p><strong>Suppression</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Moderate psychokinesis; ML 10th; Craft Psionic Arms and Armor, dispel psionics; Price +2 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 10,
+     "spells": [
+      [
+       "dispel psionics"
+      ]
+     ],
+     "text": "Moderate psychokinesis; ML 10th; Craft Psionic Arms and Armor, dispel psionics; Price +2 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Teleporting": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "thrown"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Teleporting",
+     "enhancementType": "weapon",
+     "enhIncrease": 1,
+     "price": 0,
+     "prefix": "Teleporting",
+     "description": "<p><strong>Teleporting</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint psychoportation; ML 5th; Craft Psionic Arms and Armor, psionic dimension door; Price +1 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "psionic dimension door"
+      ]
+     ],
+     "text": "Faint psychoportation; ML 5th; Craft Psionic Arms and Armor, psionic dimension door; Price +1 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Acidic blast": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "thrown"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Acidic blast",
+     "enhancementType": "weapon",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Acidic Blast",
+     "description": "<p><strong>Acidic Blast</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, acid fog; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "acid fog"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, acid fog; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Anarchic power": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "thrown"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Anarchic power",
+     "enhancementType": "weapon",
+     "enhIncrease": 8,
+     "price": 0,
+     "prefix": "Anarchic Power",
+     "description": "<p><strong>Anarchic Power</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, word of chaos; Price +8 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "word of chaos"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, word of chaos; Price +8 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Axiomatic power": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "thrown"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Axiomatic power",
+     "enhancementType": "weapon",
+     "enhIncrease": 8,
+     "price": 0,
+     "prefix": "Axiomatic Power",
+     "description": "<p><strong>Axiomatic Power</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, dictum; Price +8 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 23,
+     "spells": [
+      [
+       "dictum"
+      ]
+     ],
+     "text": "CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, dictum; Price +8 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Distant shot": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "ranged"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Distant shot",
+     "enhancementType": "weapon",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Distant Shot",
+     "description": "<p><strong>Distant Shot</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, discern location; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "discern location"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, discern location; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Dread": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "thrown"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Dread",
+     "enhancementType": "weapon",
+     "enhIncrease": 7,
+     "price": 0,
+     "prefix": "Dread",
+     "description": "<p><strong>Dread</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 22; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, summon monster IX; Price +7 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 22,
+     "spells": [
+      [
+       "summon monster IX"
+      ]
+     ],
+     "text": "CL 22; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, summon monster IX; Price +7 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Everdancing": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Everdancing",
+     "enhancementType": "weapon",
+     "enhIncrease": 8,
+     "price": 0,
+     "prefix": "Everdancing",
+     "description": "<p><strong>Everdancing</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, animate objects; Price +8 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 23,
+     "spells": [
+      [
+       "animate objects"
+      ]
+     ],
+     "text": "CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, animate objects; Price +8 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Fiery blast": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "thrown"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Fiery blast",
+     "enhancementType": "weapon",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Fiery Blast",
+     "description": "<p><strong>Fiery Blast</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, fireball; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "fireball"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, fireball; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Holy power": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "thrown"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Holy power",
+     "enhancementType": "weapon",
+     "enhIncrease": 8,
+     "price": 0,
+     "prefix": "Holy Power",
+     "description": "<p><strong>Holy Power</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, holy word; Price +8 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 23,
+     "spells": [
+      [
+       "holy word"
+      ]
+     ],
+     "text": "CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, holy word; Price +8 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Icy blast": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "thrown"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Icy blast",
+     "enhancementType": "weapon",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Icy Blast",
+     "description": "<p><strong>Icy Blast</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, cone of cold; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "cone of cold"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, cone of cold; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Lightning blast": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "thrown"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Lightning blast",
+     "enhancementType": "weapon",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Lightning Blast",
+     "description": "<p><strong>Lightning Blast</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, lightning bolt; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "lightning bolt"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, lightning bolt; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Mighty disruption": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Mighty disruption",
+     "enhancementType": "weapon",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Mighty Disruption",
+     "description": "<p><strong>Mighty Disruption</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, true resurrection; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "true resurrection"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, true resurrection; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    },
+    "damageTypes": [
+     "B"
+    ]
+   },
+   "Sonic blast": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "thrown"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Sonic blast",
+     "enhancementType": "weapon",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Sonic Blast",
+     "description": "<p><strong>Sonic Blast</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, shout; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "shout"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, shout; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Triple-throw": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "thrown"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Triple-throw",
+     "enhancementType": "weapon",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Triple-throw",
+     "description": "<p><strong>Triple-throw</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, shades; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "shades"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, shades; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Unerring accuracy": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "ranged"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Unerring accuracy",
+     "enhancementType": "weapon",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Unerring Accuracy",
+     "description": "<p><strong>Unerring Accuracy</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, true seeing; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "true seeing"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, true seeing; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Unholy power": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "melee",
+     "ranged",
+     "thrown"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Unholy power",
+     "enhancementType": "weapon",
+     "enhIncrease": 8,
+     "price": 0,
+     "prefix": "Unholy Power",
+     "description": "<p><strong>Unholy Power</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, unholy word; Price +8 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 23,
+     "spells": [
+      [
+       "unholy word"
+      ]
+     ],
+     "text": "CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, unholy word; Price +8 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   }
+  },
+  "armor": {
+   "Glamered": {
+    "d35e": "Glamered",
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "craft": {
+     "cl": 10,
+     "spells": [
+      [
+       "disguise self"
+      ]
+     ],
+     "text": "CL 10; Craft Magic Arms and Armor, disguise self"
+    }
+   },
+   "Fortification, light": {
+    "d35e": "Fortification",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 13,
+     "spells": [
+      [
+       "limited wish",
+       "miracle"
+      ]
+     ],
+     "text": "CL 13; Craft Magic Arms and Armor, limited wish or miracle"
+    }
+   },
+   "Fortification, moderate": {
+    "d35e": "Fortification",
+    "level": 2,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 13,
+     "spells": [
+      [
+       "limited wish",
+       "miracle"
+      ]
+     ],
+     "text": "CL 13; Craft Magic Arms and Armor, limited wish or miracle"
+    }
+   },
+   "Fortification, heavy": {
+    "d35e": "Fortification",
+    "level": 3,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 13,
+     "spells": [
+      [
+       "limited wish",
+       "miracle"
+      ]
+     ],
+     "text": "CL 13; Craft Magic Arms and Armor, limited wish or miracle"
+    }
+   },
+   "Slick": {
+    "d35e": "Slick",
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "craft": {
+     "cl": 4,
+     "spells": [
+      [
+       "grease"
+      ]
+     ],
+     "text": "CL 4; Craft Magic Arms and Armor, grease"
+    }
+   },
+   "Slick, improved": {
+    "d35e": "Slick",
+    "level": 2,
+    "applies": [
+     "armor"
+    ],
+    "craft": {
+     "cl": 10,
+     "spells": [
+      [
+       "grease"
+      ]
+     ],
+     "text": "CL 10; Craft Magic Arms and Armor, grease"
+    }
+   },
+   "Slick, greater": {
+    "d35e": "Slick",
+    "level": 3,
+    "applies": [
+     "armor"
+    ],
+    "craft": {
+     "cl": 15,
+     "spells": [
+      [
+       "grease"
+      ]
+     ],
+     "text": "CL 15; Craft Magic Arms and Armor, grease"
+    }
+   },
+   "Shadow": {
+    "d35e": "Shadow",
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "invisibility"
+      ]
+     ],
+     "text": "CL 5; Craft Magic Arms and Armor, invisibility"
+    }
+   },
+   "Shadow, improved": {
+    "d35e": "Shadow",
+    "level": 2,
+    "applies": [
+     "armor"
+    ],
+    "craft": {
+     "cl": 10,
+     "spells": [
+      [
+       "invisibility"
+      ]
+     ],
+     "text": "CL 10; Craft Magic Arms and Armor, invisibility"
+    }
+   },
+   "Shadow, greater": {
+    "d35e": "Shadow",
+    "level": 3,
+    "applies": [
+     "armor"
+    ],
+    "craft": {
+     "cl": 15,
+     "spells": [
+      [
+       "invisibility"
+      ]
+     ],
+     "text": "CL 15; Craft Magic Arms and Armor, invisibility"
+    }
+   },
+   "Silent moves": {
+    "d35e": "Silent Moves",
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "silence"
+      ]
+     ],
+     "text": "CL 5; Craft Magic Arms and Armor, silence"
+    }
+   },
+   "Silent moves, improved": {
+    "d35e": "Silent Moves",
+    "level": 2,
+    "applies": [
+     "armor"
+    ],
+    "craft": {
+     "cl": 10,
+     "spells": [
+      [
+       "silence"
+      ]
+     ],
+     "text": "CL 10; Craft Magic Arms and Armor, silence"
+    }
+   },
+   "Silent moves, greater": {
+    "d35e": "Silent Moves",
+    "level": 3,
+    "applies": [
+     "armor"
+    ],
+    "craft": {
+     "cl": 15,
+     "spells": [
+      [
+       "silence"
+      ]
+     ],
+     "text": "CL 15; Craft Magic Arms and Armor, silence"
+    }
+   },
+   "Spell resistance (13)": {
+    "d35e": "Spell Resistance",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 15,
+     "spells": [
+      [
+       "spell resistance"
+      ]
+     ],
+     "text": "CL 15; Craft Magic Arms and Armor, spell resistance"
+    }
+   },
+   "Spell resistance (15)": {
+    "d35e": "Spell Resistance",
+    "level": 2,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 15,
+     "spells": [
+      [
+       "spell resistance"
+      ]
+     ],
+     "text": "CL 15; Craft Magic Arms and Armor, spell resistance"
+    }
+   },
+   "Spell resistance (17)": {
+    "d35e": "Spell Resistance",
+    "level": 3,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 15,
+     "spells": [
+      [
+       "spell resistance"
+      ]
+     ],
+     "text": "CL 15; Craft Magic Arms and Armor, spell resistance"
+    }
+   },
+   "Spell resistance (19)": {
+    "d35e": "Spell Resistance",
+    "level": 4,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 15,
+     "spells": [
+      [
+       "spell resistance"
+      ]
+     ],
+     "text": "CL 15; Craft Magic Arms and Armor, spell resistance"
+    }
+   },
+   "Ghost touch": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "note": "No D35E armor Ghost Touch enhancement; the Armory builds it from this entry",
+    "build": {
+     "name": "Ghost Touch",
+     "enhancementType": "armor",
+     "enhIncrease": 3,
+     "prefix": "Ghost Touch",
+     "description": "<p>A ghost touch armor or shield's enhancement bonus counts against incorporeal touch attacks, and an incorporeal creature can pick it up, wear it and use it as normal.</p>"
+    },
+    "craft": {
+     "cl": 15,
+     "spells": [
+      [
+       "etherealness"
+      ]
+     ],
+     "text": "CL 15; Craft Magic Arms and Armor, etherealness"
+    }
+   },
+   "Invulnerability": {
+    "d35e": "Invulnerability",
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "craft": {
+     "cl": 18,
+     "spells": [
+      [
+       "stoneskin"
+      ],
+      [
+       "wish",
+       "miracle"
+      ]
+     ],
+     "text": "CL 18; Craft Magic Arms and Armor, stoneskin, wish or miracle"
+    }
+   },
+   "Wild": {
+    "d35e": "Wild",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 9,
+     "spells": [
+      [
+       "baleful polymorph"
+      ]
+     ],
+     "text": "CL 9; Craft Magic Arms and Armor, baleful polymorph"
+    }
+   },
+   "Etherealness": {
+    "d35e": "Etherealness",
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "craft": {
+     "cl": 13,
+     "spells": [
+      [
+       "ethereal jaunt"
+      ]
+     ],
+     "text": "CL 13; Craft Magic Arms and Armor, ethereal jaunt"
+    }
+   },
+   "Undead controlling": {
+    "d35e": "Undead Controlling",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 13,
+     "spells": [
+      [
+       "control undead"
+      ]
+     ],
+     "text": "CL 13; Craft Magic Arms and Armor, control undead"
+    }
+   },
+   "Arrow catching": {
+    "d35e": "Arrow Catching",
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "craft": {
+     "cl": 8,
+     "spells": [
+      [
+       "entropic shield"
+      ]
+     ],
+     "text": "CL 8; Craft Magic Arms and Armor, entropic shield"
+    }
+   },
+   "Bashing": {
+    "d35e": "Bashing",
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "craft": {
+     "cl": 8,
+     "spells": [
+      [
+       "bull's strength"
+      ]
+     ],
+     "text": "CL 8; Craft Magic Arms and Armor, bull's strength"
+    }
+   },
+   "Blinding": {
+    "d35e": "Blinding",
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "craft": {
+     "cl": 7,
+     "spells": [
+      [
+       "searing light"
+      ]
+     ],
+     "text": "CL 7; Craft Magic Arms and Armor, searing light"
+    }
+   },
+   "Arrow deflection": {
+    "d35e": "Arrow Deflection",
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "shield"
+      ]
+     ],
+     "text": "CL 5; Craft Magic Arms and Armor, shield"
+    }
+   },
+   "Animated": {
+    "d35e": "Animated",
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "craft": {
+     "cl": 12,
+     "spells": [
+      [
+       "animate objects"
+      ]
+     ],
+     "text": "CL 12; Craft Magic Arms and Armor, animate objects"
+    }
+   },
+   "Reflecting": {
+    "d35e": "Reflecting",
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "craft": {
+     "cl": 14,
+     "spells": [
+      [
+       "spell turning"
+      ]
+     ],
+     "text": "CL 14; Craft Magic Arms and Armor, spell turning"
+    }
+   },
+   "Acid resistance": {
+    "d35e": "Acid Resistance",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 3,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 3; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Acid resistance, improved": {
+    "d35e": "Acid Resistance, Improved",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 7,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 7; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Acid resistance, greater": {
+    "d35e": "Acid Resistance, Greater",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 11,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 11; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Cold resistance": {
+    "d35e": "Cold Resistance",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 3,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 3; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Cold resistance, improved": {
+    "d35e": "Cold Resistance, Improved",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 7,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 7; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Cold resistance, greater": {
+    "d35e": "Cold Resistance, Greater",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 11,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 11; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Electricity resistance": {
+    "d35e": "Electricity Resistance",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 3,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 3; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Electricity resistance, improved": {
+    "d35e": "Electricity Resistance, Improved",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 7,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 7; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Electricity resistance, greater": {
+    "d35e": "Electricity Resistance, Greater",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 11,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 11; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Fire resistance": {
+    "d35e": "Fire Resistance",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 3,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 3; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Fire resistance, improved": {
+    "d35e": "Fire Resistance, Improved",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 7,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 7; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Fire resistance, greater": {
+    "d35e": "Fire Resistance, Greater",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 11,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 11; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Sonic resistance": {
+    "d35e": "Sonic Resistance",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 3,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 3; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Sonic resistance, improved": {
+    "d35e": "Sonic Resistance, Improved",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 7,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 7; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Sonic resistance, greater": {
+    "d35e": "Sonic Resistance, Greater",
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "craft": {
+     "cl": 11,
+     "spells": [
+      [
+       "resist energy"
+      ]
+     ],
+     "text": "CL 11; Craft Magic Arms and Armor, resist energy"
+    }
+   },
+   "Aporter": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Aporter",
+     "enhancementType": "armor",
+     "enhIncrease": 0,
+     "price": 40320,
+     "prefix": "Aporter",
+     "description": "<p><strong>Aporter</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Moderate psychoportation; ML 10th; Craft Psionic Arms and Armor, psionic dimension door; Price +40,320 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 10,
+     "spells": [
+      [
+       "psionic dimension door"
+      ]
+     ],
+     "text": "Moderate psychoportation; ML 10th; Craft Psionic Arms and Armor, psionic dimension door; Price +40,320 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Averter": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Averter",
+     "enhancementType": "armor",
+     "enhIncrease": 0,
+     "price": 12960,
+     "prefix": "Averter",
+     "description": "<p><strong>Averter</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint telepathy; ML 5th; Craft Psionic Arms and Armor, aversion; Price +12,960 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "aversion"
+      ]
+     ],
+     "text": "Faint telepathy; ML 5th; Craft Psionic Arms and Armor, aversion; Price +12,960 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Ectoplasmic": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Ectoplasmic",
+     "enhancementType": "armor",
+     "enhIncrease": 0,
+     "price": 10800,
+     "prefix": "Ectoplasmic",
+     "description": "<p><strong>Ectoplasmic</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint psychometabolism; ML 5th; Craft Psionic Arms and Armor, ectoplasmic form; Price +10,800 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "ectoplasmic form"
+      ]
+     ],
+     "text": "Faint psychometabolism; ML 5th; Craft Psionic Arms and Armor, ectoplasmic form; Price +10,800 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Floating": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Floating",
+     "enhancementType": "armor",
+     "enhIncrease": 0,
+     "price": 4000,
+     "prefix": "Floating",
+     "description": "<p><strong>Floating</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint psychoportation; ML 4th; Craft Psionic Arms and Armor, float; Price +4,000 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 4,
+     "spells": [
+      [
+       "float"
+      ]
+     ],
+     "text": "Faint psychoportation; ML 4th; Craft Psionic Arms and Armor, float; Price +4,000 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Gleaming": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Gleaming",
+     "enhancementType": "armor",
+     "enhIncrease": 3,
+     "price": 0,
+     "prefix": "Gleaming",
+     "description": "<p><strong>Gleaming</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint metacreativity; ML 5th; Craft Psionic Arms and Armor, concealing amorpha; Price +3 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "concealing amorpha"
+      ]
+     ],
+     "text": "Faint metacreativity; ML 5th; Craft Psionic Arms and Armor, concealing amorpha; Price +3 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Heartening": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Heartening",
+     "enhancementType": "armor",
+     "enhIncrease": 0,
+     "price": 720,
+     "prefix": "Heartening",
+     "description": "<p><strong>Heartening</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint psychometabolism; ML 4th; Craft Psionic Arms and Armor, vigor; Price +720 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 4,
+     "spells": [
+      [
+       "vigor"
+      ]
+     ],
+     "text": "Faint psychometabolism; ML 4th; Craft Psionic Arms and Armor, vigor; Price +720 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Landing": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Landing",
+     "enhancementType": "armor",
+     "enhIncrease": 0,
+     "price": 4000,
+     "prefix": "Landing",
+     "description": "<p><strong>Landing</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint psychoportation; ML 4th; Craft Psionic Arms and Armor, catfall; Price +4,000 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 4,
+     "spells": [
+      [
+       "catfall"
+      ]
+     ],
+     "text": "Faint psychoportation; ML 4th; Craft Psionic Arms and Armor, catfall; Price +4,000 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Linked": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Linked",
+     "enhancementType": "armor",
+     "enhIncrease": 0,
+     "price": 6000,
+     "prefix": "Linked",
+     "description": "<p><strong>Linked</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Moderate telepathy; ML 6th; Craft Psionic Arms and Armor, mindlink; Price +6,000 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 6,
+     "spells": [
+      [
+       "mindlink"
+      ]
+     ],
+     "text": "Moderate telepathy; ML 6th; Craft Psionic Arms and Armor, mindlink; Price +6,000 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Manifester": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Manifester",
+     "enhancementType": "armor",
+     "enhIncrease": 0,
+     "price": 10800,
+     "prefix": "Manifester",
+     "description": "<p><strong>Manifester</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Moderate clairsentience; ML 6th; Craft Psionic Arms and Armor, knowledge of any 2nd-level power; Price +10,800 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 6,
+     "spells": [],
+     "text": "Moderate clairsentience; ML 6th; Craft Psionic Arms and Armor, knowledge of any 2nd-level power; Price +10,800 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Mindarmor": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Mindarmor",
+     "enhancementType": "armor",
+     "enhIncrease": 0,
+     "price": 24000,
+     "prefix": "Mindarmor",
+     "description": "<p><strong>Mindarmor</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint psychokinesis; ML 5th; Craft Psionic Arms and Armor, empty mind; Price +24,000 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "empty mind"
+      ]
+     ],
+     "text": "Faint psychokinesis; ML 5th; Craft Psionic Arms and Armor, empty mind; Price +24,000 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Phasing": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Phasing",
+     "enhancementType": "armor",
+     "enhIncrease": 0,
+     "price": 65520,
+     "prefix": "Phasing",
+     "description": "<p><strong>Phasing</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong psychoportation; ML 13th; Craft Psionic Arms and Armor, psionic phase door; Price +65,520 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 13,
+     "spells": [
+      [
+       "psionic phase door"
+      ]
+     ],
+     "text": "Strong psychoportation; ML 13th; Craft Psionic Arms and Armor, psionic phase door; Price +65,520 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Power resistance (13)": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Power resistance (13)",
+     "enhancementType": "armor",
+     "enhIncrease": 2,
+     "price": 0,
+     "suffix": "Power resistance (13)",
+     "description": "<p><strong>Power resistance (13)</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Moderate clairsentience; ML 9th; Craft Psionic Arms and Armor, power resistance; Price +2 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 9,
+     "spells": [
+      [
+       "power resistance"
+      ]
+     ],
+     "text": "Moderate clairsentience; ML 9th; Craft Psionic Arms and Armor, power resistance; Price +2 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Power resistance (15)": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Power resistance (15)",
+     "enhancementType": "armor",
+     "enhIncrease": 3,
+     "price": 0,
+     "suffix": "Power resistance (15)",
+     "description": "<p><strong>Power resistance (15)</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Moderate clairsentience; ML 9th; Craft Psionic Arms and Armor, power resistance; Price +3 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 9,
+     "spells": [
+      [
+       "power resistance"
+      ]
+     ],
+     "text": "Moderate clairsentience; ML 9th; Craft Psionic Arms and Armor, power resistance; Price +3 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Power resistance (17)": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Power resistance (17)",
+     "enhancementType": "armor",
+     "enhIncrease": 4,
+     "price": 0,
+     "suffix": "Power resistance (17)",
+     "description": "<p><strong>Power resistance (17)</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Moderate clairsentience; ML 9th; Craft Psionic Arms and Armor, power resistance; Price +4 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 9,
+     "spells": [
+      [
+       "power resistance"
+      ]
+     ],
+     "text": "Moderate clairsentience; ML 9th; Craft Psionic Arms and Armor, power resistance; Price +4 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Power resistance (19)": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Power resistance (19)",
+     "enhancementType": "armor",
+     "enhIncrease": 5,
+     "price": 0,
+     "suffix": "Power resistance (19)",
+     "description": "<p><strong>Power resistance (19)</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Moderate clairsentience; ML 9th; Craft Psionic Arms and Armor, power resistance; Price +5 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 9,
+     "spells": [
+      [
+       "power resistance"
+      ]
+     ],
+     "text": "Moderate clairsentience; ML 9th; Craft Psionic Arms and Armor, power resistance; Price +5 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Quickness": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Quickness",
+     "enhancementType": "armor",
+     "enhIncrease": 1,
+     "price": 0,
+     "prefix": "Quickness",
+     "description": "<p><strong>Quickness</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint psychoportation; ML 4th; Craft Psionic Arms and Armor, burst; Price +1 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 4,
+     "spells": [
+      [
+       "burst"
+      ]
+     ],
+     "text": "Faint psychoportation; ML 4th; Craft Psionic Arms and Armor, burst; Price +1 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Radiant": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Radiant",
+     "enhancementType": "armor",
+     "enhIncrease": 4,
+     "price": 0,
+     "prefix": "Radiant",
+     "description": "<p><strong>Radiant</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Moderate psychokinesis; ML 9th; Craft Psionic Arms and Armor, energy adaptation; Price +4 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 9,
+     "spells": [
+      [
+       "energy adaptation"
+      ]
+     ],
+     "text": "Moderate psychokinesis; ML 9th; Craft Psionic Arms and Armor, energy adaptation; Price +4 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Ranged": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Ranged",
+     "enhancementType": "armor",
+     "enhIncrease": 1,
+     "price": 0,
+     "prefix": "Ranged",
+     "description": "<p><strong>Ranged</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint psychokinesis; ML 5th; Craft Psionic Arms and Armor, far hand; Price +1 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "far hand"
+      ]
+     ],
+     "text": "Faint psychokinesis; ML 5th; Craft Psionic Arms and Armor, far hand; Price +1 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Seeing": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Seeing",
+     "enhancementType": "armor",
+     "enhIncrease": 0,
+     "price": 6000,
+     "prefix": "Seeing",
+     "description": "<p><strong>Seeing</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint clairsentience; ML 5th; Craft Psionic Arms and Armor, ubiquitous vision; Price +6,000 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "ubiquitous vision"
+      ]
+     ],
+     "text": "Faint clairsentience; ML 5th; Craft Psionic Arms and Armor, ubiquitous vision; Price +6,000 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Time buttress": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Time buttress",
+     "enhancementType": "armor",
+     "enhIncrease": 5,
+     "price": 0,
+     "prefix": "Time buttress",
+     "description": "<p><strong>Time buttress</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong psychoportation; ML 17th; Craft Psionic Arms and Armor, timeless body; Price +5 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 17,
+     "spells": [
+      [
+       "timeless body"
+      ]
+     ],
+     "text": "Strong psychoportation; ML 17th; Craft Psionic Arms and Armor, timeless body; Price +5 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Vanishing": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Vanishing",
+     "enhancementType": "armor",
+     "enhIncrease": 3,
+     "price": 0,
+     "prefix": "Vanishing",
+     "description": "<p><strong>Vanishing</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Faint psychokinesis; ML 5th; Craft Psionic Arms and Armor, cloud mind; Price +3 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 5,
+     "spells": [
+      [
+       "cloud mind"
+      ]
+     ],
+     "text": "Faint psychokinesis; ML 5th; Craft Psionic Arms and Armor, cloud mind; Price +3 bonus.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Wall": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "psionic": true,
+    "build": {
+     "name": "Wall",
+     "enhancementType": "armor",
+     "enhIncrease": 0,
+     "price": 20160,
+     "prefix": "Wall",
+     "description": "<p><strong>Wall</strong> (psionic special ability). See the SRD, Psionic Items, for its effect.</p><p><em>Strong metacreativity; ML 12th; Craft Psionic Arms and Armor, wall of ectoplasm; Price +20,160 gp.</em></p>"
+    },
+    "craft": {
+     "cl": 12,
+     "spells": [
+      [
+       "wall of ectoplasm"
+      ]
+     ],
+     "text": "Strong metacreativity; ML 12th; Craft Psionic Arms and Armor, wall of ectoplasm; Price +20,160 gp.",
+     "feat": "Craft Psionic Arms and Armor"
+    }
+   },
+   "Acid warding": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Acid warding",
+     "enhancementType": "armor",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Acid Warding",
+     "description": "<p><strong>Acid Warding</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, protection from energy; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "protection from energy"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, protection from energy; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Cold warding": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Cold warding",
+     "enhancementType": "armor",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Cold Warding",
+     "description": "<p><strong>Cold Warding</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, protection from energy; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "protection from energy"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, protection from energy; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Fire warding": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Fire warding",
+     "enhancementType": "armor",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Fire Warding",
+     "description": "<p><strong>Fire Warding</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, protection from energy; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "protection from energy"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, protection from energy; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Lightning warding": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Lightning warding",
+     "enhancementType": "armor",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Lightning Warding",
+     "description": "<p><strong>Lightning Warding</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, protection from energy; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "protection from energy"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, protection from energy; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Sonic warding": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Sonic warding",
+     "enhancementType": "armor",
+     "enhIncrease": 6,
+     "price": 0,
+     "prefix": "Sonic Warding",
+     "description": "<p><strong>Sonic Warding</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, protection from energy; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "protection from energy"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, protection from energy; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Negating": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Negating",
+     "enhancementType": "armor",
+     "enhIncrease": 5,
+     "price": 0,
+     "prefix": "Negating",
+     "description": "<p><strong>Negating</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 20; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, greater dispel magic; Price +5 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 20,
+     "spells": [
+      [
+       "greater dispel magic"
+      ]
+     ],
+     "text": "CL 20; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, greater dispel magic; Price +5 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Exceptional arrow deflection": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Exceptional arrow deflection",
+     "enhancementType": "armor",
+     "enhIncrease": 8,
+     "price": 0,
+     "suffix": "Exceptional Arrow Deflection",
+     "description": "<p><strong>Exceptional Arrow Deflection</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, shield, wall of force; Price +8 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 23,
+     "spells": [
+      [
+       "shield"
+      ],
+      [
+       "wall of force"
+      ]
+     ],
+     "text": "CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, shield, wall of force; Price +8 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Infinite arrow deflection": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Infinite arrow deflection",
+     "enhancementType": "armor",
+     "enhIncrease": 6,
+     "price": 0,
+     "suffix": "Infinite Arrow Deflection",
+     "description": "<p><strong>Infinite Arrow Deflection</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, protection from arrows, shield; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "protection from arrows"
+      ],
+      [
+       "shield"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, protection from arrows, shield; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Great reflection": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Great reflection",
+     "enhancementType": "armor",
+     "enhIncrease": 10,
+     "price": 0,
+     "suffix": "Great Reflection",
+     "description": "<p><strong>Great Reflection</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 25; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell turning; Price +10 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 25,
+     "spells": [
+      [
+       "spell turning"
+      ]
+     ],
+     "text": "CL 25; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell turning; Price +10 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Great invulnerability (10/magic)": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Great invulnerability (10/magic)",
+     "enhancementType": "armor",
+     "enhIncrease": 4,
+     "price": 0,
+     "suffix": "Great Invulnerability (10/magic)",
+     "description": "<p><strong>Great Invulnerability (10/magic)</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 19; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, stoneskin, wish or miracle; Price +4 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 19,
+     "spells": [
+      [
+       "stoneskin"
+      ],
+      [
+       "wish",
+       "miracle"
+      ]
+     ],
+     "text": "CL 19; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, stoneskin, wish or miracle; Price +4 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Great invulnerability (15/magic)": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Great invulnerability (15/magic)",
+     "enhancementType": "armor",
+     "enhIncrease": 5,
+     "price": 0,
+     "suffix": "Great Invulnerability (15/magic)",
+     "description": "<p><strong>Great Invulnerability (15/magic)</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 20; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, stoneskin, wish or miracle; Price +5 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 20,
+     "spells": [
+      [
+       "stoneskin"
+      ],
+      [
+       "wish",
+       "miracle"
+      ]
+     ],
+     "text": "CL 20; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, stoneskin, wish or miracle; Price +5 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Great invulnerability (5/epic)": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Great invulnerability (5/epic)",
+     "enhancementType": "armor",
+     "enhIncrease": 6,
+     "price": 0,
+     "suffix": "Great Invulnerability (5/epic)",
+     "description": "<p><strong>Great Invulnerability (5/epic)</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, stoneskin, wish or miracle; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "stoneskin"
+      ],
+      [
+       "wish",
+       "miracle"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, stoneskin, wish or miracle; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Great invulnerability (10/epic)": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Great invulnerability (10/epic)",
+     "enhancementType": "armor",
+     "enhIncrease": 7,
+     "price": 0,
+     "suffix": "Great Invulnerability (10/epic)",
+     "description": "<p><strong>Great Invulnerability (10/epic)</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 22; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, stoneskin, wish or miracle; Price +7 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 22,
+     "spells": [
+      [
+       "stoneskin"
+      ],
+      [
+       "wish",
+       "miracle"
+      ]
+     ],
+     "text": "CL 22; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, stoneskin, wish or miracle; Price +7 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Great spell resistance (21)": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Great spell resistance (21)",
+     "enhancementType": "armor",
+     "enhIncrease": 6,
+     "price": 0,
+     "suffix": "Great Spell Resistance (21)",
+     "description": "<p><strong>Great Spell Resistance (21)</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell resistance; Price +6 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 21,
+     "spells": [
+      [
+       "spell resistance"
+      ]
+     ],
+     "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell resistance; Price +6 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Great spell resistance (23)": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Great spell resistance (23)",
+     "enhancementType": "armor",
+     "enhIncrease": 7,
+     "price": 0,
+     "suffix": "Great Spell Resistance (23)",
+     "description": "<p><strong>Great Spell Resistance (23)</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 22; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell resistance; Price +7 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 22,
+     "spells": [
+      [
+       "spell resistance"
+      ]
+     ],
+     "text": "CL 22; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell resistance; Price +7 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Great spell resistance (25)": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Great spell resistance (25)",
+     "enhancementType": "armor",
+     "enhIncrease": 8,
+     "price": 0,
+     "suffix": "Great Spell Resistance (25)",
+     "description": "<p><strong>Great Spell Resistance (25)</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell resistance; Price +8 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 23,
+     "spells": [
+      [
+       "spell resistance"
+      ]
+     ],
+     "text": "CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell resistance; Price +8 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   },
+   "Great spell resistance (27)": {
+    "d35e": null,
+    "level": 1,
+    "applies": [
+     "armor",
+     "shield"
+    ],
+    "epic": true,
+    "build": {
+     "name": "Great spell resistance (27)",
+     "enhancementType": "armor",
+     "enhIncrease": 9,
+     "price": 0,
+     "suffix": "Great Spell Resistance (27)",
+     "description": "<p><strong>Great Spell Resistance (27)</strong> (epic special ability). See the SRD, Epic Magic Items, for its effect.</p><p><em>CL 24; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell resistance; Price +9 bonus.</em></p>"
+    },
+    "craft": {
+     "cl": 24,
+     "spells": [
+      [
+       "spell resistance"
+      ]
+     ],
+     "text": "CL 24; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell resistance; Price +9 bonus",
+     "feat": "Craft Epic Magic Arms and Armor",
+     "also": "Craft Magic Arms and Armor"
+    }
+   }
+  }
+ },
+ "crafting": {
+  "source": "SRD Skills: Craft; Magic Items: Creating Magic Items, Creating Magic Weapons/Armor; Feats: Item Creation Feats",
+  "feats": {
+   "Scribe Scroll": 1,
+   "Brew Potion": 3,
+   "Craft Wondrous Item": 3,
+   "Craft Magic Arms and Armor": 5,
+   "Craft Wand": 5,
+   "Craft Rod": 9,
+   "Forge Ring": 12,
+   "Craft Staff": 12
+  },
+  "craftDC": {
+   "simple": 12,
+   "martial": 15,
+   "exotic": 18,
+   "crossbow": 15,
+   "bow": 12,
+   "compositeBow": 15,
+   "armorBase": 10,
+   "masterwork": 20
+  },
+  "craftSkill": {
+   "weapon": "weaponsmithing",
+   "bow": "bowmaking",
+   "armor": "armorsmithing",
+   "shield": "armorsmithing",
+   "ammo": "weaponsmithing",
+   "arrow": "bowmaking"
+  },
+  "masterworkPrice": {
+   "weapon": 300,
+   "armor": 150,
+   "shield": 150,
+   "ammo": 6
+  }
+ },
+ "materials": [
+  {
+   "name": "Adamantine",
+   "d35e": "Adamantine",
+   "uniqueId": "material-adamantine",
+   "applies": [
+    "weapon",
+    "ammo",
+    "armor",
+    "shield"
+   ],
+   "metalOnly": true,
+   "masterwork": true,
+   "includesMasterwork": true,
+   "cost": "ammo 60; light 5000; medium 10000; heavy 15000; shield 2000; weapon 3000",
+   "price": {
+    "ammo": 60,
+    "lightArmor": 5000,
+    "mediumArmor": 10000,
+    "heavyArmor": 15000,
+    "shield": 2000,
+    "weapon": 3000
+   },
+   "effects": "DR 1/- light, 2/- medium, 3/- heavy armor; bypasses hardness under 20; masterwork",
+   "effect": {
+    "dr": {
+     "lightArmor": 1,
+     "mediumArmor": 2,
+     "heavyArmor": 3
+    }
+   }
+  },
+  {
+   "name": "Darkwood",
+   "d35e": "Darkwood",
+   "uniqueId": "mat-darkwood",
+   "applies": [
+    "weapon",
+    "ammo",
+    "shield"
+   ],
+   "woodOnly": true,
+   "masterwork": true,
+   "includesMasterwork": false,
+   "cost": "per lb 10",
+   "costNote": "per pound of the normal item, added to the masterwork price",
+   "price": {
+    "perLb": 10
+   },
+   "effects": "half weight; shield armor check penalty 2 less; masterwork",
+   "effect": {
+    "weight": 0.5,
+    "shieldAcp": -1
+   }
+  },
+  {
+   "name": "Dragonhide",
+   "d35e": "Dragonhide",
+   "uniqueId": "mat-dragonhide",
+   "applies": [
+    "armor",
+    "shield"
+   ],
+   "masterwork": true,
+   "includesMasterwork": true,
+   "cost": "x2 masterwork",
+   "costNote": "double the masterwork armor price",
+   "price": {
+    "masterworkMultiplier": 2
+   },
+   "effects": "not metal (druids may wear it); masterwork",
+   "effect": {}
+  },
+  {
+   "name": "Cold iron",
+   "d35e": "Iron, Cold",
+   "uniqueId": "material-cold-iron",
+   "applies": [
+    "weapon",
+    "ammo"
+   ],
+   "metalOnly": true,
+   "masterwork": false,
+   "includesMasterwork": false,
+   "cost": "x2; magic 2000",
+   "costNote": "twice the base cost; +2,000 gp if enhanced",
+   "price": {
+    "baseMultiplier": 2,
+    "magic": 2000
+   },
+   "effects": "overcomes DR/cold iron",
+   "effect": {}
+  },
+  {
+   "name": "Mithral",
+   "d35e": "Mithral",
+   "uniqueId": "mat-mithral",
+   "applies": [
+    "weapon",
+    "armor",
+    "shield"
+   ],
+   "metalOnly": true,
+   "masterwork": true,
+   "includesMasterwork": true,
+   "cost": "light 1000; medium 4000; heavy 9000; shield 1000; per lb 500",
+   "price": {
+    "lightArmor": 1000,
+    "mediumArmor": 4000,
+    "heavyArmor": 9000,
+    "shield": 1000,
+    "weaponPerLb": 500
+   },
+   "effects": "half weight; one armor category lighter; arcane spell failure -10%; max Dex +2; armor check penalty 3 less; masterwork",
+   "effect": {
+    "weight": 0.5,
+    "category": -1,
+    "asf": -10,
+    "maxDex": 2,
+    "acp": -2
+   }
+  },
+  {
+   "name": "Alchemical silver",
+   "d35e": "Alchemical Silver",
+   "uniqueId": "material-alchemical-silver",
+   "applies": [
+    "weapon",
+    "ammo"
+   ],
+   "metalOnly": true,
+   "masterwork": false,
+   "includesMasterwork": false,
+   "notWith": [
+    "Adamantine",
+    "Cold iron",
+    "Mithral"
+   ],
+   "cost": "ammo 2; light 20; one-handed 90; two-handed 180",
+   "price": {
+    "ammo": 2,
+    "light": 20,
+    "1h": 90,
+    "2h": 180
+   },
+   "effects": "overcomes DR/silver; -1 damage (minimum 1)",
+   "effect": {
+    "damage": -1
+   }
+  }
+ ],
+ "priceCorrections": [
+  {
+   "pack": "D35E.magicitems",
+   "name": "Sleep Arrow",
+   "price": 132,
+   "was": 0,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Screaming Bolt",
+   "price": 267,
+   "was": 0,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Arrow of Death",
+   "price": 2282,
+   "was": 0,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Slaying Arrow, Greater",
+   "price": 4057,
+   "was": 0,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Assassin's Dagger",
+   "price": 10302,
+   "was": 18302,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Oathbow",
+   "price": 25600,
+   "was": 13100,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Dragonhide Plate",
+   "price": 3300,
+   "was": 1500,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Rhino Hide",
+   "price": 5165,
+   "was": 15,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Adamantine Breastplate",
+   "price": 10200,
+   "was": 200,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Dwarven Plate",
+   "price": 16500,
+   "was": 1500,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Banded Mail of Luck",
+   "price": 18900,
+   "was": 250,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Celestial Armor",
+   "price": 22400,
+   "was": 150,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Plate Armor of the Deep",
+   "price": 24650,
+   "was": 1500,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Breastplate of Command",
+   "price": 25400,
+   "was": 200,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Mithral Full Plate of Speed",
+   "price": 26500,
+   "was": 1500,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Demon Armor",
+   "price": 52260,
+   "was": 1500,
+   "note": "SRD specific item price"
+  },
+  {
+   "pack": "D35E.magicitems",
+   "name": "Darkwood Shield",
+   "price": 257,
+   "was": 7,
+   "note": "SRD specific item price"
+  }
+ ],
+ "variantPrices": [
+  {
+   "pack": "D35E.magicitems",
+   "name": "Luck Blade",
+   "variants": {
+    "Luck blade (0 wishes)": 22060,
+    "Luck blade (1 wish)": 62360,
+    "Luck blade (2 wishes)": 102660,
+    "Luck blade (3 wishes)": 142960
+   },
+   "was": 10,
+   "note": "One D35E item for four SRD wish counts; the Armory prices it by wishes left"
+  }
+ ],
+ "notOnSrdSpecificTables": {
+  "note": "Arms in D35E Magic Items that are not on the SRD specific weapon/armor/shield tables. Some are SRD rods, cursed items or artifacts; the rest come from non-SRD books. Never rolled randomly by the Armory.",
+  "items": [
+   "Antimagic Armor",
+   "Armor of Arrow Attraction",
+   "Armor of Rage",
+   "Armor of the Abyssal Horde",
+   "Armor of the Celestial Battalion",
+   "Axe of the Dwarvish Lords",
+   "Backstabber",
+   "Bulwark of the Great Dragon",
+   "Chaosbringer",
+   "Dragonskin Armor",
+   "Elven Greatbow",
+   "Everwhirling Chain",
+   "Finaldeath",
+   "Golem Armor",
+   "Gripsoul",
+   "Hammer of Thunderbolts",
+   "Holy Devastator",
+   "Invulnerable Coat",
+   "Mace of Blood",
+   "Mace of Ruin",
+   "Mattock of the Titans",
+   "Maul of the Titans",
+   "Quarterstaff of Alacrity",
+   "Rod of Python",
+   "Rod of Viper",
+   "Shapeshifter's Armor",
+   "Souldrinker",
+   "Spear, Cursed Backbiter",
+   "Stormbrand",
+   "Sword, Berserking",
+   "Unholy Despoiler",
+   "Warlord's Breastplate"
+  ]
+ },
+ "generation": {
+  "light": {
+   "enabled": true,
+   "themesFromAbilities": true,
+   "powerBrightness": true,
+   "scaleRadiiByPower": false,
+   "scaleFeetPerPlus": 5,
+   "categories": {
+    "melee": {
+     "enabled": true,
+     "chance": 30,
+     "bright": 20,
+     "dim": 40,
+     "srd": true
+    },
+    "ranged": {
+     "enabled": false,
+     "chance": 0,
+     "bright": 20,
+     "dim": 40,
+     "srd": true
+    },
+    "armor": {
+     "enabled": true,
+     "chance": 5,
+     "bright": 10,
+     "dim": 20
+    },
+    "other": {
+     "enabled": true,
+     "chance": 1,
+     "bright": 5,
+     "dim": 10
+    }
+   },
+   "themes": {
+    "Flaming": {
+     "color": "#ff6a1a",
+     "type": "flame",
+     "speed": 5,
+     "intensity": 5
+    },
+    "Flaming burst": {
+     "color": "#ff4d00",
+     "type": "flame",
+     "speed": 6,
+     "intensity": 7
+    },
+    "Frost": {
+     "color": "#9fd8ff",
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 3
+    },
+    "Icy burst": {
+     "color": "#bfe6ff",
+     "type": "pulse",
+     "speed": 3,
+     "intensity": 5
+    },
+    "Shock": {
+     "color": "#cfe3ff",
+     "type": "torch",
+     "speed": 8,
+     "intensity": 6
+    },
+    "Shocking burst": {
+     "color": "#e6f0ff",
+     "type": "torch",
+     "speed": 9,
+     "intensity": 8
+    },
+    "Holy": {
+     "color": "#ffd966",
+     "type": "sunburst",
+     "speed": 2,
+     "intensity": 4
+    },
+    "Unholy": {
+     "color": "#8a4dcc",
+     "type": "ghost",
+     "speed": 2,
+     "intensity": 3
+    },
+    "Brilliant energy": {
+     "color": "#ffffff",
+     "type": "energy",
+     "speed": 5,
+     "intensity": 6
+    },
+    "Anarchic": {
+     "color": "#ff66cc",
+     "type": "chroma",
+     "speed": 4,
+     "intensity": 5
+    },
+    "Axiomatic": {
+     "color": "#d9e1ea",
+     "type": "dome",
+     "speed": 2,
+     "intensity": 3
+    }
+   },
+   "neutral": [
+    {
+     "color": "#ffffff",
+     "type": ""
+    },
+    {
+     "color": "#cfe8ff",
+     "type": "pulse",
+     "speed": 2,
+     "intensity": 2
+    },
+    {
+     "color": "#ffe9b0",
+     "type": ""
+    }
+   ],
+   "animationTypes": [
+    "",
+    "flame",
+    "torch",
+    "pulse",
+    "chroma",
+    "wave",
+    "fog",
+    "sunburst",
+    "dome",
+    "emanation",
+    "hexa",
+    "ghost",
+    "energy"
+   ]
+  },
+  "intelligence": {
+   "enabled": true,
+   "categories": {
+    "melee": {
+     "enabled": true,
+     "chance": 1
+    },
+    "ranged": {
+     "enabled": true,
+     "chance": 1
+    },
+    "armor": {
+     "enabled": true,
+     "chance": 1
+    },
+    "other": {
+     "enabled": true,
+     "chance": 1
+    }
+   },
+   "never": [
+    "ammo",
+    "potion",
+    "scroll",
+    "wand"
+   ],
+   "d35eTables": "Intelligent Item Tables",
+   "d35ePowers": "Intelligent Item Powers"
+  },
+  "hints": {
+   "melee": {
+    "enabled": true,
+    "chance": 15
+   },
+   "ranged": {
+    "enabled": true,
+    "chance": 15
+   }
+  }
+ }
+}

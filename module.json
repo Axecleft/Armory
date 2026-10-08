@@ -1,0 +1,34 @@
+{
+  "id": "axeclefts-armory",
+  "title": "Axecleft's Armory",
+  "description": "3.5 SRD weapons, armor, shields and ammunition for the D35E system: mundane, masterwork, special material and magic, built from the system's own items and enhancements and priced by the SRD. Supplies arms to the shared Axecleft Treasure and Merchant Generators. Builder, random generation, the Forge tab, SRD crafting, intelligent items and sizes.",
+  "version": "1.14.8.3",
+  "manifest": "https://github.com/Axecleft/Armory/releases/download/1.14.8.3/module.json",
+  "download": "https://github.com/Axecleft/Armory/archive/refs/tags/1.14.8.3.zip",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "Axecleft",
+      "discord": "axecleft"
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "D35E",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/axecleft-tools.js",
+    "scripts/axecleft-crafting.js",
+    "scripts/axecleft-treasure.js",
+    "scripts/axecleft-merchants.js",
+    "scripts/armory.js"
+  ]
+}
