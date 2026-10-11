@@ -1,5 +1,9 @@
 # Axecleft's Armory — changelog
 
+## 1.14.9.1
+
+- Added module update function.
+
 ## 1.14.9
 
 - **Worlds in other languages** (Babele-translated compendiums, French, Spanish, Portuguese…): base weapons and armor, enhancements, specific items and feats are found by their English names, so random arms, the Forge and crafting work there as in English. Wooden and metal parts are read from the English name (a "Bâton" is still a quarterstaff).
