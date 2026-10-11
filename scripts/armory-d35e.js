@@ -6,6 +6,11 @@
  */
 
 /** What kind of arms an item is: "weapon", "armor", "shield", "ammo" or null. */
+/** An item's English name (Axecleft's Tools 8: Babele's original name, an English name the user gave it), else its name. */
+export const enName = (x, opts = {}) => globalThis.AxecleftTools?.enName?.(x, opts) ?? x?.name ?? "";
+/** A compendium index with English names (display: the shown name). */
+export const enIndex = async (pack, opts = {}) => (globalThis.AxecleftTools?.enIndex ? globalThis.AxecleftTools.enIndex(pack, opts) : [...await pack.getIndex(opts)]);
+
 export function armsKind(e) {
   const s = e?.system ?? {};
   if (e?.type === "weapon") return "weapon";
@@ -42,8 +47,8 @@ export function baseFacts(e) {
     enh: kind === "weapon" ? Number(s.enh) || 0 : kind === "armor" || kind === "shield" ? Number(s.armor?.enh) || 0 : 0,
     masterwork: s.masterwork === true,
     // Special materials: metal ones need metal parts (an arrow can be adamantine, a quarterstaff can't); darkwood needs wood
-    metal: !NON_METAL.test(e?.name ?? ""),
-    wooden: WOODEN.test(e?.name ?? ""),
+    metal: !NON_METAL.test(enName(e)), // by English name (a translated "Bâton" is still a quarterstaff)
+    wooden: WOODEN.test(enName(e)),
   };
 }
 

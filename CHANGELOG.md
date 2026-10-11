@@ -1,5 +1,13 @@
 # Axecleft's Armory — changelog
 
+## 1.14.9
+
+- **Worlds in other languages** (Babele-translated compendiums, French, Spanish, Portuguese…): base weapons and armor, enhancements, specific items and feats are found by their English names, so random arms, the Forge and crafting work there as in English. Wooden and metal parts are read from the English name (a "Bâton" is still a quarterstaff).
+- Crafting specific magic arms and armor in a translated world reads D35E's English construction line for the item (new data/prereqs.json), since its translated description can't be read.
+- Axecleft's Tools 8: in a world not in English, naming or renaming an item asks for its English name (optional; Skip / Don't ask again), and item sheets get an "English name" button, so items made in your language are recognized by the treasure, merchant and crafting tools.
+- Ships the Treasure Generator 9.92 and the Crafting engine 1.7.
+- Item names still mix languages ("+1 Épée longue of Flaming"); translated names come with the language files.
+
 ## 1.14.8.3
 
 - Ships the Merchant Generator 7.5: epic stock in Epic campaign settlements of any size (about 1 magic item in 10, past the gp limit).

@@ -205,7 +205,11 @@ export class ArmoryCraft {
       if (!a.craft) {
         // A custom ability (Shared Data, the GM's own): read the SRD construction line from its description (Crafting engine 1.2)
         const C = globalThis.AxecleftCrafting;
-        const curios = game.modules.get("axeclefts-curios")?.api?.spells;
+        // A translated description (Babele) can't be read: D35E's English line for the item, by its English name (data/prereqs.json, 1.14.9)
+    const enItem = D.enName(data, { pack: hit.pack });
+    const english = await this.englishLine(enItem);
+    if (english && (!/^en\b/i.test(game.i18n?.lang ?? "en") || !C?.parsePrereqs?.(html, { itemName: enItem }))) html = english;
+    const curios = game.modules.get("axeclefts-curios")?.api?.spells;
         const pre = C?.parsePrereqs?.(a.html ?? "", { spell: (x) => curios?.resolveName?.(x) ?? (/^[a-z][a-z' ,]+$/i.test(x) && !/creator|caster|must|rank|level/i.test(x) ? x : null), isFeat: (x) => /^craft |^forge |^scribe |^brew |spell$/i.test(x), itemName: a.title });
         if (!pre) { plan.requirements.push({ key: `custom.${a.title}`, label: `${a.title}: prerequisites`, ok: "warn", detail: "no construction line in its description; the GM decides (see How requirements are found)", waivable: true }); continue; }
         if (pre.cl > plan.casterLevel) plan.casterLevel = pre.cl;
@@ -297,7 +301,7 @@ export class ArmorySpecificCraft {
       if (!pack || pack.documentName !== "Item") continue;
       const magicPack = /magic|wondrous|enchant/i.test(pack.metadata?.label ?? "") || id === "D35E.magicitems";
       let index;
-      try { index = await pack.getIndex({ fields: ["type", "system.subType", "system.equipmentType", "system.equipmentSubtype", "system.weaponSubtype", "system.masterwork", "system.enh", "system.armor.enh", "system.price", "system.epic", "system.tags"] }); } catch (e) { continue; }
+      try { index = await D.enIndex(pack, { fields: ["type", "system.subType", "system.equipmentType", "system.equipmentSubtype", "system.weaponSubtype", "system.masterwork", "system.enh", "system.armor.enh", "system.price", "system.epic", "system.tags"] }); } catch (e) { continue; }
       for (const e of index) {
         if (e.type === "Folder") continue;
         const cat = hub?.classifyItem?.({ ...e, system: { ...(e.system ?? {}), price: Math.max(1000, Number(e.system?.price) || 0) } }, magicPack, { allowEpic: true });
@@ -308,10 +312,18 @@ export class ArmorySpecificCraft {
         if (!rules.psionics && hub?.isPsionicItem?.(e)) continue;
         const kind = e.type === "loot" ? "ammo" : e.type === "weapon" ? "weapon" : "armor";
         const k = normName(e.name);
-        if (!out.has(k)) out.set(k, { name: e.name, kind, pack: id, id: e._id });
+        if (!out.has(k)) out.set(k, { name: e.display ?? e.name, en: e.name, kind, pack: id, id: e._id }); // shown as named in this world
       }
     }
     this.list = [...out.values()].sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  /** D35E's English construction line for a specific item (data/prereqs.json), or null. */
+  async englishLine(name) {
+    this.lines ??= foundry.utils.fetchJsonWithTimeout(`modules/${MOD}/data/prereqs.json`).then((d) => {
+      const m = new Map(); for (const [k, v] of Object.entries(d.lines ?? {})) m.set(normName(k), v); return m;
+    }).catch(() => new Map());
+    return (await this.lines).get(normName(name)) ?? null;
   }
 
   async featNames() {
@@ -319,7 +331,7 @@ export class ArmorySpecificCraft {
     const out = new Set();
     for (const pack of game.packs ?? []) {
       if (pack.documentName !== "Item" || !(pack.collection === "D35E.feats" || /\bfeats?\b/i.test(pack.metadata?.label ?? ""))) continue;
-      try { for (const e of await pack.getIndex()) out.add(normName(e.name)); } catch (e) { /* unreadable */ }
+      try { for (const e of await D.enIndex(pack)) { out.add(normName(e.name)); if (e.display) out.add(normName(e.display)); } } catch (e) { /* unreadable */ }
     }
     return (this.feats = out);
   }
@@ -346,7 +358,7 @@ export class ArmorySpecificCraft {
     if (!this.list) await this.prepare();
     const name = String(v.sname ?? "").trim();
     if (!name) throw new Error("Choose an item to make.");
-    const hit = this.list.find((x) => normName(x.name) === normName(name));
+    const hit = this.list.find((x) => normName(x.name) === normName(name) || normName(x.en) === normName(name));
     if (!hit) throw new Error(`${name} is not a specific magic weapon or armor in your item compendiums.`);
     const hub = globalThis.AxecleftTreasure, C = globalThis.AxecleftCrafting;
     const doc = await game.packs.get(hit.pack)?.getDocument(hit.id);
@@ -357,12 +369,16 @@ export class ArmorySpecificCraft {
     let html = data.system?.description?.value ?? "";
     const link = C?.linkedDescription?.(html);
     if (link) { try { html = (await fromUuid(link.startsWith("Compendium.") ? link : `Compendium.${link}`))?.system?.description?.value ?? html; } catch (e) { /* keep */ } }
+    // A translated description (Babele) can't be read: D35E's English line for the item, by its English name (data/prereqs.json, 1.14.9)
+    const enItem = D.enName(data, { pack: hit.pack });
+    const english = await this.englishLine(enItem);
+    if (english && (!/^en\b/i.test(game.i18n?.lang ?? "en") || !C?.parsePrereqs?.(html, { itemName: enItem }))) html = english;
     const curios = game.modules.get("axeclefts-curios")?.api?.spells;
     try { await curios?.index?.(); } catch (e) { /* Curios not loaded */ }
     const myFeats = C?.actor?.feats(actor) ?? new Set(), known = await this.featNames();
     const pre = C?.parsePrereqs?.(html, {
       spell: (x) => curios?.resolveName?.(x) ?? (/^[a-z][a-z' ,/-]+$/i.test(x) && !/creator|caster|must|rank|level|bonus/i.test(x) ? x : null),
-      isFeat: (x) => myFeats.has(normName(x)) || known.has(normName(x)), itemName: data.name,
+      isFeat: (x) => myFeats.has(normName(x)) || known.has(normName(x)), itemName: enItem,
     });
     if (/minor artifact|major artifact|cannot be created/i.test(C?.plainText?.(html) ?? "")) throw new Error(`${data.name} is an artifact; it can't be made.`);
     // Price: a price correction first, then the statblock's own price when the compendium's is missing or different

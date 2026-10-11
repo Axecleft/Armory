@@ -40,7 +40,7 @@ export class ArmoryForge {
       const pack = game.packs.get(id);
       if (!pack) continue;
       let index = [];
-      try { index = [...await pack.getIndex({ fields: ["type", "system.equipmentType", "system.subType", "system.enh", "system.armor.enh", "system.price", "system.weaponSubtype"] })]; } catch (e) { continue; }
+      try { index = await D.enIndex(pack, { fields: ["type", "system.equipmentType", "system.subType", "system.enh", "system.armor.enh", "system.price", "system.weaponSubtype"] }); } catch (e) { continue; }
       for (const e of index) {
         const kind = D.armsKind(e);
         if (!kind || Number(e.system?.enh) > 0 || Number(e.system?.armor?.enh) > 0 || /\bunarmed\b|\bspikes?\b/i.test(e.name)) continue;
@@ -48,7 +48,7 @@ export class ArmoryForge {
         const key = `${kind}|${normName(e.name)}`;
         if (seen.has(key)) continue;
         seen.add(key);
-        out[kind].push({ pack: id, id: e._id, name: e.name, label: pack.metadata?.label ?? id, ranged: e.system?.weaponSubtype === "ranged" });
+        out[kind].push({ pack: id, id: e._id, name: e.display ?? e.name, en: e.name, label: pack.metadata?.label ?? id, ranged: e.system?.weaponSubtype === "ranged" }); // shown as named in this world
       }
     }
     for (const k of Object.keys(out)) out[k].sort((a, b) => a.name.localeCompare(b.name));

@@ -70,8 +70,8 @@ export class ArmoryBuilder {
     for (const id of packs) {
       const pack = game.packs.get(id);
       if (!pack) continue;
-      const index = await pack.getIndex({ fields: ["type", "system.equipmentType", "system.subType", "system.enh", "system.armor.enh"] });
-      const e = [...index].find((x) => normName(x.name) === n && D.armsKind(x) && !(Number(x.system?.enh) > 0) && !(Number(x.system?.armor?.enh) > 0));
+      const index = await D.enIndex(pack, { fields: ["type", "system.equipmentType", "system.subType", "system.enh", "system.armor.enh"] });
+      const e = index.find((x) => (normName(x.name) === n || normName(x.display) === n) && D.armsKind(x) && !(Number(x.system?.enh) > 0) && !(Number(x.system?.armor?.enh) > 0));
       if (e) return this.doc(id, e._id);
     }
     throw new Error(`Base item "${ref.name}" not found in your item sources.`);

@@ -59,7 +59,7 @@ export class ArmoryIntelligence {
     const out = {};
     const NAME = { alignment: /alignment/i, capabilities: /capabilit|mental/i, lesser: /lesser/i, greater: /greater/i, purpose: /purpose/i, dedicated: /dedicated/i };
     for (const kind of Object.keys(NAME)) {
-      const t = docs.find((d) => d.id === cfg[kind] || d._id === cfg[kind]) ?? docs.find((d) => NAME[kind].test(d.name));
+      const t = docs.find((d) => d.id === cfg[kind] || d._id === cfg[kind]) ?? docs.find((d) => NAME[kind].test(globalThis.AxecleftTools?.enName?.(d) ?? d.name) || NAME[kind].test(d.name)); // English name first (Babele)
       if (!t) continue;
       out[kind] = [...(t.results ?? [])].map((r) => ({
         range: r.range, text: r.description || r.text || r.name || "", uuid: r.documentUuid ?? null,

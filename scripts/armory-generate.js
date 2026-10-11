@@ -206,8 +206,8 @@ export class ArmoryGenerator {
   async buildSpecific(row) {
     const pack = game.packs.get("D35E.magicitems");
     if (!pack || !row.d35e) return { placeholder: true, name: row.name, summary: `specific item; ${row.price.toLocaleString("en-US")} gp; not found in D35E's Magic Items` };
-    const index = await pack.getIndex({ fields: ["system.price"] });
-    const e = [...index].find((x) => normName(x.name) === normName(row.d35e));
+    const index = await D.enIndex(pack, { fields: ["system.price"] });
+    const e = index.find((x) => normName(x.name) === normName(row.d35e));
     if (!e) return { placeholder: true, name: row.name, summary: `specific item; ${row.price.toLocaleString("en-US")} gp; not found in D35E's Magic Items` };
     const data = D.cleanCopy(await pack.getDocument(e._id));
     const name = /^luck blade/i.test(row.name) ? `Luck Blade (${row.name.match(/\((.*)\)/)?.[1] ?? "0 wishes"})` : data.name;
