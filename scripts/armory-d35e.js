@@ -5,12 +5,27 @@
  * (the legacy 2.4.3 build) only has to change this file. Written against D35E 3.1.0.
  */
 
-/** What kind of arms an item is: "weapon", "armor", "shield", "ammo" or null. */
+/** Text in the world's language (Axecleft's Tools 8.2 language files: lang/<code>.json), else the English. {placeholders} are filled from data. */
+export const t = (s, d) => globalThis.AxecleftTools?.t?.(s, d) ?? (d ? String(s).replace(/\{(\w+)\}/g, (m, k) => d[k] ?? m) : String(s));
+/** A number in the world's language format. */
+export const num = (n) => { const l = globalThis.AxecleftTools?.i18n?.lang; return Number(n).toLocaleString(l && l !== "en" ? l : "en-US"); };
+/** 1st, 2nd, 3rd, 4th… in the world's language. */
+export const ord = (n) => t(n === 1 ? "{n}st" : n === 2 ? "{n}nd" : n === 3 ? "{n}rd" : "{n}th", { n });
+/** A name or phrase from a pattern, in the world's language (Axecleft's Tools 8.3 grammar); { lang: "en" } for the English one. */
+/** A word for N(): its English, with the text to show when the word file has none (Axecleft's Tools 8.4 word files: gender, forms). */
+export const W = (en, text = null) => globalThis.AxecleftTools?.word?.(en, { text }) ?? (text ?? en);
+export const N = (p, s = {}, o = {}) => globalThis.AxecleftTools?.compose?.(p, s, o) ?? String(p).replace(/\[([^\]]*)\]/g, (m, g) => ([...g.matchAll(/\{(\w+)[^}]*\}/g)].every(([, k]) => s[k] !== undefined && s[k] !== "" && !(Array.isArray(s[k]) && !s[k].length)) ? g : "")).replace(/\{(\w+)[^}]*\}/g, (m, k) => [s[k] ?? ""].flat().map((x) => x?.text ?? x).join(" ")).replace(/\s{2,}/g, " ").trim();
+/** Is there a translation for this English text? (Words then come from the language file rather than from Babele.) */
+export const hasT = (s) => !!globalThis.AxecleftTools?.i18n?.dict?.[s];
+/** "1,500 gp" in the world's language. */
+export const gp = (n) => t("{n} gp", { n: num(Math.round((Number(n) || 0) * 100) / 100) });
+
 /** An item's English name (Axecleft's Tools 8: Babele's original name, an English name the user gave it), else its name. */
 export const enName = (x, opts = {}) => globalThis.AxecleftTools?.enName?.(x, opts) ?? x?.name ?? "";
 /** A compendium index with English names (display: the shown name). */
 export const enIndex = async (pack, opts = {}) => (globalThis.AxecleftTools?.enIndex ? globalThis.AxecleftTools.enIndex(pack, opts) : [...await pack.getIndex(opts)]);
 
+/** What kind of arms an item is: "weapon", "armor", "shield", "ammo" or null. */
 export function armsKind(e) {
   const s = e?.system ?? {};
   if (e?.type === "weapon") return "weapon";
@@ -87,7 +102,7 @@ export function setAmmoAbilities(data, list) {
     const roll = String(w.damageRoll ?? "").trim();
     const type = w.damageType || (w.damageTypeId && w.damageTypeId !== "damage-untyped" ? w.damageTypeId.replace(/^(energy|damage)-/, "") : "");
     if (roll && !w.optionalDamage && !against) parts.push([roll, type, w.damageTypeId ?? "", "add"]);
-    else if (roll) notes.push(`${title}: +${roll}${type ? ` ${type.toLowerCase()}` : ""} damage${against ? ` against ${against}` : ""}${Number(w.attackRoll) ? ` and +${w.attackRoll} on attacks` : ""} (add it when it applies)`);
+    else if (roll) notes.push(`${title}: ${t(against ? "+{roll}{type} damage against {foes}" : "+{roll}{type} damage", { roll, type: type ? ` ${type.toLowerCase()}` : "", foes: against ? t(against) : "" })}${Number(w.attackRoll) ? t(" and +{n} on attacks", { n: w.attackRoll }) : ""} ${t("(add it when it applies)")}`);
     const note = String(enh?.system?.attackNotes ?? "").replace(/\[\[\/r ([^\]#]+)#?([^\]]*)\]\]/g, "$1 $2").replace(/\[\[([^\]]+)\]\]/g, "$1").trim();
     if (note) notes.push(`${title}: ${note}`);
   }

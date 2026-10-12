@@ -12,8 +12,10 @@ const MOD = "axeclefts-armory";
 const esc = (v) => String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const opt = (v, label, sel, extra = "") => `<option value="${esc(v)}"${String(v) === String(sel ?? "") ? " selected" : ""}${extra}>${esc(label)}</option>`;
 const normName = (s) => String(s ?? "").toLowerCase().replace(/[’']/g, "'").replace(/[^a-z0-9']+/g, " ").trim();
+const { gp, num, t } = D;
+const H = (s, d) => esc(t(s, d));
 const round2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
-const KINDS = [["weapon", "Weapons"], ["armor", "Armor"], ["shield", "Shields"], ["ammo", "Ammunition"]];
+const KINDS = [["weapon", /*t*/"Weapons"], ["armor", /*t*/"Armor"], ["shield", /*t*/"Shields"], ["ammo", /*t*/"Ammunition"]];
 const SLOTS = 4;
 
 export class ArmoryCraft {
@@ -28,16 +30,16 @@ export class ArmoryCraft {
   }
 
   /* ---------- shared form pieces ---------- */
-  baseSelect(name, sel, { blank = "Choose a base item…" } = {}) {
+  baseSelect(name, sel, { blank = t("Choose a base item…") } = {}) {
     const B = this.forge.bases ?? {};
-    return `<select name="craft.${name}">${opt("", blank, sel)}${KINDS.map(([k, label]) => `<optgroup label="${esc(label)}" data-kind="${k}">${(B[k] ?? [])
+    return `<select name="craft.${name}">${opt("", blank, sel)}${KINDS.map(([k, label]) => `<optgroup label="${H(label)}" data-kind="${k}">${(B[k] ?? [])
       .map((x) => opt(`${x.pack}|${x.id}`, x.name, sel, ` data-kind="${k}"`)).join("")}</optgroup>`).join("")}</select>`;
   }
   sizeSelect(sel) {
-    return `<div class="form-group" data-craft-show="light"><label>Size</label><select name="craft.size">${opt("med", "Medium", sel)}${opt("sm", "Small (same price, half the weight)", sel)}${opt("lg", "Large (twice the base price and weight)", sel)}</select></div>`;
+    return `<div class="form-group" data-craft-show="light"><label>${H("Size")}</label><select name="craft.size">${opt("med", t("Medium"), sel)}${opt("sm", t("Small (same price, half the weight)"), sel)}${opt("lg", t("Large (twice the base price and weight)"), sel)}</select></div>`;
   }
   materialSelect(sel) {
-    return `<select name="craft.material">${opt("", "None (ordinary)", sel)}${this.data.materials.map((m) => opt(m.name, m.name[0].toUpperCase() + m.name.slice(1), sel, ` data-kinds="${m.applies.join(" ")}"`)).join("")}</select>`;
+    return `<select name="craft.material">${opt("", t("None (ordinary)"), sel)}${this.data.materials.map((m) => opt(m.name, m.name[0].toUpperCase() + m.name.slice(1), sel, ` data-kinds="${m.applies.join(" ")}"`)).join("")}</select>`;
   }
   /** Masterwork arms in the crafter's inventory that can be enchanted. */
   inventory(actor) {
@@ -101,7 +103,7 @@ export class ArmoryCraft {
     const itemPrice = round2(((parts.base ?? facts.price ?? 0) + matCost - (m?.includesMasterwork ? mw : 0)) * qty);
     const { skill, dc } = this.craftFor(facts, built.data);
     const checks = [{ key: "item", label: `${facts.name}${m ? ` (${m.name})` : ""}`, craft: skill, dc, price: itemPrice, raw: round2(itemPrice / 3) }];
-    if (mw) checks.push({ key: "masterwork", label: "Masterwork component", craft: skill, dc: this.C.craftDC.masterwork, price: round2(mw * qty), raw: round2((mw * qty) / 3) });
+    if (mw) checks.push({ key: "masterwork", label: t("Masterwork component"), craft: skill, dc: this.C.craftDC.masterwork, price: round2(mw * qty), raw: round2((mw * qty) / 3) });
     return checks;
   }
 
@@ -111,26 +113,26 @@ export class ArmoryCraft {
     const src = v.source ?? (inv.length ? "inventory" : "buy");
     const abOpts = this.forge.abilityOptions();
     const groups = [...new Set(abOpts.map((o) => o.group))];
-    const abSelect = (i) => `<select name="craft.ab${i}">${opt("", "None", v[`ab${i}`])}${groups.map((g) => `<optgroup label="${esc(g)}">${abOpts.filter((o) => o.group === g).map((o) => opt(o.value, o.label, v[`ab${i}`], ` data-kinds="${o.kinds.join(" ")}"`)).join("")}</optgroup>`).join("")}</select>`;
+    const abSelect = (i) => `<select name="craft.ab${i}">${opt("", t("None"), v[`ab${i}`])}${groups.map((g) => `<optgroup label="${esc(g)}">${abOpts.filter((o) => o.group === g).map((o) => opt(o.value, o.label, v[`ab${i}`], ` data-kinds="${o.kinds.join(" ")}"`)).join("")}</optgroup>`).join("")}</select>`;
     const themes = Object.keys(this.data.generation.light.themes).map((k) => opt(k, k, v.theme)).join("");
-    return `<p class="hint">Craft Magic Arms and Armor (SRD): the base must be a masterwork item. Magic supplies cost half the base price in gp and 1/25 in XP; the masterwork item is the item cost. Caster level at least 3 × the enhancement bonus, and each ability's own caster level and spells.</p>
-      <div class="form-group"><label>Masterwork item</label><select name="craft.source">${opt("inventory", `From ${actor?.name ?? "the crafter"}'s inventory`, src)}${opt("buy", "Buy it (pay the item cost)", src)}${opt("craft", "Make it first with Craft", src)}</select></div>
-      <div class="form-group" data-craft-show="inv"><label>Item</label><select name="craft.inv">${opt("", inv.length ? "Choose…" : "No masterwork arms in the inventory", v.inv)}${inv.map((i) => opt(i.id, `${i.name}${i.qty > 1 ? ` (${i.qty})` : ""}`, v.inv, ` data-kind="${i.kind}"`)).join("")}</select></div>
-      <div class="form-group" data-craft-show="catalog"><label>Base item</label>${this.baseSelect("base", v.base)}</div>
-      <div class="form-group" data-craft-show="catalog"><label>Material</label>${this.materialSelect(v.material)}</div>
+    return `<p class="hint">${H("Craft Magic Arms and Armor (SRD): the base must be a masterwork item. Magic supplies cost half the base price in gp and 1/25 in XP; the masterwork item is the item cost. Caster level at least 3 × the enhancement bonus, and each ability's own caster level and spells.")}</p>
+      <div class="form-group"><label>${H("Masterwork item")}</label><select name="craft.source">${opt("inventory", actor?.name ? t("From {name}'s inventory", { name: actor.name }) : t("From the crafter's inventory"), src)}${opt("buy", t("Buy it (pay the item cost)"), src)}${opt("craft", t("Make it first with Craft"), src)}</select></div>
+      <div class="form-group" data-craft-show="inv"><label>${H("Item")}</label><select name="craft.inv">${opt("", inv.length ? t("Choose…") : t("No masterwork arms in the inventory"), v.inv)}${inv.map((i) => opt(i.id, `${i.name}${i.qty > 1 ? ` (${i.qty})` : ""}`, v.inv, ` data-kind="${i.kind}"`)).join("")}</select></div>
+      <div class="form-group" data-craft-show="catalog"><label>${H("Base item")}</label>${this.baseSelect("base", v.base)}</div>
+      <div class="form-group" data-craft-show="catalog"><label>${H("Material")}</label>${this.materialSelect(v.material)}</div>
       <div data-craft-show="catalog">${this.sizeSelect(v.size)}</div>
-      <div class="form-group"><label>Enhancement</label><select name="craft.bonus">${[1, 2, 3, 4, 5].map((n) => opt(n, `+${n}`, v.bonus ?? "1")).join("")}${Array.from({ length: 15 }, (_, i) => i + 6).map((n) => opt(n, `+${n} (epic)`, v.bonus, ' data-epic="1"')).join("")}</select>
-        ${globalThis.AxecleftTreasure?.rules?.()?.epic ? `<label class="acr-cb" style="flex:0 0 auto;margin-left:8px"><input type="checkbox" name="craft.epic" ${v.epic ? "checked" : ""}> Epic</label>` : ""}</div>
-      <fieldset><legend>Special abilities</legend>
-        ${Array.from({ length: SLOTS }, (_, i) => `<div class="form-group"><label>Ability ${i + 1}</label>${abSelect(i)}</div>`).join("")}
-        <div class="form-group" data-craft-show="bane"><label>Bane foe</label><select name="craft.foe">${this.data.tables.baneFoes.map((f) => opt(f.foe, f.foe, v.foe)).join("")}</select></div>
-        <p class="hint">SRD abilities carry their prerequisites in the Armory's data (psionic ones need Craft Psionic Arms and Armor, with powers in place of spells). Custom abilities (Shared Data or your own enhancement items) are read from their description:</p>
+      <div class="form-group"><label>${H("Enhancement")}</label><select name="craft.bonus">${[1, 2, 3, 4, 5].map((n) => opt(n, `+${n}`, v.bonus ?? "1")).join("")}${Array.from({ length: 15 }, (_, i) => i + 6).map((n) => opt(n, t("+{n} (epic)", { n }), v.bonus, ' data-epic="1"')).join("")}</select>
+        ${globalThis.AxecleftTreasure?.rules?.()?.epic ? `<label class="acr-cb" style="flex:0 0 auto;margin-left:8px"><input type="checkbox" name="craft.epic" ${v.epic ? "checked" : ""}> ${H("Epic")}</label>` : ""}</div>
+      <fieldset><legend>${H("Special abilities")}</legend>
+        ${Array.from({ length: SLOTS }, (_, i) => `<div class="form-group"><label>${H("Ability {n}", { n: i + 1 })}</label>${abSelect(i)}</div>`).join("")}
+        <div class="form-group" data-craft-show="bane"><label>${H("Bane foe")}</label><select name="craft.foe">${this.data.tables.baneFoes.map((f) => opt(f.foe, f.foe, v.foe)).join("")}</select></div>
+        <p class="hint">${H("SRD abilities carry their prerequisites in the Armory's data (psionic ones need Craft Psionic Arms and Armor, with powers in place of spells). Custom abilities (Shared Data or your own enhancement items) are read from their description:")}</p>
         ${globalThis.AxecleftCrafting?.prereqHelp?.("abilities") ?? ""}
       </fieldset>
-      <div class="form-group" data-craft-show="light"><label>Sheds light</label><select name="craft.light">${opt("none", "No", v.light)}${opt("on", "Yes", v.light)}</select><span class="hint" style="flex:1">SRD: the creator decides now; it can't be changed later.</span></div>
-      <div class="form-group" data-craft-show="theme"><label>Look</label><select name="craft.theme">${opt("", "From its abilities (or neutral)", v.theme)}${themes}</select></div>
-      <div class="form-group" data-craft-show="light"><label>Intelligent</label><label class="acr-cb" style="flex:1"><input type="checkbox" name="craft.intel" ${v.intel ? "checked" : ""}> Make it intelligent (SRD: caster level 15; it takes your alignment; its other features are rolled when the GM approves, and their price is added)</label></div>
-      <div class="form-group" data-craft-show="ammo"><label>Pieces</label><input type="number" name="craft.qty" value="${esc(v.qty ?? 50)}" min="1" max="50" step="1"><span class="hint" style="flex:1">magic ammunition is made 50 at a time; fewer pieces cost proportionally less</span></div>`;
+      <div class="form-group" data-craft-show="light"><label>${H("Sheds light")}</label><select name="craft.light">${opt("none", t("No"), v.light)}${opt("on", t("Yes"), v.light)}</select><span class="hint" style="flex:1">${H("SRD: the creator decides now; it can't be changed later.")}</span></div>
+      <div class="form-group" data-craft-show="theme"><label>${H("Look")}</label><select name="craft.theme">${opt("", t("From its abilities (or neutral)"), v.theme)}${themes}</select></div>
+      <div class="form-group" data-craft-show="light"><label>${H("Intelligent")}</label><label class="acr-cb" style="flex:1"><input type="checkbox" name="craft.intel" ${v.intel ? "checked" : ""}> ${H("Make it intelligent (SRD: caster level 15; it takes your alignment; its other features are rolled when the GM approves, and their price is added)")}</label></div>
+      <div class="form-group" data-craft-show="ammo"><label>${H("Pieces")}</label><input type="number" name="craft.qty" value="${esc(v.qty ?? 50)}" min="1" max="50" step="1"><span class="hint" style="flex:1">${H("magic ammunition is made 50 at a time; fewer pieces cost proportionally less")}</span></div>`;
   }
   /** At approval the GM's client rolls an intelligent item's features (the SRD: "Determine other features randomly"). */
   async magicBeforeApprove({ actor, values }) {
@@ -152,14 +154,14 @@ export class ArmoryCraft {
     let base, baseKind, material = null, consume = [], spec0 = null;
     if (src === "inventory") {
       const it = actor?.items?.get(v.inv);
-      if (!it) throw new Error("Choose a masterwork item from the inventory, or buy or make one.");
+      if (!it) throw new Error(t("Choose a masterwork item from the inventory, or buy or make one."));
       const spec = it.flags?.[MOD]?.spec;
       spec0 = spec;
       baseKind = D.armsKind(it);
       if (spec?.base && !spec.base.system) { base = spec.base; material = spec.material ?? null; } else base = D.cleanCopy(it);
       consume = [{ id: it.id, qty: baseKind === "ammo" ? Math.max(1, Number(v.qty) || 50) : 0 }];
     } else {
-      if (!v.base) throw new Error("Choose a base item.");
+      if (!v.base) throw new Error(t("Choose a base item."));
       const [pack, id] = v.base.split("|");
       base = { pack, id };
       baseKind = this.catalogKind(v.base);
@@ -179,7 +181,7 @@ export class ArmoryCraft {
       if (v.intelData) intel = JSON.parse(v.intelData);
       else if (v.intelRoll) {
         const al = globalThis.AxecleftCrafting?.actor?.alignment(actor) ?? { lc: "n", ge: "n" };
-        intel = await this.api.intelligence.roll({ alignment: `${al.lc}${al.ge}`, abilities: built.craft.abilities.map((a) => ({ name: a.title })), bonus: Number(v.bonus) || 1, effective: built.effective });
+        intel = await this.api.intelligence.roll({ alignment: `${al.lc}${al.ge}`, abilities: built.craft.abilities.map((a) => ({ name: a.en ?? a.title })), bonus: Number(v.bonus) || 1, effective: built.effective });
         intelData = JSON.stringify(intel);
       }
       if (intel) this.api.intelligence.apply(built, intel);
@@ -194,9 +196,9 @@ export class ArmoryCraft {
       summary: built.summary, consume, notes: [], requirements: [], checks: [], spells: [],
     };
     plan.data.system.identified = true;
-    if (src === "buy") { plan.itemCost = mundane; plan.itemCostLabel = `Masterwork ${built.craft.facts.name}${material ? ` (${material})` : ""}, bought`; }
-    if (src === "craft") { plan.checks = this.craftChecks(built, qty); plan.raw = round2(plan.checks.reduce((s, c) => s + c.raw, 0)); plan.notes.push("The masterwork item is made with Craft first (raw materials ⅓ of its price); the magic is added when the checks succeed."); }
-    if (src === "inventory") plan.notes.push(`${actor.items.get(v.inv)?.name} becomes the magic item${ammo ? ` (${qty} pieces used)` : ""}.`);
+    if (src === "buy") { plan.itemCost = mundane; plan.itemCostLabel = t(material ? "Masterwork {item} ({material}), bought" : "Masterwork {item}, bought", { item: built.craft.facts.name, material }); }
+    if (src === "craft") { plan.checks = this.craftChecks(built, qty); plan.raw = round2(plan.checks.reduce((s, c) => s + c.raw, 0)); plan.notes.push(t("The masterwork item is made with Craft first (raw materials ⅓ of its price); the magic is added when the checks succeed.")); }
+    if (src === "inventory") plan.notes.push(t(ammo ? "{item} becomes the magic item ({n} pieces used)." : "{item} becomes the magic item.", { item: actor.items.get(v.inv)?.name, n: qty }));
     // Caster level and prerequisites (SRD Magic Items)
     const bonus = Number(v.bonus) || 1;
     const why = [`3 × +${bonus} = ${3 * bonus}`];
@@ -205,18 +207,14 @@ export class ArmoryCraft {
       if (!a.craft) {
         // A custom ability (Shared Data, the GM's own): read the SRD construction line from its description (Crafting engine 1.2)
         const C = globalThis.AxecleftCrafting;
-        // A translated description (Babele) can't be read: D35E's English line for the item, by its English name (data/prereqs.json, 1.14.9)
-    const enItem = D.enName(data, { pack: hit.pack });
-    const english = await this.englishLine(enItem);
-    if (english && (!/^en\b/i.test(game.i18n?.lang ?? "en") || !C?.parsePrereqs?.(html, { itemName: enItem }))) html = english;
-    const curios = game.modules.get("axeclefts-curios")?.api?.spells;
+        const curios = game.modules.get("axeclefts-curios")?.api?.spells;
         const pre = C?.parsePrereqs?.(a.html ?? "", { spell: (x) => curios?.resolveName?.(x) ?? (/^[a-z][a-z' ,]+$/i.test(x) && !/creator|caster|must|rank|level/i.test(x) ? x : null), isFeat: (x) => /^craft |^forge |^scribe |^brew |spell$/i.test(x), itemName: a.title });
-        if (!pre) { plan.requirements.push({ key: `custom.${a.title}`, label: `${a.title}: prerequisites`, ok: "warn", detail: "no construction line in its description; the GM decides (see How requirements are found)", waivable: true }); continue; }
+        if (!pre) { plan.requirements.push({ key: `custom.${a.title}`, label: t("{ability}: prerequisites", { ability: a.title }), ok: "warn", detail: t("no construction line in its description; the GM decides (see How requirements are found)"), waivable: true }); continue; }
         if (pre.cl > plan.casterLevel) plan.casterLevel = pre.cl;
         if (pre.cl) why.push(`${a.title} CL ${pre.cl}`);
         for (const g of pre.spells) plan.spells.push({ any: g, for: a.title });
         if (pre.align.length) plan.align = [...new Set([...(plan.align ?? []), ...pre.align])];
-        for (const o of pre.other) plan.requirements.push({ key: `custom.${a.title}.${o}`, label: `${a.title}: ${o}`, ok: "warn", detail: "the GM checks this", waivable: true });
+        for (const o of pre.other) plan.requirements.push({ key: `custom.${a.title}.${o}`, label: `${a.title}: ${o}`, ok: "warn", detail: t("the GM checks this"), waivable: true });
         continue;
       }
       if (a.craft.cl > plan.casterLevel) plan.casterLevel = a.craft.cl;
@@ -233,38 +231,38 @@ export class ArmoryCraft {
       if (psi.length === built.craft.abilities.length) plan.feat = "Craft Psionic Arms and Armor";
       else {
         const has = globalThis.AxecleftCrafting?.actor?.feats?.(actor)?.has?.(normName("Craft Psionic Arms and Armor"));
-        plan.requirements.push({ key: "feat.psionic", label: "Craft Psionic Arms and Armor", ok: has === undefined ? "warn" : has, detail: has === undefined ? "the GM checks this" : has ? `has the feat (for ${psi.map((a) => a.title).join(", ")})` : `doesn't have the feat (needed for ${psi.map((a) => a.title).join(", ")})`, waivable: false });
+        plan.requirements.push({ key: "feat.psionic", label: "Craft Psionic Arms and Armor", ok: has === undefined ? "warn" : has, detail: has === undefined ? t("the GM checks this") : t(has ? "has the feat (for {abilities})" : "doesn't have the feat (needed for {abilities})", { abilities: psi.map((a) => a.title).join(", ") }), waivable: false });
       }
-      plan.notes.push("Psionic abilities: the powers listed stand in for spells, and manifester level for caster level (SRD Psionic Items).");
+      plan.notes.push(t("Psionic abilities: the powers listed stand in for spells, and manifester level for caster level (SRD Psionic Items)."));
     }
     if (v.intel && !ammo) {
       plan.casterLevel = Math.max(plan.casterLevel, 15);
-      why.push("an intelligent item 15");
-      if (intel) plan.notes.push(`Intelligent: ${intel.lines.join(" · ")}; adds ${intel.price.toLocaleString("en-US")} gp to the base price.`);
-      else plan.notes.push("Intelligent: it takes the crafter's alignment; its mind, powers and any special purpose are rolled when the GM approves, and their price (from +1,000 gp) is added to the base price, so the gp, XP and time rise.");
+      why.push(t("an intelligent item 15"));
+      if (intel) plan.notes.push(t("Intelligent: {lines}; adds {gp} to the base price.", { lines: intel.lines.join(" · "), gp: gp(intel.price) }));
+      else plan.notes.push(t("Intelligent: it takes the crafter's alignment; its mind, powers and any special purpose are rolled when the GM approves, and their price (from +1,000 gp) is added to the base price, so the gp, XP and time rise."));
     }
     if (intelData) plan.intelData = intelData;
-    plan.casterNote = `item needs ${why.join("; ")}`;
-    if (built.craft.facts.double) plan.notes.push("SRD: a double weapon counts as two weapons for cost, time, XP and abilities; enchant each head separately.");
-    if (v.light === "on") plan.notes.push("Sheds light (decided at creation).");
+    plan.casterNote = t("item needs {why}", { why: why.join("; ") });
+    if (built.craft.facts.double) plan.notes.push(t("SRD: a double weapon counts as two weapons for cost, time, XP and abilities; enchant each head separately."));
+    if (v.light === "on") plan.notes.push(t("Sheds light (decided at creation)."));
     return plan;
   }
 
   /* ---------- Mundane and masterwork arms (Craft) ---------- */
   mundaneContent({ values: v }) {
-    return `<p class="hint">Craft (SRD): raw materials cost ⅓ of the price; the DC comes from the Craft table. A masterwork item has a separate masterwork component (DC 20). Each check failed by 5 or more ruins half that part's raw materials.</p>
-      <div class="form-group"><label>Item</label>${this.baseSelect("base", v.base)}</div>
-      <div class="form-group"><label>Masterwork</label><label class="acr-cb" style="flex:1"><input type="checkbox" name="craft.masterwork" ${v.masterwork ? "checked" : ""}> Masterwork (adamantine, mithral, darkwood and dragonhide always are)</label></div>
-      <div class="form-group"><label>Material</label>${this.materialSelect(v.material)}</div>
+    return `<p class="hint">${H("Craft (SRD): raw materials cost ⅓ of the price; the DC comes from the Craft table. A masterwork item has a separate masterwork component (DC 20). Each check failed by 5 or more ruins half that part's raw materials.")}</p>
+      <div class="form-group"><label>${H("Item")}</label>${this.baseSelect("base", v.base)}</div>
+      <div class="form-group"><label>${H("Masterwork")}</label><label class="acr-cb" style="flex:1"><input type="checkbox" name="craft.masterwork" ${v.masterwork ? "checked" : ""}> ${H("Masterwork (adamantine, mithral, darkwood and dragonhide always are)")}</label></div>
+      <div class="form-group"><label>${H("Material")}</label>${this.materialSelect(v.material)}</div>
       ${this.sizeSelect(v.size)}
-      <div class="form-group" data-craft-show="ammo"><label>Pieces</label><input type="number" name="craft.qty" value="${esc(v.qty ?? 20)}" min="1" step="1"></div>`;
+      <div class="form-group" data-craft-show="ammo"><label>${H("Pieces")}</label><input type="number" name="craft.qty" value="${esc(v.qty ?? 20)}" min="1" step="1"></div>`;
   }
   mundaneWire(section) {
     this.wireFilter(section, () => section.querySelector('[name="craft.base"]')?.selectedOptions?.[0]?.dataset?.kind ?? null);
   }
   async mundaneEvaluate({ values: v }) {
     await this.prepare();
-    if (!v.base) throw new Error("Choose an item to make.");
+    if (!v.base) throw new Error(t("Choose an item to make."));
     const [pack, id] = v.base.split("|");
     const kind = this.catalogKind(v.base);
     const m = v.material ? this.data.materials.find((x) => normName(x.name) === normName(v.material)) : null;
@@ -280,7 +278,8 @@ export class ArmoryCraft {
 
 /* ---------- Specific magic arms (from their SRD statblock) ---------- */
 
-const SPEC_KINDS = [["weapon", "Weapons"], ["armor", "Armor and shields"], ["ammo", "Ammunition"]];
+// [key, label, one item's label]
+const SPEC_KINDS = [["weapon", /*t*/"Weapons", /*t*/"Weapon"], ["armor", /*t*/"Armor and shields", /*t*/"Armor or shield"], ["ammo", /*t*/"Ammunition", /*t*/"Ammunition"]];
 const CRAFT_MIN = { "craft magic arms and armor": 5, "craft psionic arms and armor": 5, "craft epic magic arms and armor": 0, "craft rod": 9, "craft staff": 12, "craft wondrous item": 3 };
 
 export class ArmorySpecificCraft {
@@ -299,7 +298,7 @@ export class ArmorySpecificCraft {
     for (const id of packs) {
       const pack = game.packs.get(id);
       if (!pack || pack.documentName !== "Item") continue;
-      const magicPack = /magic|wondrous|enchant/i.test(pack.metadata?.label ?? "") || id === "D35E.magicitems";
+      const magicPack = /magic|wondrous|enchant/i.test(pack.metadata?.originalLabel ?? pack.metadata?.label ?? "") || id === "D35E.magicitems";
       let index;
       try { index = await D.enIndex(pack, { fields: ["type", "system.subType", "system.equipmentType", "system.equipmentSubtype", "system.weaponSubtype", "system.masterwork", "system.enh", "system.armor.enh", "system.price", "system.epic", "system.tags"] }); } catch (e) { continue; }
       for (const e of index) {
@@ -330,7 +329,7 @@ export class ArmorySpecificCraft {
     if (this.feats) return this.feats;
     const out = new Set();
     for (const pack of game.packs ?? []) {
-      if (pack.documentName !== "Item" || !(pack.collection === "D35E.feats" || /\bfeats?\b/i.test(pack.metadata?.label ?? ""))) continue;
+      if (pack.documentName !== "Item" || !(pack.collection === "D35E.feats" || /\bfeats?\b/i.test(pack.metadata?.originalLabel ?? pack.metadata?.label ?? ""))) continue;
       try { for (const e of await D.enIndex(pack)) { out.add(normName(e.name)); if (e.display) out.add(normName(e.display)); } } catch (e) { /* unreadable */ }
     }
     return (this.feats = out);
@@ -338,9 +337,9 @@ export class ArmorySpecificCraft {
 
   content({ values: v }) {
     const k = v.skind ?? "weapon";
-    return `<p class="hint">Specific magic weapons, armor, shields and ammunition (Flame Tongue, Celestial Armor…) from your item compendiums, by the SRD statblock in each item's description: its caster level, spells and other prerequisites, and its cost (the masterwork item plus half the magic's price, and 1/25 of that in XP).</p>
-      <div class="form-group"><label>Kind</label><select name="craft.skind">${SPEC_KINDS.map(([x, l]) => opt(x, l, k)).join("")}</select></div>
-      <div class="form-group"><label>Item</label><input type="text" name="craft.sname" list="ac-specific" value="${esc(v.sname ?? "")}" placeholder="Type to search"><datalist id="ac-specific"></datalist></div>
+    return `<p class="hint">${H("Specific magic weapons, armor, shields and ammunition (Flame Tongue, Celestial Armor…) from your item compendiums, by the SRD statblock in each item's description: its caster level, spells and other prerequisites, and its cost (the masterwork item plus half the magic's price, and 1/25 of that in XP).")}</p>
+      <div class="form-group"><label>${H("Kind")}</label><select name="craft.skind">${SPEC_KINDS.map(([x, l]) => opt(x, t(l), k)).join("")}</select></div>
+      <div class="form-group"><label>${H("Item")}</label><input type="text" name="craft.sname" list="ac-specific" value="${esc(v.sname ?? "")}" placeholder="${H("Type to search")}"><datalist id="ac-specific"></datalist></div>
       ${globalThis.AxecleftCrafting?.prereqHelp?.("arms") ?? ""}`;
   }
 
@@ -357,12 +356,12 @@ export class ArmorySpecificCraft {
   async evaluate({ actor, values: v }) {
     if (!this.list) await this.prepare();
     const name = String(v.sname ?? "").trim();
-    if (!name) throw new Error("Choose an item to make.");
+    if (!name) throw new Error(t("Choose an item to make."));
     const hit = this.list.find((x) => normName(x.name) === normName(name) || normName(x.en) === normName(name));
-    if (!hit) throw new Error(`${name} is not a specific magic weapon or armor in your item compendiums.`);
+    if (!hit) throw new Error(t("{name} is not a specific magic weapon or armor in your item compendiums.", { name }));
     const hub = globalThis.AxecleftTreasure, C = globalThis.AxecleftCrafting;
     const doc = await game.packs.get(hit.pack)?.getDocument(hit.id);
-    if (!doc) throw new Error(`Could not read ${name}.`);
+    if (!doc) throw new Error(t("Could not read {name}.", { name }));
     const data = doc.toObject();
     delete data._id; delete data.folder; delete data.sort;
     const fix = hub?.applyPriceCorrection?.(hit.pack, data);
@@ -380,13 +379,13 @@ export class ArmorySpecificCraft {
       spell: (x) => curios?.resolveName?.(x) ?? (/^[a-z][a-z' ,/-]+$/i.test(x) && !/creator|caster|must|rank|level|bonus/i.test(x) ? x : null),
       isFeat: (x) => myFeats.has(normName(x)) || known.has(normName(x)), itemName: enItem,
     });
-    if (/minor artifact|major artifact|cannot be created/i.test(C?.plainText?.(html) ?? "")) throw new Error(`${data.name} is an artifact; it can't be made.`);
+    if (/minor artifact|major artifact|cannot be created/i.test(C?.plainText?.(html) ?? "")) throw new Error(t("{name} is an artifact; it can't be made.", { name: data.name }));
     // Price: a price correction first, then the statblock's own price when the compendium's is missing or different
     let price = Number(data.system?.price) || 0;
     const notes = [];
-    if (fix) notes.push(`Price corrected to ${price.toLocaleString("en-US")} gp (${fix.note || "price correction"}).`);
-    else if (pre?.price && pre.price !== price) { notes.push(`Price ${pre.price.toLocaleString("en-US")} gp from its statblock (the compendium says ${price.toLocaleString("en-US")} gp).`); price = pre.price; }
-    if (!(price > 0)) throw new Error(`${data.name} has no price; add one on the Price Corrections page of the Treasure Lists journal.`);
+    if (fix) notes.push(t("Price corrected to {price} ({note}).", { price: gp(price), note: fix.note || t("price correction") }));
+    else if (pre?.price && pre.price !== price) { notes.push(t("Price {price} from its statblock (the compendium says {old}).", { price: gp(pre.price), old: gp(price) })); price = pre.price; }
+    if (!(price > 0)) throw new Error(t("{name} has no price; add one on the Price Corrections page of the Treasure Lists journal.", { name: data.name }));
     data.system.price = price;
     data.system.identified = true;
     const plan = { magic: true, name: data.name, img: data.img, data, quantity: 1, market: price, requirements: [], checks: [], notes, spells: [] };
@@ -396,7 +395,7 @@ export class ArmorySpecificCraft {
       plan.base = price;
       plan.casterLevel = Math.max(5, 3 * enh);
       plan.casterNote = `Craft Magic Arms and Armor 5${enh ? `; 3 × +${enh}` : ""}`;
-      plan.requirements.push({ key: "line", label: "Prerequisites", ok: "warn", detail: "no construction line in its description; the GM decides (see How requirements are found)", waivable: true });
+      plan.requirements.push({ key: "line", label: t("Prerequisites"), ok: "warn", detail: t("no construction line in its description; the GM decides (see How requirements are found)"), waivable: true });
       return plan;
     }
     const creation = pre.feats.filter((f) => CRAFT_MIN[normName(f)] !== undefined || /^(craft|forge|scribe|brew)\b/i.test(f));
@@ -405,29 +404,29 @@ export class ArmorySpecificCraft {
     let cl = 5;
     for (const f of creation) { const m = CRAFT_MIN[normName(f)] ?? 0; if (m > cl) { cl = m; why.push(`${f} ${m}`); } }
     if (enh && 3 * enh > cl) { cl = 3 * enh; why.push(`3 × +${enh}`); }
-    if (pre.minCl && pre.minCl > cl) { cl = pre.minCl; why.push(`the item needs ${pre.minCl}`); }
+    if (pre.minCl && pre.minCl > cl) { cl = pre.minCl; why.push(t("the item needs {n}", { n: pre.minCl })); }
     plan.casterLevel = cl;
-    plan.casterNote = `${why.join("; ") || `${plan.feat} 5`}${pre.cl ? `; the item works at caster level ${pre.cl}` : ""}`;
+    plan.casterNote = `${why.join("; ") || `${plan.feat} 5`}${pre.cl ? t("; the item works at caster level {n}", { n: pre.cl }) : ""}`;
     for (const f of pre.feats) if (normName(f) !== normName(plan.feat)) {
       const has = myFeats.has(normName(f));
-      plan.requirements.push({ key: `feat.${f}`, label: f, ok: has, detail: has ? "has the feat" : "doesn't have the feat", waivable: !/^(craft|forge|scribe|brew)\b/i.test(f) });
+      plan.requirements.push({ key: `feat.${f}`, label: f, ok: has, detail: has ? t("has the feat") : t("doesn't have the feat"), waivable: !/^(craft|forge|scribe|brew)\b/i.test(f) });
     }
     plan.spells = pre.spells.map((g) => ({ any: g, for: data.name }));
     if (pre.align.length) plan.align = [...new Set(pre.align)];
     if (pre.minLevel) plan.minLevel = pre.minLevel;
-    for (const sk of pre.skills) plan.requirements.push({ key: `skill.${sk.skill}`, label: `${sk.ranks} ranks in ${sk.skill}`, ok: "warn", detail: "the GM checks", waivable: true });
-    for (const o of pre.other) plan.requirements.push({ key: `other.${o}`, label: o[0].toUpperCase() + o.slice(1), ok: "warn", detail: "the GM checks this", waivable: true });
+    for (const sk of pre.skills) plan.requirements.push({ key: `skill.${sk.skill}`, label: t("{n} ranks in {skill}", { n: sk.ranks, skill: sk.skill }), ok: "warn", detail: t("the GM checks"), waivable: true });
+    for (const o of pre.other) plan.requirements.push({ key: `other.${o}`, label: o[0].toUpperCase() + o.slice(1), ok: "warn", detail: t("the GM checks this"), waivable: true });
     // SRD cost: the XP gives the magic's base price (XP × 25); the rest of the gp is the masterwork item and material
     if (pre.cost) {
       const base = pre.cost.xp * 25, item = Math.round((pre.cost.gp - base / 2) * 100) / 100;
-      if (item >= 0) { plan.base = base; plan.itemCost = item; plan.itemCostLabel = "Masterwork item and materials (from the SRD cost)"; }
+      if (item >= 0) { plan.base = base; plan.itemCost = item; plan.itemCostLabel = t("Masterwork item and materials (from the SRD cost)"); }
       else { plan.base = pre.cost.gp * 2; plan.xpExtra = Math.max(0, pre.cost.xp - plan.base / 25); }
-      notes.push(`SRD cost: ${pre.cost.gp.toLocaleString("en-US")} gp and ${pre.cost.xp.toLocaleString("en-US")} XP.`);
+      notes.push(t("SRD cost: {gp} and {xp} XP.", { gp: gp(pre.cost.gp), xp: num(pre.cost.xp) }));
     } else {
       plan.base = price;
-      notes.push("Its statblock gives no Cost, so the whole price counts as magic (the SRD would charge the masterwork item at full price and only the rest at half).");
+      notes.push(t("Its statblock gives no Cost, so the whole price counts as magic (the SRD would charge the masterwork item at full price and only the rest at half)."));
     }
-    plan.summary = `${SPEC_KINDS.find(([x]) => x === hit.kind)?.[1]?.replace(/s$/, "") ?? "Item"}${pre.cl ? `; caster level ${pre.cl}` : ""}${pre.text ? `; prerequisites: ${pre.text}` : ""}`;
+    plan.summary = `${t(SPEC_KINDS.find(([x]) => x === hit.kind)?.[2] ?? "Item")}${pre.cl ? t("; caster level {n}", { n: pre.cl }) : ""}${pre.text ? t("; prerequisites: {text}", { text: pre.text }) : ""}`;
     return plan;
   }
 }
@@ -439,18 +438,18 @@ export function registerCrafting(api) {
   const craft = new ArmoryCraft(api);
   api.craft = craft;
   C.registerKind({
-    module: MOD, key: "magic-arms", label: "Magic arms and armor", icon: "fas fa-wand-sparkles", order: 20, magic: true, feat: "Craft Magic Arms and Armor",
+    module: MOD, key: "magic-arms", label: /*t*/"Magic arms and armor", icon: "fas fa-wand-sparkles", order: 20, magic: true, feat: "Craft Magic Arms and Armor",
     prepare: () => craft.prepare(), content: (ctx) => craft.magicContent(ctx), wire: (s, ctx) => craft.magicWire(s, ctx), evaluate: (ctx) => craft.magicEvaluate(ctx),
     beforeApprove: (ctx) => craft.magicBeforeApprove(ctx),
   });
   const specific = new ArmorySpecificCraft(api);
   api.specificCraft = specific;
   C.registerKind({
-    module: MOD, key: "specific-arms", label: "Specific magic arms", icon: "fas fa-khanda", order: 20.5, magic: true,
+    module: MOD, key: "specific-arms", label: /*t*/"Specific magic arms", icon: "fas fa-khanda", order: 20.5, magic: true,
     prepare: () => specific.prepare(), content: (ctx) => specific.content(ctx), wire: (s) => specific.wire(s), evaluate: (ctx) => specific.evaluate(ctx),
   });
   C.registerKind({
-    module: MOD, key: "arms", label: "Arms and armor (Craft)", icon: "fas fa-hammer", order: 21, magic: false,
+    module: MOD, key: "arms", label: /*t*/"Arms and armor (Craft)", icon: "fas fa-hammer", order: 21, magic: false,
     prepare: () => craft.prepare(), content: (ctx) => craft.mundaneContent(ctx), wire: (s) => craft.mundaneWire(s), evaluate: (ctx) => craft.mundaneEvaluate(ctx),
   });
   return craft;

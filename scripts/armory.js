@@ -23,15 +23,15 @@ const api = { MOD, data: null, ready: false, builder: null, generator: null, loa
 
 if (T?.registerSourceKind) {
   T.registerSourceKind({
-    module: MOD, key: "enhancements", label: "Enhancements",
-    hint: "Special abilities for magic weapons, armor and shields (Flaming, Keen, Fortification…). D35E's Enhancements compendium and any compendium with enhancement items, such as Axecleft's Shared Data.",
+    module: MOD, key: "enhancements", label: /*t*/"Enhancements",
+    hint: /*t*/"Special abilities for magic weapons, armor and shields (Flaming, Keen, Fortification…). D35E's Enhancements compendium and any compendium with enhancement items, such as Axecleft's Shared Data.",
     match: (label) => /\benhancements?\b/i.test(label),
     accept: (e) => e.type === "enhancement",
     fields: ["system.enhancementType", "system.enhIncrease", "system.allowedTypes", "system.nameExtension"],
   });
   T.registerSourceKind({
-    module: MOD, key: "materials", label: "Special materials",
-    hint: "Materials for arms and armor (adamantine, mithral, darkwood…). Costs and effects follow the SRD; D35E's material items supply hardness and damage-reduction properties.",
+    module: MOD, key: "materials", label: /*t*/"Special materials",
+    hint: /*t*/"Materials for arms and armor (adamantine, mithral, darkwood…). Costs and effects follow the SRD; D35E's material items supply hardness and damage-reduction properties.",
     match: (label) => /\bmaterials?\b/i.test(label),
     accept: (e) => e.type === "material",
     fields: ["system.hardness", "system.uniqueId"],
@@ -41,7 +41,7 @@ if (T?.registerSourceKind) {
     categories: ["mundane:weapon", "mundane:armor", "magic:weapon", "magic:armor"],
     async roll({ category, grade, tags = [], exclude = null }) {
       await api.loaded;
-      if (!api.generator) throw new Error("armory.json did not load");
+      if (!api.generator) throw new Error(globalThis.AxecleftTools?.t?.("armory.json did not load") ?? "armory.json did not load");
       // grade "epic" (Treasure Generator 9.9): the SRD epic tables, only while Epic items is on
       return api.generator.generate(category, { grade: grade ?? "minor", ranged: tags.includes("ranged"), psionic: tags.includes("psionic"), exclude });
     },
@@ -56,8 +56,8 @@ registerCrafting(api); // the shared Crafting window (magic and mundane arms and
 Hooks.once("init", () => {
   game.modules.get(MOD).api = api;
   game.settings.register(MOD, "psionicShare", {
-    name: "Psionic share of magic arms and armor (%)", scope: "world", config: true, type: Number, default: 10, range: { min: 0, max: 100, step: 5 },
-    hint: "House rule, while Psionics is on (Treasure Generator → Generation settings): this share of random magic weapons, armor and shields that get special abilities roll them on the SRD psionic ability tables instead. 0 = none.",
+    name: /*t*/"Psionic share of magic arms and armor (%)", scope: "world", config: true, type: Number, default: 10, range: { min: 0, max: 100, step: 5 },
+    hint: /*t*/"House rule, while Psionics is on (Treasure Generator → Generation settings): this share of random magic weapons, armor and shields that get special abilities roll them on the SRD psionic ability tables instead. 0 = none.",
   });
   api.loaded = foundry.utils.fetchJsonWithTimeout(`modules/${MOD}/data/armory.json`)
     .then((data) => {
@@ -72,9 +72,9 @@ Hooks.once("init", () => {
         T.registerPriceCorrections({ module: MOD, corrections: data.priceCorrections ?? [] });
         if (game.ready && game.user?.isGM) T.scanCompendiums?.(); // the scan may already have run
       }
-      const t = data.tables;
-      console.log(`${MOD} | armory.json loaded: ${t.commonMelee.length + t.uncommon.length + t.commonRanged.length} weapon rows, `
-        + `${t.meleeAbilities.length + t.rangedAbilities.length + t.armorAbilities.length + t.shieldAbilities.length} ability rows, `
+      const tb = data.tables;
+      console.log(`${MOD} | armory.json loaded: ${tb.commonMelee.length + tb.uncommon.length + tb.commonRanged.length} weapon rows, `
+        + `${tb.meleeAbilities.length + tb.rangedAbilities.length + tb.armorAbilities.length + tb.shieldAbilities.length} ability rows, `
         + `${data.materials.length} materials, ${data.priceCorrections.length} price corrections`);
       return data;
     })

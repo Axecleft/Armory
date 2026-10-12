@@ -1,5 +1,49 @@
 # Axecleft's Armory — changelog
 
+## 1.14.9.10
+
+- French draft: lang/fr.json (buttons, menus, hints, messages and name patterns) and lang/fr.words.json (the words in item and shop names, with their genders) are filled in, and languages.json now lists fr, so worlds set to French show this module in French. A first draft for Gigalad to correct; English worlds are unchanged.
+
+## 1.14.9.9
+
+- Axecleft's Tools 8.4: word files. Each module's lang folder has words.template.json, every English word that goes into names (abilities, materials, base items, gems, art objects, item kinds, shop-name words); a translator copies it to <code>.words.json and writes each word with a short notation: "Épée longue (f)" (text and gender), "(f)" (gender only, keeping Babele's name), "acéré/acérée/acérés/acérées" (forms that agree with the noun), "de feu (of)" (a word that moves after the noun). Patterns can also hold agreeing words: {~sculpté/sculptée}. lang/README.md explains it. This module's template has 413 words.
+- Ships the Merchant Generator 7.7: shop names ("The Gilded Anvil", "Garrick's Smithy") go through the grammar and the word files, so they can read "L'Enclume dorée" or "Forge de Garrick".
+- Ability, material, size and base-item words come from the word file when it has them (with their genders, so abilities agree with the weapon or armor).
+- English names are unchanged.
+
+## 1.14.9.8
+
+- Axecleft's Tools 8.3: names built from parts ("+1 Flaming Longsword of Speed", "Scroll of Fireball", "Gold Ring set with Ruby") follow the language's grammar: the name patterns are translated in lang/<code>.json like other texts (word order), and a new grammar file per language (lang/<code>.grammar.json) sets the word for "and", articles, agreement ("acérée" with "Épée longue"), elision (de → d'), contractions (de le → du) and capital letters. Drafts for French, Spanish and Portuguese are included (used once the language is listed in languages.json); lang/README.md explains patterns and grammar files.
+- Built arms keep their English name (for matching) whatever language the world is in; armory.json marks which abilities go after "of" (as D35E's English items have them), since a translated enhancement's own name extension can't be used for that.
+- English names are unchanged.
+
+## 1.14.9.7
+
+- The Armory's own windows are translatable: the Forge tab, the three crafting tabs (magic arms and armor, specific magic arms, arms and armor by Craft), rule messages, item descriptions and summaries, ammunition notes and intelligent items. Prices use the world's number format. lang/template.json now lists 1,068 texts.
+- Fixed: crafting magic arms with a custom ability (Shared Data or your own enhancement item) stopped with an error.
+- Fixed: in a translated world, making an item intelligent could add its intelligence section to the description twice.
+
+## 1.14.9.6
+
+- Axecleft's Tools 8.2: a language loader for Axecleft's modules. Each module has a lang folder (template.json to translate, one file per language, e.g. fr.json); texts not translated yet stay in English, Brazilian and European Portuguese fall back on each other, and setting names are translated too.
+- Ships the Treasure Generator 9.94, Merchant Generator 7.6 and Crafting 1.9: their windows, chat cards and messages are translatable. The Armory's own windows follow next.
+
+## 1.14.9.5
+
+- Worlds in other languages: the special-ability dropdowns (Forge, Crafting) and the ability headings in an item's description use D35E's translated enhancement names ("Feu", "Froid"; "Défense (Light Fortification)" when one D35E item covers several grades). Abilities D35E has no item for stay in English. Item names keep the English ability words until the per-language grammar files.
+
+## 1.14.9.4
+
+- Ships Axecleft's Crafting 1.8: spell requirements in the world's language.
+
+## 1.14.9.3
+
+- Worlds in other languages: enhancement and material sources are found when Babele translates the compendium labels ("Propriétés spéciales", "Matériaux"); the forge and crafting lists use the English labels too. Ships the Treasure Generator 9.93.
+
+## 1.14.9.2
+
+- Axecleft's Tools 8.1: works with Babele 2.9 (Foundry 13/14), which keeps its translations in a new place; with it, translated compendium items are found by their English names again.
+
 ## 1.14.9.1
 
 - Added module update function.

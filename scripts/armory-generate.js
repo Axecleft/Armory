@@ -8,6 +8,8 @@
 import * as D from "./armory-d35e.js";
 
 const T = () => globalThis.AxecleftTreasure;
+const { gp, t } = D;
+const GRADE_MAGIC = { minor: /*t*/"Minor magic", medium: /*t*/"Medium magic", major: /*t*/"Major magic" };
 const d100 = () => 1 + Math.floor(Math.random() * 100);
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
 const normName = (s) => String(s ?? "").toLowerCase().replace(/[’']/g, "'").replace(/[^a-z0-9']+/g, " ").trim();
@@ -205,10 +207,10 @@ export class ArmoryGenerator {
   }
   async buildSpecific(row) {
     const pack = game.packs.get("D35E.magicitems");
-    if (!pack || !row.d35e) return { placeholder: true, name: row.name, summary: `specific item; ${row.price.toLocaleString("en-US")} gp; not found in D35E's Magic Items` };
+    if (!pack || !row.d35e) return { placeholder: true, name: row.name, summary: t("specific item; {price}; not found in D35E's Magic Items", { price: gp(row.price) }) };
     const index = await D.enIndex(pack, { fields: ["system.price"] });
     const e = index.find((x) => normName(x.name) === normName(row.d35e));
-    if (!e) return { placeholder: true, name: row.name, summary: `specific item; ${row.price.toLocaleString("en-US")} gp; not found in D35E's Magic Items` };
+    if (!e) return { placeholder: true, name: row.name, summary: t("specific item; {price}; not found in D35E's Magic Items", { price: gp(row.price) }) };
     const data = D.cleanCopy(await pack.getDocument(e._id));
     const name = /^luck blade/i.test(row.name) ? `Luck Blade (${row.name.match(/\((.*)\)/)?.[1] ?? "0 wishes"})` : data.name;
     data.name = name;
@@ -217,7 +219,7 @@ export class ArmoryGenerator {
       D.setPrice(data, row.price); // SRD price (D35E's can be wrong; legacy versions never get fixed)
       data.system.identified = false;
     }
-    return { name, data, summary: `specific item, ${row.price.toLocaleString("en-US")} gp (SRD price)` };
+    return { name, data, summary: t("specific item, {price} (SRD price)", { price: gp(row.price) }) };
   }
 
   /* ---------- the mundane table (masterwork arms, darkwood, armor) ---------- */
@@ -271,7 +273,7 @@ export class ArmoryGenerator {
     const cat = facts.kind === "armor" || facts.kind === "shield" ? "armor" : facts.ranged ? "ranged" : "melee";
     if (!hub.genChance("intelligence", cat)) return false;
     try {
-      const intel = await this.intel.roll({ abilities: (built.craft?.abilities ?? []).map((a) => ({ name: a.title })), bonus, effective: built.effective ?? bonus });
+      const intel = await this.intel.roll({ abilities: (built.craft?.abilities ?? []).map((a) => ({ name: a.en ?? a.title })), bonus, effective: built.effective ?? bonus });
       this.intel.apply(built, intel);
       return true;
     } catch (err) { console.warn("axeclefts-armory | intelligence not added", err); return false; }
@@ -320,7 +322,7 @@ export class ArmoryGenerator {
         if (roll.rename) this.renameBase(built, roll.rename, roll.renamePrice, facts);
         if (magic) await this.maybeIntelligent(built, facts, roll.bonus ?? 0);
         return [{ name: built.quantity > 1 ? `${built.name} (${built.quantity})` : built.name, data: built.data,
-          summary: `${epic ? "SRD epic table:" : magic ? `${grade[0].toUpperCase()}${grade.slice(1)} magic` : "Mundane"} ${built.summary}; ${built.price.toLocaleString("en-US")} gp${built.quantity > 1 ? " each" : ""}${spec.light ? "; sheds light" : ""}` }];
+          summary: `${t(epic ? "SRD epic table:" : magic ? GRADE_MAGIC[grade] ?? /*t*/"Magic" : "Mundane")} ${built.summary}; ${gp(built.price)}${built.quantity > 1 ? t(" each") : ""}${spec.light ? t("; sheds light") : ""}` }];
       } catch (err) {
         if (tries === 7) throw err;
       }
@@ -333,6 +335,8 @@ export class ArmoryGenerator {
     const d = built.data, s = d.system;
     const fix = (n) => String(n ?? "").replace(facts.name, rename);
     d.name = fix(d.name); s.identifiedName = fix(s.identifiedName);
+    const en = d.flags?.world?.axecleftEn;
+    if (en && built.baseEn) d.flags.world.axecleftEn = en.replace(built.baseEn, rename);
     if (s.unidentified) s.unidentified.name = fix(s.unidentified.name);
     const diff = (price ?? facts.price) - facts.price;
     s.price = Math.round((Number(s.price) + diff) * 100) / 100;

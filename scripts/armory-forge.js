@@ -11,13 +11,16 @@ const MOD = "axeclefts-armory";
 const T = () => globalThis.AxecleftTreasure;
 const esc = (v) => String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const opt = (v, label, sel, extra = "") => `<option value="${esc(v)}"${String(v) === String(sel ?? "") ? " selected" : ""}${extra}>${esc(label)}</option>`;
-const gp = (n) => `${Number(Math.round(n * 100) / 100).toLocaleString("en-US")} gp`;
+const { gp, t } = D;
+const H = (s, d) => esc(t(s, d));
 const normName = (s) => String(s ?? "").toLowerCase().replace(/[’']/g, "'").replace(/[^a-z0-9']+/g, " ").trim();
 const d100 = () => 1 + Math.floor(Math.random() * 100);
 const pick = (l) => l[Math.floor(Math.random() * l.length)];
 const inGrade = (rows, grade, r) => rows.find((x) => x[grade] && r >= x[grade][0] && r <= x[grade][1]);
 const SLOTS = 4;
-const KINDS = [["weapon", "Weapon"], ["armor", "Armor"], ["shield", "Shield"], ["ammo", "Ammunition"]];
+/** The builder's price part labels, translated when shown. */
+const PART_WORDS = [/*t*/"base", /*t*/"masterwork"]; // eslint-disable-line no-unused-vars
+const KINDS = [["weapon", /*t*/"Weapon"], ["armor", /*t*/"Armor"], ["shield", /*t*/"Shield"], ["ammo", /*t*/"Ammunition"]];
 const KIND_LABEL = Object.fromEntries(KINDS);
 const STORE = "axeclefts-armory.forge.";
 const remember = (k, v) => { try { localStorage.setItem(STORE + k, v); } catch (e) { /* private mode */ } };
@@ -35,7 +38,7 @@ export class ArmoryForge {
   async loadBases() {
     const out = { weapon: [], armor: [], shield: [], ammo: [] }, seen = new Set();
     const packs = [...new Set(["D35E.weapons-and-ammo", "D35E.armors-and-shields", ...(T()?.itemSources?.().packs ?? [])])]
-      .filter((id) => id !== "D35E.magicitems" && !/magic|wondrous|enchant/i.test(game.packs.get(id)?.metadata?.label ?? ""));
+      .filter((id) => id !== "D35E.magicitems" && !/magic|wondrous|enchant/i.test(game.packs.get(id)?.metadata?.originalLabel ?? game.packs.get(id)?.metadata?.label ?? ""));
     for (const id of packs) {
       const pack = game.packs.get(id);
       if (!pack) continue;
@@ -58,6 +61,8 @@ export class ArmoryForge {
   /** Enhancements from the sources that aren't SRD abilities the Armory knows (GM or Shared Data ones). */
   async loadCustom() {
     const items = await (T()?.kindItems?.(`${MOD}.enhancements`) ?? []);
+    // English name -> name as this world shows it (Babele: "Flaming" -> "Feu"), for the ability dropdowns
+    this.shownAb = new Map(items.filter((x) => x.display && x.display !== x.name).map((x) => [normName(x.name), x.display]));
     const known = new Set([...Object.values(this.data.abilities.weapon), ...Object.values(this.data.abilities.armor)].map((o) => normName(o.d35e)).filter(Boolean));
     for (const f of this.data.tables.baneFoes) known.add(normName(f.d35e));
     ["+1 weapon enhancement", "+1 armor enhancement"].forEach((n) => known.add(normName(n)));
@@ -82,27 +87,32 @@ export class ArmoryForge {
     const psi = T()?.rules?.()?.psionics !== false; // the shared Psionics switch
     const epic = T()?.rules?.()?.epic === true;      // the shared Epic items switch
     const ok = (o) => (!o.psionic || psi) && (!o.epic || epic);
-    for (const [k, o] of Object.entries(w)) if (ok(o)) out.push({ value: `srd:${k}`, label: abilityTitle(k), kinds: wKinds(o), group: o.psionic ? "SRD psionic weapon abilities" : o.epic ? "SRD epic weapon abilities" : "SRD weapon abilities" });
-    for (const [k, o] of Object.entries(a)) if (ok(o)) out.push({ value: `srd:${k}`, label: abilityTitle(k), kinds: o.applies.filter((x) => x === "armor" || x === "shield"), group: o.psionic ? "SRD psionic armor and shield abilities" : o.epic ? "SRD epic armor and shield abilities" : "SRD armor and shield abilities" });
-    for (const c of this.custom ?? []) out.push({ value: `custom:${c.name}`, label: `${c.name} (${c.pack})`, kinds: c.type === "weapon" ? ["weapon", "ammo"] : ["armor", "shield"], group: "Your enhancements" });
+    // In a translated world: the enhancement's translated name; the English one added when D35E's item covers several grades ("Défense (Light Fortification)")
+    const label = (k, o) => {
+      const en = o.d35e ?? k, shown = this.shownAb?.get(normName(en));
+      return !shown ? abilityTitle(k) : normName(en) === normName(k) ? shown : `${shown} (${abilityTitle(k)})`;
+    };
+    for (const [k, o] of Object.entries(w)) if (ok(o)) out.push({ value: `srd:${k}`, label: label(k, o), kinds: wKinds(o), group: t(o.psionic ? "SRD psionic weapon abilities" : o.epic ? "SRD epic weapon abilities" : "SRD weapon abilities") });
+    for (const [k, o] of Object.entries(a)) if (ok(o)) out.push({ value: `srd:${k}`, label: label(k, o), kinds: o.applies.filter((x) => x === "armor" || x === "shield"), group: t(o.psionic ? "SRD psionic armor and shield abilities" : o.epic ? "SRD epic armor and shield abilities" : "SRD armor and shield abilities") });
+    for (const c of this.custom ?? []) out.push({ value: `custom:${c.name}`, label: `${c.name} (${c.pack})`, kinds: c.type === "weapon" ? ["weapon", "ammo"] : ["armor", "shield"], group: t("Your enhancements") });
     return out;
   }
 
   /* ---------- intelligence ---------- */
   intelContent() {
     const I = this.api.intelligence;
-    if (!I?.tables) return `<p class="hint">Intelligent items need D35E's Intelligent Item Tables compendium.</p>`;
-    const sel = (name, kind, first = ["", "Random"]) => `<select name="forge.${name}">${opt(first[0], first[1], "")}${I.options(kind).map((o) => opt(o.value, o.label, "")).join("")}</select>`;
-    const aligns = [["", "Random (suits holy, unholy, axiomatic, anarchic)"], ["lg", "Lawful good"], ["ng", "Neutral good"], ["cg", "Chaotic good"], ["ln", "Lawful neutral"], ["nn", "Neutral"], ["cn", "Chaotic neutral"], ["le", "Lawful evil"], ["ne", "Neutral evil"], ["ce", "Chaotic evil"]];
-    return `<div class="form-group" data-forge="intel"><label>Intelligent</label><select name="forge.intel">${opt("settings", "By Generation settings (random)", recall("intel", "settings"))}${opt("none", "No", recall("intel", "settings"))}${opt("random", "Yes, all features random", recall("intel", "settings"))}${opt("choose", "Yes, choose the features", recall("intel", "settings"))}</select></div>
+    if (!I?.tables) return `<p class="hint">${H("Intelligent items need D35E's Intelligent Item Tables compendium.")}</p>`;
+    const sel = (name, kind, first = ["", t("Random")]) => `<select name="forge.${name}">${opt(first[0], first[1], "")}${I.options(kind).map((o) => opt(o.value, o.label, "")).join("")}</select>`;
+    const aligns = [["", /*t*/"Random (suits holy, unholy, axiomatic, anarchic)"], ["lg", /*t*/"Lawful good"], ["ng", /*t*/"Neutral good"], ["cg", /*t*/"Chaotic good"], ["ln", /*t*/"Lawful neutral"], ["nn", /*t*/"Neutral"], ["cn", /*t*/"Chaotic neutral"], ["le", /*t*/"Lawful evil"], ["ne", /*t*/"Neutral evil"], ["ce", /*t*/"Chaotic evil"]];
+    return `<div class="form-group" data-forge="intel"><label>${H("Intelligent")}</label><select name="forge.intel">${opt("settings", t("By Generation settings (random)"), recall("intel", "settings"))}${opt("none", t("No"), recall("intel", "settings"))}${opt("random", t("Yes, all features random"), recall("intel", "settings"))}${opt("choose", t("Yes, choose the features"), recall("intel", "settings"))}</select></div>
       <div data-forge="intel-choose">
-        <div class="form-group"><label>Alignment</label><select name="forge.ialign">${aligns.map(([v, l]) => opt(v, l, "")).join("")}</select></div>
-        <div class="form-group"><label>Mind</label>${sel("icap", "capabilities")}</div>
-        ${[0, 1, 2, 3].map((i) => `<div class="form-group" data-forge-il="${i}"><label>Lesser power ${i + 1}</label>${sel(`il${i}`, "lesser")}</div>`).join("")}
-        ${[0, 1, 2].map((i) => `<div class="form-group" data-forge-ig="${i}"><label>Greater power ${i + 1}</label>${sel(`ig${i}`, "greater")}</div>`).join("")}
-        <div class="form-group"><label>Special purpose</label><select name="forge.ipurpose">${opt("rule", "By Generation settings", "")}${opt("none", "None", "")}${opt("random", "Random", "")}${I.options("purpose").map((o) => opt(o.value, o.label, "")).join("")}</select></div>
-        <div class="form-group" data-forge="intel-dedicated"><label>Dedicated power</label>${sel("idedicated", "dedicated")}</div>
-        <p class="hint">The mind sets how many lesser and greater powers it has. Prices follow the SRD and are added to the item's price.</p>
+        <div class="form-group"><label>${H("Alignment")}</label><select name="forge.ialign">${aligns.map(([v, l]) => opt(v, t(l), "")).join("")}</select></div>
+        <div class="form-group"><label>${H("Mind")}</label>${sel("icap", "capabilities")}</div>
+        ${[0, 1, 2, 3].map((i) => `<div class="form-group" data-forge-il="${i}"><label>${H("Lesser power {n}", { n: i + 1 })}</label>${sel(`il${i}`, "lesser")}</div>`).join("")}
+        ${[0, 1, 2].map((i) => `<div class="form-group" data-forge-ig="${i}"><label>${H("Greater power {n}", { n: i + 1 })}</label>${sel(`ig${i}`, "greater")}</div>`).join("")}
+        <div class="form-group"><label>${H("Special purpose")}</label><select name="forge.ipurpose">${opt("rule", t("By Generation settings"), "")}${opt("none", t("None"), "")}${opt("random", t("Random"), "")}${I.options("purpose").map((o) => opt(o.value, o.label, "")).join("")}</select></div>
+        <div class="form-group" data-forge="intel-dedicated"><label>${H("Dedicated power")}</label>${sel("idedicated", "dedicated")}</div>
+        <p class="hint">${H("The mind sets how many lesser and greater powers it has. Prices follow the SRD and are added to the item's price.")}</p>
       </div>`;
   }
   /** Make the built item intelligent as the form says (Generation settings, random, or chosen). */
@@ -119,45 +129,46 @@ export class ArmoryForge {
   /* ---------- the tab ---------- */
 
   content() {
-    if (!this.bases) return `<p class="hint">Loading the Forge…</p>`;
+    if (!this.bases) return `<p class="hint">${H("Loading the Forge…")}</p>`;
     const r = (k, d) => recall(k, d);
     const kind = r("kind", "weapon");
-    const baseOpts = KINDS.map(([k, label]) => `<optgroup label="${esc(label)}" data-kind="${k}">${(this.bases[k] ?? []).map((b) => opt(`${b.pack}|${b.id}`, b.name, r("base", ""), ` data-kind="${k}"`)).join("")}</optgroup>`).join("");
+    const baseOpts = KINDS.map(([k, label]) => `<optgroup label="${H(label)}" data-kind="${k}">${(this.bases[k] ?? []).map((b) => opt(`${b.pack}|${b.id}`, b.name, r("base", ""), ` data-kind="${k}"`)).join("")}</optgroup>`).join("");
     const mats = this.data.materials.map((m) => opt(m.name, `${m.name[0].toUpperCase()}${m.name.slice(1)}`, r("material", ""), ` data-kinds="${m.applies.join(" ")}"`)).join("");
     const abOpts = this.abilityOptions();
     const groups = [...new Set(abOpts.map((o) => o.group))];
-    const abSelect = (i) => `<select name="forge.ab${i}">${opt("", "None")}${opt("random", "Random (by grade)")}${T()?.rules?.()?.psionics !== false ? opt("randompsi", "Random psionic (by grade)") : ""}${groups.map((g) => `<optgroup label="${esc(g)}">${abOpts.filter((o) => o.group === g).map((o) => opt(o.value, o.label, "", ` data-kinds="${o.kinds.join(" ")}"`)).join("")}</optgroup>`).join("")}</select>`;
+    const abSelect = (i) => `<select name="forge.ab${i}">${opt("", t("None"))}${opt("random", t("Random (by grade)"))}${T()?.rules?.()?.psionics !== false ? opt("randompsi", t("Random psionic (by grade)")) : ""}${groups.map((g) => `<optgroup label="${esc(g)}">${abOpts.filter((o) => o.group === g).map((o) => opt(o.value, o.label, "", ` data-kinds="${o.kinds.join(" ")}"`)).join("")}</optgroup>`).join("")}</select>`;
     const foes = this.data.tables.baneFoes.map((f) => opt(f.foe, f.foe, "")).join("");
     const L = this.data.generation.light;
     const themes = Object.keys(L.themes).map((k) => opt(k, k, "")).join("");
-    const anims = L.animationTypes.map((t) => opt(t, t ? t[0].toUpperCase() + t.slice(1) : "None", "")).join("");
-    return `<p class="hint">Make weapons, armor, shields and ammunition by hand. Any choice can be Random: random parts are rolled on the SRD tables for the grade you pick. Prices follow the SRD; magic items start unidentified.</p>
-      <div class="form-group"><label>Kind</label><select name="forge.kind">${opt("random", "Random", kind)}${KINDS.map(([k, l]) => opt(k, l, kind)).join("")}</select></div>
-      <div class="form-group"><label>Base item</label><select name="forge.base">${opt("", "Random (SRD tables)", r("base", ""))}${baseOpts}</select></div>
-      <div class="form-group"><label>Grade</label><select name="forge.grade">${["minor", "medium", "major"].map((g) => opt(g, g[0].toUpperCase() + g.slice(1), r("grade", "medium"))).join("")}${T()?.rules?.()?.epic ? opt("epic", "Epic (SRD epic tables)", r("grade", "medium")) : ""}</select><span class="hint" style="flex:1">for Random bonus and abilities</span></div>
-      <div class="form-group"><label>Enhancement</label><select name="forge.bonus">${opt("", "None", r("bonus", "1"))}${opt("random", "Random (by grade)", r("bonus", "1"))}${[1, 2, 3, 4, 5].map((n) => opt(n, `+${n}`, r("bonus", "1"))).join("")}${Array.from({ length: 15 }, (_, i) => i + 6).map((n) => opt(n, `+${n} (epic)`, r("bonus", "1"), ' data-epic="1"')).join("")}</select></div>
-      ${T()?.rules?.()?.epic ? `<div class="form-group"><label>Epic</label><label class="atg-cb" style="flex:1"><input type="checkbox" name="forge.epic" ${r("epic", "0") === "1" ? "checked" : ""}> Allow epic items: enhancement past +5 and a total past +10, at SRD epic prices (×10)</label></div>` : ""}
-      <div class="form-group"><label>Masterwork</label><label class="atg-cb" style="flex:1"><input type="checkbox" name="forge.masterwork" ${r("masterwork", "1") === "1" ? "checked" : ""}> Masterwork (always, with a bonus, abilities or adamantine, mithral, darkwood, dragonhide)</label></div>
-      <div class="form-group"><label>Material</label><select name="forge.material">${opt("", "None (ordinary)", r("material", ""))}${opt("random", "Random (one that fits)", r("material", ""))}${mats}</select></div>
-      <div class="form-group"><label>Size</label><select name="forge.size">${opt("med", "Medium", r("size", "med"))}${opt("sm", "Small (same price, half the weight)", r("size", "med"))}${opt("lg", "Large (twice the base price and weight)", r("size", "med"))}${opt("random", "Random (Generation settings)", r("size", "med"))}</select></div>
-      <fieldset><legend>Special abilities</legend>
-        ${Array.from({ length: SLOTS }, (_, i) => `<div class="form-group"><label>Ability ${i + 1}</label>${abSelect(i)}</div>`).join("")}
-        <div class="form-group" data-forge="bane"><label>Bane foe</label><select name="forge.foe">${opt("random", "Random (SRD table)")}${foes}</select></div>
-        <p class="hint">Each ability needs at least +1; bonus plus abilities can't pass +10 unless epic items are allowed. Abilities that don't fit the base (keen on a mace, returning on a longsword) are refused.</p>
+    const anims = L.animationTypes.map((a) => opt(a, a ? a[0].toUpperCase() + a.slice(1) : t("None"), "")).join("");
+    const GRADES = { minor: /*t*/"Minor", medium: /*t*/"Medium", major: /*t*/"Major" };
+    return `<p class="hint">${H("Make weapons, armor, shields and ammunition by hand. Any choice can be Random: random parts are rolled on the SRD tables for the grade you pick. Prices follow the SRD; magic items start unidentified.")}</p>
+      <div class="form-group"><label>${H("Kind")}</label><select name="forge.kind">${opt("random", t("Random"), kind)}${KINDS.map(([k, l]) => opt(k, t(l), kind)).join("")}</select></div>
+      <div class="form-group"><label>${H("Base item")}</label><select name="forge.base">${opt("", t("Random (SRD tables)"), r("base", ""))}${baseOpts}</select></div>
+      <div class="form-group"><label>${H("Grade")}</label><select name="forge.grade">${["minor", "medium", "major"].map((g) => opt(g, t(GRADES[g]), r("grade", "medium"))).join("")}${T()?.rules?.()?.epic ? opt("epic", t("Epic (SRD epic tables)"), r("grade", "medium")) : ""}</select><span class="hint" style="flex:1">${H("for Random bonus and abilities")}</span></div>
+      <div class="form-group"><label>${H("Enhancement")}</label><select name="forge.bonus">${opt("", t("None"), r("bonus", "1"))}${opt("random", t("Random (by grade)"), r("bonus", "1"))}${[1, 2, 3, 4, 5].map((n) => opt(n, `+${n}`, r("bonus", "1"))).join("")}${Array.from({ length: 15 }, (_, i) => i + 6).map((n) => opt(n, t("+{n} (epic)", { n }), r("bonus", "1"), ' data-epic="1"')).join("")}</select></div>
+      ${T()?.rules?.()?.epic ? `<div class="form-group"><label>${H("Epic")}</label><label class="atg-cb" style="flex:1"><input type="checkbox" name="forge.epic" ${r("epic", "0") === "1" ? "checked" : ""}> ${H("Allow epic items: enhancement past +5 and a total past +10, at SRD epic prices (×10)")}</label></div>` : ""}
+      <div class="form-group"><label>${H("Masterwork")}</label><label class="atg-cb" style="flex:1"><input type="checkbox" name="forge.masterwork" ${r("masterwork", "1") === "1" ? "checked" : ""}> ${H("Masterwork (always, with a bonus, abilities or adamantine, mithral, darkwood, dragonhide)")}</label></div>
+      <div class="form-group"><label>${H("Material")}</label><select name="forge.material">${opt("", t("None (ordinary)"), r("material", ""))}${opt("random", t("Random (one that fits)"), r("material", ""))}${mats}</select></div>
+      <div class="form-group"><label>${H("Size")}</label><select name="forge.size">${opt("med", t("Medium"), r("size", "med"))}${opt("sm", t("Small (same price, half the weight)"), r("size", "med"))}${opt("lg", t("Large (twice the base price and weight)"), r("size", "med"))}${opt("random", t("Random (Generation settings)"), r("size", "med"))}</select></div>
+      <fieldset><legend>${H("Special abilities")}</legend>
+        ${Array.from({ length: SLOTS }, (_, i) => `<div class="form-group"><label>${H("Ability {n}", { n: i + 1 })}</label>${abSelect(i)}</div>`).join("")}
+        <div class="form-group" data-forge="bane"><label>${H("Bane foe")}</label><select name="forge.foe">${opt("random", t("Random (SRD table)"))}${foes}</select></div>
+        <p class="hint">${H("Each ability needs at least +1; bonus plus abilities can't pass +10 unless epic items are allowed. Abilities that don't fit the base (keen on a mace, returning on a longsword) are refused.")}</p>
       </fieldset>
-      <details class="atg-sec" data-sec="forge-extras" ${r("sec.extras", "0") === "1" ? "open" : ""}><summary>Light, inscription and more <small data-forge="extras-note"></small></summary>
-        <div class="form-group"><label>Light</label><select name="forge.light">${opt("settings", "By Generation settings (random)", r("light", "settings"))}${opt("none", "None", r("light", "settings"))}${opt("on", "Sheds light", r("light", "settings"))}</select></div>
+      <details class="atg-sec" data-sec="forge-extras" ${r("sec.extras", "0") === "1" ? "open" : ""}><summary>${H("Light, inscription and more")} <small data-forge="extras-note"></small></summary>
+        <div class="form-group"><label>${H("Light")}</label><select name="forge.light">${opt("settings", t("By Generation settings (random)"), r("light", "settings"))}${opt("none", t("None"), r("light", "settings"))}${opt("on", t("Sheds light"), r("light", "settings"))}</select></div>
         <div data-forge="light">
-          <div class="form-group"><label>Look</label><select name="forge.theme">${opt("", "From its abilities (or neutral)")}${themes}${opt("custom", "Custom")}</select></div>
-          <div class="form-group" data-forge="custom-light"><label>Color</label><input type="color" name="forge.color" value="#ffd27f" style="flex:0 0 4em"><label style="flex:0 0 auto;margin-left:8px">Animation</label><select name="forge.anim">${anims}</select></div>
-          <div class="form-group" data-forge="custom-light"><label>Speed / intensity</label><input type="number" name="forge.speed" value="3" min="1" max="10"><input type="number" name="forge.intensity" value="4" min="1" max="10"></div>
-          <div class="form-group"><label>Bright / dim (ft)</label><input type="number" name="forge.bright" value="" min="0" step="5" placeholder="20"><input type="number" name="forge.dim" value="" min="0" step="5" placeholder="40"><span class="hint" style="flex:1">blank: from Generation settings</span></div>
+          <div class="form-group"><label>${H("Look")}</label><select name="forge.theme">${opt("", t("From its abilities (or neutral)"))}${themes}${opt("custom", t("Custom"))}</select></div>
+          <div class="form-group" data-forge="custom-light"><label>${H("Color")}</label><input type="color" name="forge.color" value="#ffd27f" style="flex:0 0 4em"><label style="flex:0 0 auto;margin-left:8px">${H("Animation")}</label><select name="forge.anim">${anims}</select></div>
+          <div class="form-group" data-forge="custom-light"><label>${H("Speed / intensity")}</label><input type="number" name="forge.speed" value="3" min="1" max="10"><input type="number" name="forge.intensity" value="4" min="1" max="10"></div>
+          <div class="form-group"><label>${H("Bright / dim (ft)")}</label><input type="number" name="forge.bright" value="" min="0" step="5" placeholder="20"><input type="number" name="forge.dim" value="" min="0" step="5" placeholder="40"><span class="hint" style="flex:1">${H("blank: from Generation settings")}</span></div>
         </div>
         ${this.intelContent()}
-        <div class="form-group"><label>Inscription hint</label><select name="forge.hint">${opt("settings", "By Generation settings (random)")}${opt("yes", "Yes")}${opt("no", "No")}</select></div>
-        <div class="form-group"><label>Identified</label><label class="atg-cb" style="flex:1"><input type="checkbox" name="forge.identified"> Start identified (magic items are unidentified otherwise)</label></div>
-        <div class="form-group" data-forge="ammo"><label>Ammunition</label><input type="number" name="forge.qty" value="50" min="1" step="1"><span class="hint" style="flex:1">pieces (magic ammunition is priced per 50)</span></div>
-        <div class="form-group"><label>Items to make</label><input type="number" name="forge.count" value="1" min="1" max="10" step="1"><span class="hint" style="flex:1">for each target; Random parts are rolled for each</span></div>
+        <div class="form-group"><label>${H("Inscription hint")}</label><select name="forge.hint">${opt("settings", t("By Generation settings (random)"))}${opt("yes", t("Yes"))}${opt("no", t("No"))}</select></div>
+        <div class="form-group"><label>${H("Identified")}</label><label class="atg-cb" style="flex:1"><input type="checkbox" name="forge.identified"> ${H("Start identified (magic items are unidentified otherwise)")}</label></div>
+        <div class="form-group" data-forge="ammo"><label>${H("Ammunition")}</label><input type="number" name="forge.qty" value="50" min="1" step="1"><span class="hint" style="flex:1">${H("pieces (magic ammunition is priced per 50)")}</span></div>
+        <div class="form-group"><label>${H("Items to make")}</label><input type="number" name="forge.count" value="1" min="1" max="10" step="1"><span class="hint" style="flex:1">${H("for each target; Random parts are rolled for each")}</span></div>
       </details>
       <div class="atg-preview" data-forge="preview"></div>`;
   }
@@ -191,7 +202,7 @@ export class ArmoryForge {
       section.querySelectorAll("[data-forge-ig]").forEach((x) => { x.style.display = intel === "choose" && Number(x.dataset.forgeIg) < ng ? "" : "none"; });
       show("intel-dedicated", intel === "choose" && el("ipurpose")?.value !== "none");
       const note = section.querySelector('[data-forge="extras-note"]');
-      if (note) note.textContent = `(light ${el("light").selectedOptions[0]?.text.toLowerCase()}; ${el("identified").checked ? "identified" : "unidentified"}; ${el("count").value || 1} item${Number(el("count").value) > 1 ? "s" : ""})`;
+      if (note) { const n = Number(el("count").value) || 1; note.textContent = `(${t("light {light}", { light: el("light").selectedOptions[0]?.text.toLowerCase() })}; ${t(el("identified").checked ? "identified" : "unidentified")}; ${t(n > 1 ? "{n} items" : "{n} item", { n })})`; }
       T()?.refreshSize?.();
     };
     let tmo = null;
@@ -232,15 +243,15 @@ export class ArmoryForge {
    * Abilities that don't fit are rerolled (Random) or reported (chosen).
    */
   async resolve(f) {
-    const t = this.data.tables;
+    const tb = this.data.tables;
     // Kind and base item
     let kind = f.baseKind ?? (f.kind === "random" ? null : f.kind);
     let base = f.base, rename = null;
     if (!base) {
       kind ??= pick(["weapon", "weapon", "weapon", "weapon", "armor", "armor", "shield", "ammo"]);
       if (kind === "weapon") { const w = this.g.weaponBase(false); if (w.row.table || /arrow|bolt|bullet/i.test(w.base.name)) return this.resolve({ ...f, kind: "weapon" }); base = w.base; rename = w.rename ? { to: w.rename, price: w.renamePrice } : null; }
-      else if (kind === "ammo") base = { name: t.ammunition[Math.floor(Math.random() * t.ammunition.length)].d35e };
-      else base = { name: (kind === "shield" ? t.shieldType : t.armorType).find((x) => d100() <= x.d[1])?.d35e ?? (kind === "shield" ? "Heavy Steel Shield" : "Chain Shirt") };
+      else if (kind === "ammo") base = { name: tb.ammunition[Math.floor(Math.random() * tb.ammunition.length)].d35e };
+      else base = { name: (kind === "shield" ? tb.shieldType : tb.armorType).find((x) => d100() <= x.d[1])?.d35e ?? (kind === "shield" ? "Heavy Steel Shield" : "Chain Shirt") };
     }
     const baseDoc = await this.b.baseDoc(base);
     const facts = D.baseFacts(D.cleanCopy(baseDoc));
@@ -250,7 +261,7 @@ export class ArmoryForge {
     const epicGrade = f.grade === "epic";
     if (epicGrade) f.epic = true; // the SRD epic tables make epic items
     if (bonus === null) {
-      const table = epicGrade ? (kind === "armor" || kind === "shield" ? t.epicArmorAndShields : t.epicWeapons) : kind === "armor" || kind === "shield" ? t.armorAndShields : t.weapons;
+      const table = epicGrade ? (kind === "armor" || kind === "shield" ? tb.epicArmorAndShields : tb.epicWeapons) : kind === "armor" || kind === "shield" ? tb.armorAndShields : tb.weapons;
       for (let i = 0; i < 50 && bonus === null; i++) {
         const row = inGrade(table, f.grade, d100());
         if (row?.bonus) bonus = row.bonus;
@@ -265,14 +276,14 @@ export class ArmoryForge {
       if (a.startsWith("custom:")) { chosen.push({ d35e: a.slice(7), name: a.slice(7) }); continue; }
       const name = a.slice(4);
       const ab = { name };
-      if (name === "Bane") ab.foe = f.foe === "random" ? t.baneFoes.find((x) => { const r = d100(); return r >= x.d[0] && r <= x.d[1]; })?.foe ?? pick(t.baneFoes).foe : f.foe;
+      if (name === "Bane") ab.foe = f.foe === "random" ? tb.baneFoes.find((x) => { const r = d100(); return r >= x.d[0] && r <= x.d[1]; })?.foe ?? pick(tb.baneFoes).foe : f.foe;
       chosen.push(ab);
     }
     // Random psionic first (SRD psionic tables; a base nothing fits gets normal abilities instead), then Random
     let normal = randoms;
     if (randomPsi) {
       if (bonus < 1) bonus = 1;
-      const table = kind === "armor" ? t.psionicArmorAbilities : kind === "shield" ? t.psionicShieldAbilities : facts.ranged ? t.psionicRangedAbilities : t.psionicMeleeAbilities;
+      const table = kind === "armor" ? tb.psionicArmorAbilities : kind === "shield" ? tb.psionicShieldAbilities : facts.ranged ? tb.psionicRangedAbilities : tb.psionicMeleeAbilities;
       const rolled = await this.g.rollAbilities(facts, table, f.grade, randomPsi, bonus + chosen.reduce((s, x) => s + (this.b.tableRow(kind, x.name)?.bonus ?? 0), 0), { limit: f.epic ? Infinity : 10 });
       let got = 0;
       for (const r of rolled) if (!chosen.some((c) => normName(c.name) === normName(r.name))) { chosen.push(r); got++; }
@@ -281,15 +292,15 @@ export class ArmoryForge {
     if (normal && epicGrade) {
       // SRD epic special ability tables (their "roll on the nonepic table" rows use the major table)
       if (bonus < 1) bonus = 1;
-      const epicT = kind === "armor" ? t.epicArmorAbilities : kind === "shield" ? t.epicShieldAbilities : facts.ranged ? t.epicRangedAbilities : t.epicMeleeAbilities;
-      const plainT = kind === "armor" ? t.armorAbilities : kind === "shield" ? t.shieldAbilities : facts.ranged ? t.rangedAbilities : t.meleeAbilities;
+      const epicT = kind === "armor" ? tb.epicArmorAbilities : kind === "shield" ? tb.epicShieldAbilities : facts.ranged ? tb.epicRangedAbilities : tb.epicMeleeAbilities;
+      const plainT = kind === "armor" ? tb.armorAbilities : kind === "shield" ? tb.shieldAbilities : facts.ranged ? tb.rangedAbilities : tb.meleeAbilities;
       const rolled = await this.g.rollEpicAbilities(facts, epicT, plainT, normal, bonus + chosen.reduce((s, x) => s + (this.b.tableRow(kind, x.name)?.bonus ?? 0), 0));
       for (const r of rolled) if (!chosen.some((c) => normName(c.name) === normName(r.name))) chosen.push(r);
       normal = 0;
     }
     if (normal) {
       if (bonus < 1) bonus = 1;
-      const table = kind === "armor" ? t.armorAbilities : kind === "shield" ? t.shieldAbilities : facts.ranged ? t.rangedAbilities : t.meleeAbilities;
+      const table = kind === "armor" ? tb.armorAbilities : kind === "shield" ? tb.shieldAbilities : facts.ranged ? tb.rangedAbilities : tb.meleeAbilities;
       const rolled = await this.g.rollAbilities(facts, table, f.grade, normal, bonus + chosen.reduce((s, x) => s + (this.b.tableRow(kind, x.name)?.bonus ?? 0), 0), { limit: f.epic ? Infinity : 10 });
       for (const r of rolled) if (!chosen.some((c) => normName(c.name) === normName(r.name))) chosen.push(r);
     }
@@ -331,10 +342,10 @@ export class ArmoryForge {
         if (rename) this.g.renameBase(built, rename.to, rename.price, facts);
         await this.applyIntel(built, facts, spec, f);
         return { name: built.quantity > 1 ? `${built.name} (${built.quantity})` : built.name, data: built.data,
-          summary: `Forge: ${built.summary}; ${gp(built.price)}${built.quantity > 1 ? " each" : ""}${spec.light ? "; sheds light" : ""}` };
+          summary: `${t("Forge: {summary}", { summary: built.summary })}; ${gp(built.price)}${built.quantity > 1 ? t(" each") : ""}${spec.light ? t("; sheds light") : ""}` };
       } catch (err) { lastErr = err; }
     }
-    throw lastErr ?? new Error("Could not make an item with these choices.");
+    throw lastErr ?? new Error(t("Could not make an item with these choices."));
   }
 
   async preview(section) {
@@ -342,7 +353,7 @@ export class ArmoryForge {
     if (!box) return;
     const f = this.read(section);
     if (this.hasRandom(f) && (f.kind === "random" || !f.base || f.bonus === "random" || f.material === "random" || f.abilities.some((a) => a === "random" || a === "randompsi"))) {
-      box.innerHTML = `<i class="fas fa-dice"></i> Random choices are rolled when you press Generate${f.count > 1 ? `, separately for each of the ${f.count} items` : ""}.`;
+      box.innerHTML = `<i class="fas fa-dice"></i> ${H(f.count > 1 ? "Random choices are rolled when you press Generate, separately for each of the {n} items." : "Random choices are rolled when you press Generate.", { n: f.count })}`;
       return;
     }
     try {
@@ -350,8 +361,8 @@ export class ArmoryForge {
       const built = await this.b.build(spec);
       if (rename) this.g.renameBase(built, rename.to, rename.price, facts);
       if (f.intel === "choose") await this.applyIntel(built, facts, spec, f); // a sample roll for anything left Random
-      const parts = (built.data.flags?.[MOD]?.price ?? []).map(([l, n]) => `${l} ${gp(n)}`).join(" + ");
-      box.innerHTML = `<strong>${esc(built.name)}</strong>${built.quantity > 1 ? ` (${built.quantity})` : ""}: ${gp(built.price)}${built.quantity > 1 ? " each" : ""}<br><small>${esc(built.summary)}${parts ? ` — ${esc(parts)}` : ""}${built.data.system?.identified === false ? `; players see "${esc(built.data.system.unidentified?.name)}" until identified` : ""}</small>`;
+      const parts = (built.data.flags?.[MOD]?.price ?? []).map(([l, n]) => `${t(l)} ${gp(n)}`).join(" + ");
+      box.innerHTML = `<strong>${esc(built.name)}</strong>${built.quantity > 1 ? ` (${built.quantity})` : ""}: ${esc(gp(built.price))}${built.quantity > 1 ? H(" each") : ""}<br><small>${esc(built.summary)}${parts ? ` — ${esc(parts)}` : ""}${built.data.system?.identified === false ? H("; players see \"{name}\" until identified", { name: built.data.system.unidentified?.name }) : ""}</small>`;
     } catch (err) {
       box.innerHTML = `<span style="color:var(--color-level-error,#c33)"><i class="fas fa-triangle-exclamation"></i> ${esc(err.message)}</span>`;
     }
@@ -363,7 +374,7 @@ export class ArmoryForge {
     const f = this.read(section);
     const entries = [];
     for (let i = 0; i < f.count; i++) entries.push(await this.makeOne(f));
-    return { entries, note: f.count > 1 ? `${f.count} items from the Forge` : "" };
+    return { entries, note: f.count > 1 ? t("{n} items from the Forge", { n: f.count }) : "" };
   }
 }
 
@@ -374,11 +385,11 @@ export function registerForge(api) {
   const forge = new ArmoryForge(api);
   api.forge = forge;
   hub.registerTab({
-    module: MOD, name: "forge", title: "Forge", icon: "fas fa-hammer", order: 40,
+    module: MOD, name: "forge", title: /*t*/"Forge", icon: "fas fa-hammer", order: 40,
     prepare: () => forge.prepare(),
     content: () => forge.content(),
     wire: (section) => forge.wire(section),
     generate: (form) => forge.generate(form),
-    generateTitle: () => "Forge",
+    generateTitle: () => t("Forge"),
   });
 }

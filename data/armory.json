@@ -6074,7 +6074,8 @@
      "spells": [],
      "text": "CL 8; Craft Magic Arms and Armor, creator must be a monk",
      "cls": "monk"
-    }
+    },
+    "of": true
    },
    "Merciful": {
     "d35e": "Merciful",
@@ -6108,7 +6109,8 @@
       ]
      ],
      "text": "CL 8; Craft Magic Arms and Armor, divine power"
-    }
+    },
+    "of": true
    },
    "Spell storing": {
     "d35e": "Spell Storing",
@@ -6227,7 +6229,8 @@
       ]
      ],
      "text": "CL 14; Craft Magic Arms and Armor, heal"
-    }
+    },
+    "of": true
    },
    "Flaming burst": {
     "d35e": "Flaming Burst",
@@ -6356,7 +6359,8 @@
       ]
      ],
      "text": "CL 7; Craft Magic Arms and Armor, haste"
-    }
+    },
+    "of": true
    },
    "Brilliant energy": {
     "d35e": "Brilliant Energy",
@@ -6377,7 +6381,8 @@
       ]
      ],
      "text": "CL 16; Craft Magic Arms and Armor, gaseous form, continual flame"
-    }
+    },
+    "of": true
    },
    "Dancing": {
     "d35e": "Dancing",
@@ -6431,7 +6436,8 @@
       ]
      ],
      "text": "CL 6; Craft Magic Arms and Armor, clairaudience/clairvoyance"
-    }
+    },
+    "of": true
    },
    "Returning": {
     "d35e": "Returning",
@@ -7455,7 +7461,8 @@
       ]
      ],
      "text": "CL 13; Craft Magic Arms and Armor, limited wish or miracle"
-    }
+    },
+    "of": true
    },
    "Fortification, moderate": {
     "d35e": "Fortification",
@@ -7473,7 +7480,8 @@
       ]
      ],
      "text": "CL 13; Craft Magic Arms and Armor, limited wish or miracle"
-    }
+    },
+    "of": true
    },
    "Fortification, heavy": {
     "d35e": "Fortification",
@@ -7491,7 +7499,8 @@
       ]
      ],
      "text": "CL 13; Craft Magic Arms and Armor, limited wish or miracle"
-    }
+    },
+    "of": true
    },
    "Slick": {
     "d35e": "Slick",
@@ -7555,7 +7564,8 @@
       ]
      ],
      "text": "CL 5; Craft Magic Arms and Armor, invisibility"
-    }
+    },
+    "of": true
    },
    "Shadow, improved": {
     "d35e": "Shadow",
@@ -7571,7 +7581,8 @@
       ]
      ],
      "text": "CL 10; Craft Magic Arms and Armor, invisibility"
-    }
+    },
+    "of": true
    },
    "Shadow, greater": {
     "d35e": "Shadow",
@@ -7587,7 +7598,8 @@
       ]
      ],
      "text": "CL 15; Craft Magic Arms and Armor, invisibility"
-    }
+    },
+    "of": true
    },
    "Silent moves": {
     "d35e": "Silent Moves",
@@ -7603,7 +7615,8 @@
       ]
      ],
      "text": "CL 5; Craft Magic Arms and Armor, silence"
-    }
+    },
+    "of": true
    },
    "Silent moves, improved": {
     "d35e": "Silent Moves",
@@ -7619,7 +7632,8 @@
       ]
      ],
      "text": "CL 10; Craft Magic Arms and Armor, silence"
-    }
+    },
+    "of": true
    },
    "Silent moves, greater": {
     "d35e": "Silent Moves",
@@ -7635,7 +7649,8 @@
       ]
      ],
      "text": "CL 15; Craft Magic Arms and Armor, silence"
-    }
+    },
+    "of": true
    },
    "Spell resistance (13)": {
     "d35e": "Spell Resistance",
@@ -7748,7 +7763,8 @@
       ]
      ],
      "text": "CL 18; Craft Magic Arms and Armor, stoneskin, wish or miracle"
-    }
+    },
+    "of": true
    },
    "Wild": {
     "d35e": "Wild",
@@ -7781,7 +7797,8 @@
       ]
      ],
      "text": "CL 13; Craft Magic Arms and Armor, ethereal jaunt"
-    }
+    },
+    "of": true
    },
    "Undead controlling": {
     "d35e": "Undead Controlling",
@@ -7798,7 +7815,8 @@
       ]
      ],
      "text": "CL 13; Craft Magic Arms and Armor, control undead"
-    }
+    },
+    "of": true
    },
    "Arrow catching": {
     "d35e": "Arrow Catching",
@@ -7830,7 +7848,8 @@
       ]
      ],
      "text": "CL 8; Craft Magic Arms and Armor, bull's strength"
-    }
+    },
+    "of": true
    },
    "Blinding": {
     "d35e": "Blinding",
@@ -7862,7 +7881,8 @@
       ]
      ],
      "text": "CL 5; Craft Magic Arms and Armor, shield"
-    }
+    },
+    "of": true
    },
    "Animated": {
     "d35e": "Animated",
@@ -7911,7 +7931,8 @@
       ]
      ],
      "text": "CL 3; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Acid resistance, improved": {
     "d35e": "Acid Resistance, Improved",
@@ -7928,7 +7949,8 @@
       ]
      ],
      "text": "CL 7; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Acid resistance, greater": {
     "d35e": "Acid Resistance, Greater",
@@ -7945,7 +7967,8 @@
       ]
      ],
      "text": "CL 11; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Cold resistance": {
     "d35e": "Cold Resistance",
@@ -7962,7 +7985,8 @@
       ]
      ],
      "text": "CL 3; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Cold resistance, improved": {
     "d35e": "Cold Resistance, Improved",
@@ -7979,7 +8003,8 @@
       ]
      ],
      "text": "CL 7; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Cold resistance, greater": {
     "d35e": "Cold Resistance, Greater",
@@ -7996,7 +8021,8 @@
       ]
      ],
      "text": "CL 11; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Electricity resistance": {
     "d35e": "Electricity Resistance",
@@ -8013,7 +8039,8 @@
       ]
      ],
      "text": "CL 3; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Electricity resistance, improved": {
     "d35e": "Electricity Resistance, Improved",
@@ -8030,7 +8057,8 @@
       ]
      ],
      "text": "CL 7; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Electricity resistance, greater": {
     "d35e": "Electricity Resistance, Greater",
@@ -8047,7 +8075,8 @@
       ]
      ],
      "text": "CL 11; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Fire resistance": {
     "d35e": "Fire Resistance",
@@ -8064,7 +8093,8 @@
       ]
      ],
      "text": "CL 3; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Fire resistance, improved": {
     "d35e": "Fire Resistance, Improved",
@@ -8081,7 +8111,8 @@
       ]
      ],
      "text": "CL 7; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Fire resistance, greater": {
     "d35e": "Fire Resistance, Greater",
@@ -8098,7 +8129,8 @@
       ]
      ],
      "text": "CL 11; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Sonic resistance": {
     "d35e": "Sonic Resistance",
@@ -8115,7 +8147,8 @@
       ]
      ],
      "text": "CL 3; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Sonic resistance, improved": {
     "d35e": "Sonic Resistance, Improved",
@@ -8132,7 +8165,8 @@
       ]
      ],
      "text": "CL 7; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Sonic resistance, greater": {
     "d35e": "Sonic Resistance, Greater",
@@ -8149,7 +8183,8 @@
       ]
      ],
      "text": "CL 11; Craft Magic Arms and Armor, resist energy"
-    }
+    },
+    "of": true
    },
    "Aporter": {
     "d35e": null,
@@ -8461,7 +8496,8 @@
      ],
      "text": "Moderate clairsentience; ML 9th; Craft Psionic Arms and Armor, power resistance; Price +2 bonus.",
      "feat": "Craft Psionic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Power resistance (15)": {
     "d35e": null,
@@ -8488,7 +8524,8 @@
      ],
      "text": "Moderate clairsentience; ML 9th; Craft Psionic Arms and Armor, power resistance; Price +3 bonus.",
      "feat": "Craft Psionic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Power resistance (17)": {
     "d35e": null,
@@ -8515,7 +8552,8 @@
      ],
      "text": "Moderate clairsentience; ML 9th; Craft Psionic Arms and Armor, power resistance; Price +4 bonus.",
      "feat": "Craft Psionic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Power resistance (19)": {
     "d35e": null,
@@ -8542,7 +8580,8 @@
      ],
      "text": "Moderate clairsentience; ML 9th; Craft Psionic Arms and Armor, power resistance; Price +5 bonus.",
      "feat": "Craft Psionic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Quickness": {
     "d35e": null,
@@ -8922,7 +8961,8 @@
      "text": "CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, shield, wall of force; Price +8 bonus",
      "feat": "Craft Epic Magic Arms and Armor",
      "also": "Craft Magic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Infinite arrow deflection": {
     "d35e": null,
@@ -8952,7 +8992,8 @@
      "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, protection from arrows, shield; Price +6 bonus",
      "feat": "Craft Epic Magic Arms and Armor",
      "also": "Craft Magic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Great reflection": {
     "d35e": null,
@@ -8979,7 +9020,8 @@
      "text": "CL 25; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell turning; Price +10 bonus",
      "feat": "Craft Epic Magic Arms and Armor",
      "also": "Craft Magic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Great invulnerability (10/magic)": {
     "d35e": null,
@@ -9011,7 +9053,8 @@
      "text": "CL 19; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, stoneskin, wish or miracle; Price +4 bonus",
      "feat": "Craft Epic Magic Arms and Armor",
      "also": "Craft Magic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Great invulnerability (15/magic)": {
     "d35e": null,
@@ -9043,7 +9086,8 @@
      "text": "CL 20; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, stoneskin, wish or miracle; Price +5 bonus",
      "feat": "Craft Epic Magic Arms and Armor",
      "also": "Craft Magic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Great invulnerability (5/epic)": {
     "d35e": null,
@@ -9075,7 +9119,8 @@
      "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, stoneskin, wish or miracle; Price +6 bonus",
      "feat": "Craft Epic Magic Arms and Armor",
      "also": "Craft Magic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Great invulnerability (10/epic)": {
     "d35e": null,
@@ -9107,7 +9152,8 @@
      "text": "CL 22; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, stoneskin, wish or miracle; Price +7 bonus",
      "feat": "Craft Epic Magic Arms and Armor",
      "also": "Craft Magic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Great spell resistance (21)": {
     "d35e": null,
@@ -9135,7 +9181,8 @@
      "text": "CL 21; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell resistance; Price +6 bonus",
      "feat": "Craft Epic Magic Arms and Armor",
      "also": "Craft Magic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Great spell resistance (23)": {
     "d35e": null,
@@ -9163,7 +9210,8 @@
      "text": "CL 22; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell resistance; Price +7 bonus",
      "feat": "Craft Epic Magic Arms and Armor",
      "also": "Craft Magic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Great spell resistance (25)": {
     "d35e": null,
@@ -9191,7 +9239,8 @@
      "text": "CL 23; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell resistance; Price +8 bonus",
      "feat": "Craft Epic Magic Arms and Armor",
      "also": "Craft Magic Arms and Armor"
-    }
+    },
+    "of": true
    },
    "Great spell resistance (27)": {
     "d35e": null,
@@ -9219,7 +9268,8 @@
      "text": "CL 24; Craft Magic Arms and Armor, Craft Epic Magic Arms and Armor, spell resistance; Price +9 bonus",
      "feat": "Craft Epic Magic Arms and Armor",
      "also": "Craft Magic Arms and Armor"
-    }
+    },
+    "of": true
    }
   }
  },
