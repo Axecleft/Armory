@@ -101,6 +101,7 @@ export class ArmoryForge {
   /* ---------- intelligence ---------- */
   intelContent() {
     const I = this.api.intelligence;
+    if (!I) return ""; // D35E before 3.1.0: no intelligent items
     if (!I?.tables) return `<p class="hint">${H("Intelligent items need D35E's Intelligent Item Tables compendium.")}</p>`;
     const sel = (name, kind, first = ["", t("Random")]) => `<select name="forge.${name}">${opt(first[0], first[1], "")}${I.options(kind).map((o) => opt(o.value, o.label, "")).join("")}</select>`;
     const aligns = [["", /*t*/"Random (suits holy, unholy, axiomatic, anarchic)"], ["lg", /*t*/"Lawful good"], ["ng", /*t*/"Neutral good"], ["cg", /*t*/"Chaotic good"], ["ln", /*t*/"Lawful neutral"], ["nn", /*t*/"Neutral"], ["cn", /*t*/"Chaotic neutral"], ["le", /*t*/"Lawful evil"], ["ne", /*t*/"Neutral evil"], ["ce", /*t*/"Chaotic evil"]];
@@ -165,6 +166,7 @@ export class ArmoryForge {
           <div class="form-group"><label>${H("Bright / dim (ft)")}</label><input type="number" name="forge.bright" value="" min="0" step="5" placeholder="20"><input type="number" name="forge.dim" value="" min="0" step="5" placeholder="40"><span class="hint" style="flex:1">${H("blank: from Generation settings")}</span></div>
         </div>
         ${this.intelContent()}
+        ${T()?.curseField?.("forge.cursed") ?? ""}
         <div class="form-group"><label>${H("Inscription hint")}</label><select name="forge.hint">${opt("settings", t("By Generation settings (random)"))}${opt("yes", t("Yes"))}${opt("no", t("No"))}</select></div>
         <div class="form-group"><label>${H("Identified")}</label><label class="atg-cb" style="flex:1"><input type="checkbox" name="forge.identified"> ${H("Start identified (magic items are unidentified otherwise)")}</label></div>
         <div class="form-group" data-forge="ammo"><label>${H("Ammunition")}</label><input type="number" name="forge.qty" value="50" min="1" step="1"><span class="hint" style="flex:1">${H("pieces (magic ammunition is priced per 50)")}</span></div>
@@ -374,7 +376,10 @@ export class ArmoryForge {
     const f = this.read(section);
     const entries = [];
     for (let i = 0; i < f.count; i++) entries.push(await this.makeOne(f));
-    return { entries, note: f.count > 1 ? t("{n} items from the Forge", { n: f.count }) : "" };
+    // Treasure Generator 9.96: an SRD curse when the GM asks for one
+    const cursed = section.querySelector?.('[name="forge.cursed"]')?.value ?? "none";
+    const made = (await T()?.curseEntries?.(entries, cursed)) ?? entries;
+    return { entries: made, note: f.count > 1 ? t("{n} items from the Forge", { n: f.count }) : "" };
   }
 }
 

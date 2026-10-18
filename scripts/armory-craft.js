@@ -41,16 +41,32 @@ export class ArmoryCraft {
   materialSelect(sel) {
     return `<select name="craft.material">${opt("", t("None (ordinary)"), sel)}${this.data.materials.map((m) => opt(m.name, m.name[0].toUpperCase() + m.name.slice(1), sel, ` data-kinds="${m.applies.join(" ")}"`)).join("")}</select>`;
   }
-  /** Masterwork arms in the crafter's inventory that can be enchanted. */
+  /**
+   * Arms in the crafter's inventory that can be enchanted: masterwork items, and (1.14.9.19; DMG, Adding New Abilities) magic
+   * arms the Armory made, to add a higher bonus or new abilities for the difference in price. Their existing magic stays.
+   * No body-slot surcharge: raising a bonus or adding an ability to arms and armor is the same kind of magic.
+   * Cursed and intelligent items, and magic items the Armory didn't make (their magic can't be read back), aren't listed.
+   */
   inventory(actor) {
-    return (actor?.items ?? []).filter((i) => {
+    const out = [];
+    for (const i of actor?.items ?? []) {
       const k = D.armsKind(i);
-      if (!k) return false;
+      if (!k) continue;
       const s = i.system ?? {};
-      if (Number(s.enh) > 0 || Number(s.armor?.enh) > 0 || (s.enhancements?.items ?? []).length) return false;
       const spec = i.flags?.[MOD]?.spec;
-      return !!(s.masterwork || spec?.masterwork || (spec?.material && this.data.materials.find((m) => normName(m.name) === normName(spec.material))?.masterwork) || /masterwork/i.test(i.name));
-    }).map((i) => ({ id: i.id, name: i.name, kind: D.armsKind(i), qty: Number(i.system?.quantity ?? 1) || 1 }));
+      const magicData = Number(s.enh) > 0 || Number(s.armor?.enh) > 0 || (s.enhancements?.items ?? []).length
+        || Number(s.bonusAmmoEnhancement) > 0 || /\d/.test(String(s.bonusAmmoAttack ?? "")) || (s.ammoDamageParts ?? []).length; // magic ammunition keeps its bonus in the ammunition fields
+      const specMagic = Number(spec?.bonus) > 0 || (spec?.abilities ?? []).length > 0;
+      const qty = Number(s.quantity ?? 1) || 1;
+      if (magicData || specMagic) {
+        if (!specMagic || !spec?.base || s.cursed || s.intelligent?.enabled || i.flags?.world?.axecleftCurse) continue;
+        out.push({ id: i.id, name: i.name, kind: k, qty, magic: { bonus: Number(spec.bonus) || 0, abilities: spec.abilities ?? [] } });
+        continue;
+      }
+      const mw = s.masterwork || spec?.masterwork || (spec?.material && this.data.materials.find((m) => normName(m.name) === normName(spec.material))?.masterwork) || /masterwork/i.test(i.name);
+      if (mw) out.push({ id: i.id, name: i.name, kind: k, qty, magic: null });
+    }
+    return out;
   }
   catalogKind(ref) { const [pack, id] = String(ref ?? "").split("|"); for (const [k] of KINDS) if ((this.forge.bases?.[k] ?? []).some((x) => x.pack === pack && x.id === id)) return k; return null; }
 
@@ -116,8 +132,9 @@ export class ArmoryCraft {
     const abSelect = (i) => `<select name="craft.ab${i}">${opt("", t("None"), v[`ab${i}`])}${groups.map((g) => `<optgroup label="${esc(g)}">${abOpts.filter((o) => o.group === g).map((o) => opt(o.value, o.label, v[`ab${i}`], ` data-kinds="${o.kinds.join(" ")}"`)).join("")}</optgroup>`).join("")}</select>`;
     const themes = Object.keys(this.data.generation.light.themes).map((k) => opt(k, k, v.theme)).join("");
     return `<p class="hint">${H("Craft Magic Arms and Armor (SRD): the base must be a masterwork item. Magic supplies cost half the base price in gp and 1/25 in XP; the masterwork item is the item cost. Caster level at least 3 × the enhancement bonus, and each ability's own caster level and spells.")}</p>
-      <div class="form-group"><label>${H("Masterwork item")}</label><select name="craft.source">${opt("inventory", actor?.name ? t("From {name}'s inventory", { name: actor.name }) : t("From the crafter's inventory"), src)}${opt("buy", t("Buy it (pay the item cost)"), src)}${opt("craft", t("Make it first with Craft"), src)}</select></div>
-      <div class="form-group" data-craft-show="inv"><label>${H("Item")}</label><select name="craft.inv">${opt("", inv.length ? t("Choose…") : t("No masterwork arms in the inventory"), v.inv)}${inv.map((i) => opt(i.id, `${i.name}${i.qty > 1 ? ` (${i.qty})` : ""}`, v.inv, ` data-kind="${i.kind}"`)).join("")}</select></div>
+      <div class="form-group"><label>${H("Masterwork or magic item")}</label><select name="craft.source">${opt("inventory", actor?.name ? t("From {name}'s inventory", { name: actor.name }) : t("From the crafter's inventory"), src)}${opt("buy", t("Buy it (pay the item cost)"), src)}${opt("craft", t("Make it first with Craft"), src)}</select></div>
+      <div class="form-group" data-craft-show="inv"><label>${H("Item")}</label><select name="craft.inv">${opt("", inv.length ? t("Choose…") : t("No masterwork or magic arms in the inventory"), v.inv)}${inv.map((i) => opt(i.id, `${i.name}${i.qty > 1 ? ` (${i.qty})` : ""}`, v.inv, ` data-kind="${i.kind}" data-qty="${i.qty}"${i.magic ? ` data-bonus="${i.magic.bonus}"` : ""}`)).join("")}</select></div>
+      <p class="hint" data-craft-show="upgrade">${H("A magic item from the inventory keeps its magic: choose its new enhancement bonus (no lower) and the abilities to add. It needs every prerequisite of the new item; the cost, XP and time are the difference in price (DMG, Adding New Abilities).")}</p>
       <div class="form-group" data-craft-show="catalog"><label>${H("Base item")}</label>${this.baseSelect("base", v.base)}</div>
       <div class="form-group" data-craft-show="catalog"><label>${H("Material")}</label>${this.materialSelect(v.material)}</div>
       <div data-craft-show="catalog">${this.sizeSelect(v.size)}</div>
@@ -131,8 +148,8 @@ export class ArmoryCraft {
       </fieldset>
       <div class="form-group" data-craft-show="light"><label>${H("Sheds light")}</label><select name="craft.light">${opt("none", t("No"), v.light)}${opt("on", t("Yes"), v.light)}</select><span class="hint" style="flex:1">${H("SRD: the creator decides now; it can't be changed later.")}</span></div>
       <div class="form-group" data-craft-show="theme"><label>${H("Look")}</label><select name="craft.theme">${opt("", t("From its abilities (or neutral)"), v.theme)}${themes}</select></div>
-      <div class="form-group" data-craft-show="light"><label>${H("Intelligent")}</label><label class="acr-cb" style="flex:1"><input type="checkbox" name="craft.intel" ${v.intel ? "checked" : ""}> ${H("Make it intelligent (SRD: caster level 15; it takes your alignment; its other features are rolled when the GM approves, and their price is added)")}</label></div>
-      <div class="form-group" data-craft-show="ammo"><label>${H("Pieces")}</label><input type="number" name="craft.qty" value="${esc(v.qty ?? 50)}" min="1" max="50" step="1"><span class="hint" style="flex:1">${H("magic ammunition is made 50 at a time; fewer pieces cost proportionally less")}</span></div>`;
+      ${this.api.intelligence ? `<div class="form-group" data-craft-show="light"><label>${H("Intelligent")}</label><label class="acr-cb" style="flex:1"><input type="checkbox" name="craft.intel" ${v.intel ? "checked" : ""}> ${H("Make it intelligent (SRD: caster level 15; it takes your alignment; its other features are rolled when the GM approves, and their price is added)")}</label></div>` : ""}
+      <div class="form-group" data-craft-show="ammo"><label>${H("Pieces")}</label><input type="number" name="craft.qty" value="${esc(v.qty ?? 50)}" min="1" max="50" step="1"><span class="hint" style="flex:1" data-qty-hint="free">${H("magic ammunition is made 50 at a time; fewer pieces cost proportionally less")}</span><span class="hint" style="flex:1" data-qty-hint="inv">${H("the pieces in the inventory (50 at most at a time)")}</span></div>`;
   }
   /** At approval the GM's client rolls an intelligent item's features (the SRD: "Determine other features randomly"). */
   async magicBeforeApprove({ actor, values }) {
@@ -142,16 +159,37 @@ export class ArmoryCraft {
   }
   magicWire(section, { actor }) {
     const inv = this.inventory(actor);
+    // Ammunition from the inventory: the pieces are the stack's (up to 50), not a free choice (1.14.9.18)
+    const pieces = () => {
+      const q = section.querySelector('[name="craft.qty"]');
+      if (!q) return;
+      const fromInv = section.querySelector('[name="craft.source"]')?.value === "inventory";
+      const it = fromInv ? inv.find((i) => i.id === section.querySelector('[name="craft.inv"]')?.value) : null;
+      const stack = it?.kind === "ammo" ? Math.min(50, it.qty) : null;
+      if (stack) { q.value = String(stack); q.max = String(stack); }
+      else q.max = "50";
+      q.readOnly = !!stack;
+      section.querySelectorAll("[data-qty-hint]").forEach((h) => { h.style.display = (h.dataset.qtyHint === "inv") === !!stack ? "" : "none"; });
+      // A magic item: no lower bonus than it has; light is already decided (SRD: at creation)
+      const min = it?.magic ? Math.max(1, it.magic.bonus) : 0;
+      const b = section.querySelector('[name="craft.bonus"]');
+      b?.querySelectorAll("option").forEach((o) => { const low = Number(o.value) < min; o.disabled = low || (o.dataset.epic && o.hidden); if (low) o.hidden = true; else if (!o.dataset.epic) o.hidden = false; });
+      if (b && Number(b.value) < min) b.value = String(min);
+      section.querySelectorAll('[data-craft-show="upgrade"]').forEach((x) => { x.style.display = it?.magic ? "" : "none"; });
+      section.querySelectorAll('[data-craft-show="light"]').forEach((x) => { if (it?.magic) x.style.display = "none"; });
+    };
     this.wireFilter(section, () => {
       const src = section.querySelector('[name="craft.source"]')?.value;
       if (src === "inventory") return inv.find((i) => i.id === section.querySelector('[name="craft.inv"]')?.value)?.kind ?? null;
       return section.querySelector('[name="craft.base"]')?.selectedOptions?.[0]?.dataset?.kind ?? null;
     });
+    section.addEventListener("change", pieces); // after the filter, which shows the light rows again
+    pieces();
   }
   async magicEvaluate({ actor, values: v }) {
     await this.prepare();
     const src = v.source || "inventory";
-    let base, baseKind, material = null, consume = [], spec0 = null;
+    let base, baseKind, material = null, consume = [], spec0 = null, upgrade = null;
     if (src === "inventory") {
       const it = actor?.items?.get(v.inv);
       if (!it) throw new Error(t("Choose a masterwork item from the inventory, or buy or make one."));
@@ -159,7 +197,11 @@ export class ArmoryCraft {
       spec0 = spec;
       baseKind = D.armsKind(it);
       if (spec?.base && !spec.base.system) { base = spec.base; material = spec.material ?? null; } else base = D.cleanCopy(it);
-      consume = [{ id: it.id, qty: baseKind === "ammo" ? Math.max(1, Number(v.qty) || 50) : 0 }];
+      upgrade = this.inventory(actor).find((i) => i.id === it.id)?.magic ?? null;
+      // Ammunition: the stack's pieces, 50 at most at a time; arms and armor: one item from its stack (1.14.9.18)
+      const stack = Number(it.system?.quantity ?? 1) || 1;
+      if (baseKind === "ammo") v = { ...v, qty: Math.min(50, stack) };
+      consume = [{ id: it.id, qty: baseKind === "ammo" ? v.qty : 1 }];
     } else {
       if (!v.base) throw new Error(t("Choose a base item."));
       const [pack, id] = v.base.split("|");
@@ -173,6 +215,19 @@ export class ArmoryCraft {
       abilities, foe: v.foe || this.data.tables.baneFoes[0].foe, light: v.light === "on" ? "on" : "none", theme: v.theme ?? "", color: "", anim: "", speed: 3, intensity: 4,
       bright: "", dim: "", hint: "no", identified: true, qty: Math.max(1, Math.min(50, Number(v.qty) || 50)), count: 1 };
     const { spec } = await this.forge.resolve(f);
+    // Upgrading a magic item (house rule): its bonus can only go up, its abilities stay, and its light and look were
+    // decided when it was made; the new abilities are added to them
+    let oldBuilt = null;
+    if (upgrade) {
+      const have = new Set(upgrade.abilities.map((a) => normName(a.name)));
+      const twice = spec.abilities.filter((a) => have.has(normName(a.name)));
+      if (twice.length) throw new Error(t("It already has {abilities}.", { abilities: twice.map((a) => a.name).join(", ") }));
+      if (Number(spec.bonus) < upgrade.bonus) throw new Error(t("Its enhancement bonus can't go below +{n}.", { n: upgrade.bonus }));
+      if (Number(spec.bonus) === upgrade.bonus && !spec.abilities.length) throw new Error(t("Raise its enhancement bonus or add an ability."));
+      Object.assign(spec, { abilities: [...upgrade.abilities, ...spec.abilities], light: spec0.light ?? null, hint: spec0.hint ?? false, material: spec0.material ?? null,
+        epic: spec.epic || spec0.epic || undefined, size: spec0.size });
+      oldBuilt = await this.b.build({ ...spec0, identified: true, quantity: spec.quantity });
+    }
     const built = await this.b.build(spec);
     const k = built.craft.facts.kind, ammo = k === "ammo";
     // Intelligent item: rolled by the GM at approval (kept in values.intelData), then priced like any other feature
@@ -187,7 +242,8 @@ export class ArmoryCraft {
       if (intel) this.api.intelligence.apply(built, intel);
     }
     const qty = ammo ? built.quantity : 1;
-    const basePrice = round2(built.craft.magicEach * qty);
+    // An upgrade costs the difference between the new magic and the magic it already has
+    const basePrice = round2((built.craft.magicEach - (oldBuilt?.craft.magicEach ?? 0)) * qty);
     const mundane = round2(built.craft.mundaneEach * qty);
     const plan = {
       // Epic (enhancement above +5, total above +10, or an epic ability): the engine (1.6) adds Craft Epic Magic Arms and Armor and the epic XP
@@ -198,11 +254,14 @@ export class ArmoryCraft {
     plan.data.system.identified = true;
     if (src === "buy") { plan.itemCost = mundane; plan.itemCostLabel = t(material ? "Masterwork {item} ({material}), bought" : "Masterwork {item}, bought", { item: built.craft.facts.name, material }); }
     if (src === "craft") { plan.checks = this.craftChecks(built, qty); plan.raw = round2(plan.checks.reduce((s, c) => s + c.raw, 0)); plan.notes.push(t("The masterwork item is made with Craft first (raw materials ⅓ of its price); the magic is added when the checks succeed.")); }
-    if (src === "inventory") plan.notes.push(t(ammo ? "{item} becomes the magic item ({n} pieces used)." : "{item} becomes the magic item.", { item: actor.items.get(v.inv)?.name, n: qty }));
+    if (upgrade) plan.notes.push(t(ammo ? "{item} becomes {new} ({n} pieces); the cost is the difference in price (DMG, Adding New Abilities)." : "{item} becomes {new}; the cost is the difference in price (DMG, Adding New Abilities).", { item: actor.items.get(v.inv)?.name, new: built.name, n: qty }));
+    else if (src === "inventory") plan.notes.push(t(ammo ? "{item} becomes the magic item ({n} pieces used)." : "{item} becomes the magic item.", { item: actor.items.get(v.inv)?.name, n: qty }));
     // Caster level and prerequisites (SRD Magic Items)
     const bonus = Number(v.bonus) || 1;
     const why = [`3 × +${bonus} = ${3 * bonus}`];
     plan.casterLevel = Math.max(3 * bonus, 1);
+    // An upgrade needs every prerequisite of the new item, old abilities included, as if it were made from scratch
+    // (1.14.9.20: the crafter must work with the magic already in it without harming it)
     for (const a of built.craft.abilities) {
       if (!a.craft) {
         // A custom ability (Shared Data, the GM's own): read the SRD construction line from its description (Crafting engine 1.2)
@@ -237,14 +296,14 @@ export class ArmoryCraft {
     }
     if (v.intel && !ammo) {
       plan.casterLevel = Math.max(plan.casterLevel, 15);
-      why.push(t("an intelligent item 15"));
+      why.push(t("an intelligent item (caster level {n})", { n: 15 }));
       if (intel) plan.notes.push(t("Intelligent: {lines}; adds {gp} to the base price.", { lines: intel.lines.join(" · "), gp: gp(intel.price) }));
       else plan.notes.push(t("Intelligent: it takes the crafter's alignment; its mind, powers and any special purpose are rolled when the GM approves, and their price (from +1,000 gp) is added to the base price, so the gp, XP and time rise."));
     }
     if (intelData) plan.intelData = intelData;
     plan.casterNote = t("item needs {why}", { why: why.join("; ") });
     if (built.craft.facts.double) plan.notes.push(t("SRD: a double weapon counts as two weapons for cost, time, XP and abilities; enchant each head separately."));
-    if (v.light === "on") plan.notes.push(t("Sheds light (decided at creation)."));
+    if (v.light === "on" && !upgrade) plan.notes.push(t("Sheds light (decided at creation)."));
     return plan;
   }
 
@@ -405,6 +464,9 @@ export class ArmorySpecificCraft {
     for (const f of creation) { const m = CRAFT_MIN[normName(f)] ?? 0; if (m > cl) { cl = m; why.push(`${f} ${m}`); } }
     if (enh && 3 * enh > cl) { cl = 3 * enh; why.push(`3 × +${enh}`); }
     if (pre.minCl && pre.minCl > cl) { cl = pre.minCl; why.push(t("the item needs {n}", { n: pre.minCl })); }
+    // SRD: never lower than the minimum caster level that can cast the required spells (needs Curios' spell data)
+    const sp = await curios?.minClOfGroups?.(pre.spells)?.catch?.(() => null);
+    if (sp && sp.cl > cl) { cl = sp.cl; why.push(t("{spell} needs caster level {n}", { spell: curios?.shownName?.(sp.spell) ?? sp.spell, n: sp.cl })); }
     plan.casterLevel = cl;
     plan.casterNote = `${why.join("; ") || `${plan.feat} 5`}${pre.cl ? t("; the item works at caster level {n}", { n: pre.cl }) : ""}`;
     for (const f of pre.feats) if (normName(f) !== normName(plan.feat)) {

@@ -65,7 +65,8 @@ Hooks.once("init", () => {
       api.builder = new ArmoryBuilder(data);
       api.generator = new ArmoryGenerator(api.builder);
       api.generator.setting = api.setting;
-      api.intelligence = new ArmoryIntelligence(api);
+      // Intelligent items need D35E 3.1.0 or later (Foundry v11's D35E 2.4.3 has none)
+      api.intelligence = globalThis.AxecleftTools?.intelligentItems?.() === false ? null : new ArmoryIntelligence(api);
       api.generator.intel = api.intelligence;
       api.ready = true;
       if (T?.registerPriceCorrections) {

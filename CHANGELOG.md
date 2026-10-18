@@ -1,5 +1,67 @@
 # Axecleft's Armory — changelog
 
+## 1.14.9.24
+
+- Ships Axecleft's Tools 9.2: the User Guide button opens the Tool Suite's wiki in Foundry's language: French, Spanish, Brazilian Portuguese or European Portuguese when you play in one of them, English otherwise.
+
+## 1.14.9.23
+
+- Ships Axecleft's Tools 9.1: a User Guide button at the end of the Axecleft's Tools toolbar group (and menu), for GMs and players. It opens the Tool Suite's wiki (https://github.com/Axecleft/Axecleft-s-Tools-Suite/wiki/Home) in your web browser.
+
+## 1.14.9.22
+
+- Ships the Crafting engine 1.94: crafting time estimates use each skill's full bonus, as the character sheet shows it.
+
+## 1.14.9.21
+
+- Ships the Crafting engine 1.93: a Craft check's weekly progress can be counted in another coin (used by Traps' trap kits).
+
+## 1.14.9.20
+
+- Upgrading magic arms and armor follows the DMG's "Adding New Abilities" rule (p. 288), so it's no longer called a house rule. The upgrade now needs every prerequisite of the new item, old abilities included, as if it were made from scratch; the cost is still the difference in price. No 50% body-slot surcharge applies to arms and armor.
+
+## 1.14.9.19
+
+- Crafting, Magic arms and armor: magic weapons, armor, shields and ammunition the Armory made can be upgraded (house rule; the SRD only enchants masterwork items). Choose one from the inventory, give it a higher enhancement bonus and/or new abilities, and pay only the difference in price (gp, XP and time). Its existing bonus and abilities stay (a +2 flaming longsword can become a +2 flaming flaming burst longsword, not a +3 frost one), and its light was decided when it was made. Only the new abilities' prerequisites are needed. Cursed and intelligent items, and magic items the Armory didn't make, aren't offered.
+
+## 1.14.9.18
+
+- Crafting, Magic arms and armor: ammunition from the inventory uses the stack's own pieces (up to 50 at a time); the Pieces box is set to the stack and locked, and the price follows it. Before, any number up to 50 could be made from a few pieces. Magic ammunition is no longer offered as a masterwork base (+1 darts showed up in the list; magic arms and armor already didn't). Enchanting one item from a stack of masterwork arms or armor now uses one item, not the whole stack.
+
+## 1.14.9.17
+
+- Ships the Treasure Generator 9.98: a cursed item that sheds light keeps its own light until the curse is active ("Curse Active" ticked); only then does it glow with the curse's eerie light, and unticking it brings its own light back. Before, the eerie light was there from the start and gave the curse away. The eerie lights now use animations from D35E's item sheet, so saving the sheet no longer clears the animation.
+
+## 1.14.9.16
+
+- Ships the Treasure Generator 9.97: custom curses on a "Custom Curses" page of the Treasure Lists journal (your own curses, drawbacks, situations and specific cursed items, with weights, the items they fit and buff penalties); the SRD's curses can be switched off one by one.
+
+## 1.14.9.15
+
+- Crafting a specific magic item (Rings, rods, staffs, wondrous / Specific magic arms): the caster level needed is never lower than the minimum caster level that can cast the item's required spells (SRD), e.g. Ring Gates needs 17 for gate. The window says which spell sets it. Needs Curios for the spell data.
+- Ships Crafting 1.92: a staff (or, for powers, a psicrown) can supply a spell; scrolls and wands name their psionic equivalents (power stone, dorje).
+
+## 1.14.9.14
+
+- Ships the Treasure Generator 9.96: cursed items (SRD tables; Generation settings: a flat rate, 1% by default, or by grade, 3% / 2% / 1%), with D35E's Cursed mark, buffs for active curses and an eerie light on cursed items that shed light.
+- The Forge has a "Cursed" choice: no curse, a random SRD curse, or a chosen kind. A reversed curse turns the enhancement bonus into a penalty.
+
+## 1.14.9.13
+
+- The crafting window's caster-level reason for an intelligent item now reads "an intelligent item (caster level 15)" instead of "an intelligent item 15"; the number is filled in by the code, so translations keep the {n} placeholder (French: "un objet intelligent (NLS {n})").
+- French words: Gilgalad's corrections to the Words tab are applied (Improved and Greater armor abilities in the right order, base ammunition named in the plural, shop words, gems, art objects and materials).
+
+## 1.14.9.12
+
+- Ships Axecleft's Tools 9.0, Treasure Generator 9.95, Merchant Generator 7.9, Crafting 1.91: the same scripts now run on Foundry v11 too (the Foundry v11 build of this module is 1.11 instead of 1.14). On v11, windows and dialogs use Foundry's classic ones; nothing changes on v13/v14.
+- Intelligent items are offered only when the D35E system supports them (3.1.0 or later); with older D35E versions the Intelligent options are hidden.
+
+## 1.14.9.11
+
+- French draft, second pass: Gigalad's terminology corrections are applied (weapon and armor abilities, bane foes, metamagic words, item grades Faible/Puissant, Pierre psionique, Biens précieux, Token, Améliorer, Objet spécial, Grimoire).
+- French weapon and armor names list their abilities after the bonus, each noun with its own "de": "Hache d'arme +2, sainte, de feu et de rapidité".
+- Ships the Merchant Generator 7.8: shop-name words have their own lines in the word files (Shop: Anvil, Shop: Shadow), so a shop word can differ from the same English word in item names. English shop names are unchanged.
+
 ## 1.14.9.10
 
 - French draft: lang/fr.json (buttons, menus, hints, messages and name patterns) and lang/fr.words.json (the words in item and shop names, with their genders) are filled in, and languages.json now lists fr, so worlds set to French show this module in French. A first draft for Gigalad to correct; English worlds are unchanged.
