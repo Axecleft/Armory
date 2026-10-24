@@ -9,6 +9,13 @@ import { abilityTitle } from "./armory-builder.js";
 
 const MOD = "axeclefts-armory";
 const T = () => globalThis.AxecleftTreasure;
+
+/** A name from this module's English data as shown in the world's language: the word file's entry, else the name given
+ *  (Babele's), else the English; first letter capitalised for lists. */
+const dn = (en, shown) => {
+  const s = String(globalThis.AxecleftTools?.word?.(en, { text: shown ?? null })?.text || shown || en || "");
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
 const esc = (v) => String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const opt = (v, label, sel, extra = "") => `<option value="${esc(v)}"${String(v) === String(sel ?? "") ? " selected" : ""}${extra}>${esc(label)}</option>`;
 const { gp, t } = D;
@@ -51,7 +58,7 @@ export class ArmoryForge {
         const key = `${kind}|${normName(e.name)}`;
         if (seen.has(key)) continue;
         seen.add(key);
-        out[kind].push({ pack: id, id: e._id, name: e.display ?? e.name, en: e.name, label: pack.metadata?.label ?? id, ranged: e.system?.weaponSubtype === "ranged" }); // shown as named in this world
+        out[kind].push({ pack: id, id: e._id, name: dn(e.name, e.display ?? e.name), en: e.name, label: pack.metadata?.label ?? id, ranged: e.system?.weaponSubtype === "ranged" }); // shown as named in this world
       }
     }
     for (const k of Object.keys(out)) out[k].sort((a, b) => a.name.localeCompare(b.name));
@@ -60,7 +67,8 @@ export class ArmoryForge {
   }
   /** Enhancements from the sources that aren't SRD abilities the Armory knows (GM or Shared Data ones). */
   async loadCustom() {
-    const items = await (T()?.kindItems?.(`${MOD}.enhancements`) ?? []);
+    // Read fresh each time a window opens, so enhancements imported since (Shared Data, MIC…) are listed without a reload
+    const items = await (T()?.kindItems?.(`${MOD}.enhancements`, { force: true }) ?? []);
     // English name -> name as this world shows it (Babele: "Flaming" -> "Feu"), for the ability dropdowns
     this.shownAb = new Map(items.filter((x) => x.display && x.display !== x.name).map((x) => [normName(x.name), x.display]));
     const known = new Set([...Object.values(this.data.abilities.weapon), ...Object.values(this.data.abilities.armor)].map((o) => normName(o.d35e)).filter(Boolean));

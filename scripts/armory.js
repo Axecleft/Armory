@@ -10,12 +10,14 @@
  *   const A = game.modules.get("axeclefts-armory").api;
  *   await A.build({ base: { name: "Longsword" }, bonus: 1, abilities: [{ name: "Flaming" }] });   // { data, name, price, ... }
  *   await A.generate("magic:weapon", { grade: "medium" });                                         // [{ name, data, summary }]
+ *   await A.sockets.attach(weapon, crystal); await A.sockets.detach(weapon);                       // socket crystals (setting)
  */
 import { ArmoryBuilder } from "./armory-builder.js";
 import { ArmoryGenerator } from "./armory-generate.js";
 import { registerForge } from "./armory-forge.js";
 import { registerCrafting } from "./armory-craft.js";
 import { ArmoryIntelligence } from "./armory-intelligent.js";
+import { registerSockets } from "./armory-sockets.js";
 
 const MOD = "axeclefts-armory";
 const T = globalThis.AxecleftTreasure;
@@ -28,6 +30,7 @@ if (T?.registerSourceKind) {
     match: (label) => /\benhancements?\b/i.test(label),
     accept: (e) => e.type === "enhancement",
     fields: ["system.enhancementType", "system.enhIncrease", "system.allowedTypes", "system.nameExtension"],
+    group: (e) => e.system?.enhancementType, // Item Sources: "12 weapon, 8 armor"
   });
   T.registerSourceKind({
     module: MOD, key: "materials", label: /*t*/"Special materials",
@@ -52,6 +55,7 @@ if (T?.registerSourceKind) {
 }
 
 registerCrafting(api); // the shared Crafting window (magic and mundane arms and armor)
+registerSockets(api); // socket crystals (world setting, off by default)
 
 Hooks.once("init", () => {
   game.modules.get(MOD).api = api;

@@ -27,6 +27,7 @@ export class ArmoryCraft {
   async prepare() {
     await this.api.loaded;
     if (!this.forge.bases) await this.forge.prepare();
+    else await this.forge.loadCustom(); // enhancements imported since the last window
   }
 
   /* ---------- shared form pieces ---------- */

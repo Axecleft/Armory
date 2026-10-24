@@ -1,5 +1,56 @@
 # Axecleft's Armory — changelog
 
+## 1.14.9.33
+
+- Ships Axecleft's Tools 9.3: **Support on Patreon**. Configure Settings → Axecleft's Armory has a new **Open Patreon** button, and the GM's Axecleft's Tools menu has a **Support on Patreon** button; both open [Axecleft's Patreon](https://www.patreon.com/Axecleft) in your web browser. The modules stay free; patrons get new releases two weeks early. The manifest lists the Patreon page as the author's link.
+- **Join the Discord**: Configure Settings → Axecleft's Armory and the Axecleft's Tools menu (for everyone) have a button that opens [Axecleft's Tool Suite Discord server](https://discord.gg/FRhPPwDWta), for help, news and ideas.
+- Translations: the Forge's base weapon, armor and shield list uses the word file's name when it has one, else Babele's. Socket crystal lists, and crystals you generate or craft, use the word file's names; the nine example crystals are added to words.template.json and fr.words.json to translate (reported by Gilgalad).
+
+## 1.14.9.32
+
+- Ships the Treasure Generator 9.994 and Merchant Generator 7.93: a new **Your item compendiums** row in Generation settings sets how much treasure (default 0%) and merchant stock (default 50%, as before) comes from your own Item compendiums instead of the SRD tables, and a `Treasure weight: n` item tag makes an item more or less likely (suggested by Gilgalad).
+
+## 1.14.9.31
+
+- Ships the Treasure Generator 9.993: in Generation settings, the Sizes of arms, Poisons and Cursed items rows start with their checkbox at the left like the other rows; the Shared treasure lists library setting no longer says the lists hold weapons.
+
+## 1.14.9.30
+
+- Ships the Treasure Generator 9.992: on the Lists tab, hovering a column label explains it, and a list's notes show under its fields.
+
+## 1.14.9.29
+
+- Number boxes in the Treasure Generator, Merchant Generator and Crafting windows are right-aligned, so a value sits next to the % or unit after it (suggested by Gilgalad). Axecleft's Treasure Lists journal is written entirely in the world's language and is rewritten when the language changes, keeping your rows; each page lists its columns one per line, warns to keep the column headings as they are, and shows an example row. Ships the Treasure Generator 9.991, the Merchant Generator 7.92 and the Crafting engine 1.95.
+
+## 1.14.9.28
+
+- Ships the Treasure Generator 9.99 and Merchant Generator 7.91: on the Merchant Generator's Item Sources tab, every source list (Enhancements, Special materials, Spells, Psionic powers…) now shows how many items each compendium it uses supplies, next to the compendium, as the Item compendiums list already did. Each heading reads "n of m used", like the Item compendiums heading. Rescan and Save and Rescan read these lists again too. The Armory's Enhancements list counts weapon and armor enhancements separately.
+
+## 1.14.9.27
+
+- Socket crystals: Crafting → Socket crystals and the Treasure Generator's Crystals tab now also list the crystals in your item compendiums (the item sources you pick in the Treasure Generator), such as the Magic Item Compendium import's augment crystals in Shared Data. They are read fresh each time the window opens. Crafting one uses the construction line in its description (spells, other prerequisites, caster level and the SRD cost); generating one copies the compendium item. Before, only the Armory's nine examples were listed.
+- If an item tagged Augment crystal has no crystal data, the console says so (it can't be set into an item; import it again from the MIC repository).
+
+## 1.14.9.26
+
+- New: socket crystals, a world setting (Configure Settings → Axecleft's Armory → Socket crystals, off by default; Foundry reloads when you change it). While it is on:
+  - A weapon, armor or shield a character carries gets a Socket crystal button on its sheet. Pick a crystal from the character's inventory and it is set into the item (one crystal per item). A Crystal button on the item then takes it out and puts it back in the inventory. A crystal's sheet also has a Set into… button.
+  - A set crystal adds one enhancement entry to the item, marked as the crystal's, so D35E applies its bonuses, energy resistance, damage reduction and extra weapon damage the way it applies the item's other enhancements. Its notes are added to the item's notes. Taking it out removes exactly those. The item's price and name don't change.
+  - The crystal must fit: the right kind of item; masterwork or magic for least crystals, an enhancement bonus of +1 for lesser and +3 for greater (special abilities don't count); melee-only and armor-category limits when a crystal has them.
+  - A weapon's D35E attack item, if it has one, is remade so the crystal's damage is rolled.
+  - Only items on a character are changed; compendium and sidebar items never are.
+  - Works with the Augment Crystals of the Magic Item Compendium import (Shared Data) as well as the Armory's own.
+- Nine homebrew example crystals (data/socket-crystals.json), three each for weapons, armor and shields, one of each rank. All are original: Cinder Shard, Stormglass Prism and Huntsman's Eye (weapons); Hushstone, Hearthfire Garnet and Ironheart Opal (armor); Warden's Pebble, Mirror Mica and Aegis Beryl (shields). They aren't in a compendium. While the setting is on you can:
+  - Craft them: Crafting → Socket crystals, with Craft Magic Arms and Armor, half the price in gp and 1/25 in XP.
+  - Generate them: the Treasure Generator's new Crystals tab, random or chosen.
+  The file explains every field, so you can use it as a template for your own crystals; add them from a world script or macro with `game.modules.get("axeclefts-armory").api.sockets.register({...})`.
+- Switching the setting off hides the Socket crystal buttons and the Crafting and Treasure Generator pages. Items that already hold a crystal keep it, and still show the button to take it out. To take every crystal out at once (GM), run `game.modules.get("axeclefts-armory").api.sockets.detachAll()` in a macro.
+- French translation of the new texts.
+
+## 1.14.9.25
+
+- Forge and Crafting: the "Your enhancements" list is read fresh each time the window opens, so enhancement items you import while the world is running (Shared Data, the MIC repository…) appear without reloading Foundry. Before, the list was read once per session.
+
 ## 1.14.9.24
 
 - Ships Axecleft's Tools 9.2: the User Guide button opens the Tool Suite's wiki in Foundry's language: French, Spanish, Brazilian Portuguese or European Portuguese when you play in one of them, English otherwise.

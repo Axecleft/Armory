@@ -1,0 +1,139 @@
+{
+  "_about": "Homebrew socket crystals: nine examples (three each for weapons, armor and shields, one of each rank) to show how socket crystals are built. They are original Armory items, not taken from any book. Make your own with the same fields and add them from a world script or macro: game.modules.get('axeclefts-armory').api.sockets.register({ ...same fields... }).",
+  "_format": {
+    "key": "unique id (lowercase, dashes)",
+    "name": "item name",
+    "img": "icon path",
+    "slot": "what it fits: [\"weapon\"], [\"armor\"], [\"shield\"] or [\"armor\", \"shield\"]",
+    "rank": "least (masterwork item or better), lesser (+1 or better) or greater (+3 or better): the host item's own enhancement bonus, not special abilities",
+    "minEnhancement": "optional: overrides the rank's minimum enhancement bonus",
+    "meleeOnly": "optional, weapons: true = melee weapons only",
+    "armorTypes": "optional, armor: [\"mediumArmor\", \"heavyArmor\"] = only those armor categories",
+    "price": "market price in gp (crafting costs half in gp and 1/25 in XP, by the SRD)",
+    "cl": "caster level",
+    "aura": "aura text, e.g. faint evocation",
+    "spells": "crafting prerequisites: a list of groups, any one spell of a group will do: [[\"burning hands\", \"produce flame\"]]",
+    "look": "what it looks like (one sentence)",
+    "text": "what it does, for the description",
+    "effect": {
+      "changes": "D35E changes [formula, target, subTarget, bonus type]; while socketed they count for the wearer, as the item's other enhancements do",
+      "contextNotes": "D35E context notes [text, target, subTarget]; added to the host item's notes while socketed",
+      "resistances": "D35E energy resistance [value, \"energy-fire\", immunity, vulnerable]",
+      "damageReduction": "D35E damage reduction [value, \"any\" or a material/alignment id, immunity]",
+      "weaponData": "weapons: extra damage or attack bonus on the weapon's attacks { damageRoll, damageType, damageTypeId, attackRoll, optionalDamage } (optionalDamage: true = a conditional you switch on when you use it)",
+      "uses": "optional daily uses { \"per\": \"day\", \"max\": 3 } (refreshed with the item's other daily uses)",
+      "activation": "optional { \"type\": \"swift\", \"cost\": 1 }",
+      "effectNotes": "optional text shown when the uses are spent"
+    }
+  },
+  "crystals": [
+    {
+      "key": "cinder-shard", "name": "Cinder Shard", "img": "systems/D35E/icons/items/magic/gems/Jewelry_05_redcrystal.png",
+      "slot": ["weapon"], "rank": "least", "price": 300, "cl": 3, "aura": "faint evocation",
+      "spells": [["burning hands", "produce flame"]],
+      "look": "A sliver of smoky red glass with a coal-bright fleck trapped at its heart.",
+      "text": "The weapon's strikes leave a hiss of heat: it deals 1 extra point of fire damage on each hit.",
+      "effect": {
+        "weaponData": { "damageRoll": "1", "damageType": "Fire", "damageTypeId": "energy-fire", "attackRoll": "", "optionalDamage": false }
+      }
+    },
+    {
+      "key": "stormglass-prism", "name": "Stormglass Prism", "img": "systems/D35E/icons/items/magic/gems/Jewelry_20_greatbluecrystal.png",
+      "slot": ["weapon"], "rank": "lesser", "price": 1500, "cl": 5, "aura": "faint evocation",
+      "spells": [["lightning bolt", "call lightning"]],
+      "look": "A clear six-sided prism in which a thread of blue light flickers like distant lightning.",
+      "text": "Three times per day, as a swift action, the wielder can charge the weapon: its next hit before the end of the turn deals 1d6 extra electricity damage.",
+      "effect": {
+        "weaponData": { "damageRoll": "1d6", "damageType": "Electricity", "damageTypeId": "energy-electric", "attackRoll": "", "optionalDamage": true },
+        "uses": { "per": "day", "max": 3 },
+        "activation": { "type": "swift", "cost": 1 },
+        "effectNotes": "Stormglass Prism: switch on its conditional for the charged hit (+1d6 electricity) and spend a use.",
+        "contextNotes": [["Stormglass Prism: 3/day, swift action: the next hit this turn deals +1d6 electricity damage", "attacks", "attack"]]
+      }
+    },
+    {
+      "key": "huntsmans-eye", "name": "Huntsman's Eye", "img": "systems/D35E/icons/items/magic/gems/Jewelry_17_brilliant.png",
+      "slot": ["weapon"], "rank": "greater", "price": 4000, "cl": 9, "aura": "moderate divination",
+      "spells": [["true strike"], ["see invisibility", "clairaudience/clairvoyance"]],
+      "look": "A golden-brown stone with a dark slit through its middle, like the eye of a hawk.",
+      "text": "The wielder gains a +4 bonus on rolls to confirm critical hits with the weapon. Once per day, as a swift action, the wielder can mark a creature it can see: for 1 minute its attacks with the weapon against that creature ignore the miss chance from concealment (not total concealment).",
+      "effect": {
+        "contextNotes": [
+          ["Huntsman's Eye: +4 on rolls to confirm critical hits with this weapon", "attacks", "attack"],
+          ["Huntsman's Eye: 1/day, swift action: mark a creature you can see; for 1 minute this weapon ignores its concealment miss chance (not total concealment)", "attacks", "attack"]
+        ],
+        "uses": { "per": "day", "max": 1 },
+        "activation": { "type": "swift", "cost": 1 },
+        "effectNotes": "Huntsman's Eye: a creature is marked for 1 minute."
+      }
+    },
+    {
+      "key": "hushstone", "name": "Hushstone", "img": "systems/D35E/icons/items/magic/gems/Jewelry_18_shadowcrystal.png",
+      "slot": ["armor"], "rank": "least", "price": 400, "cl": 3, "aura": "faint illusion",
+      "spells": [["silence", "pass without trace"]],
+      "look": "A dull grey pebble that seems to swallow sound: taps and scrapes near it fall flat.",
+      "text": "The armor's buckles and plates make no noise: the wearer gains a +2 competence bonus on Move Silently checks.",
+      "effect": {
+        "changes": [["2", "skill", "skill.mos", "competence"]]
+      }
+    },
+    {
+      "key": "hearthfire-garnet", "name": "Hearthfire Garnet", "img": "systems/D35E/icons/items/magic/gems/Jewelry_15_greatredcrystal.png",
+      "slot": ["armor"], "rank": "lesser", "price": 1600, "cl": 5, "aura": "faint abjuration",
+      "spells": [["resist energy", "endure elements"]],
+      "look": "A deep red garnet, always warm, that glows like embers in a banked fire.",
+      "text": "The armor keeps its wearer warm whatever the weather: the wearer gains resistance to cold 5.",
+      "effect": {
+        "resistances": [["5", "energy-cold", false, false]]
+      }
+    },
+    {
+      "key": "ironheart-opal", "name": "Ironheart Opal", "img": "systems/D35E/icons/items/magic/gems/Jewelry_09_blackcrystal.png",
+      "slot": ["armor"], "rank": "greater", "price": 6000, "cl": 10, "aura": "moderate abjuration",
+      "spells": [["stoneskin", "barkskin"]],
+      "look": "A black opal veined with streaks of iron grey that ring like a bell when struck.",
+      "text": "The armor shrugs off part of every blow: the wearer gains damage reduction 2/—.",
+      "effect": {
+        "damageReduction": [["2", "any", false]],
+        "contextNotes": [["Ironheart Opal: DR 2/— (D35E keeps the highest DR/—; it doesn't add to other DR/—)", "misc", "ac"]]
+      }
+    },
+    {
+      "key": "wardens-pebble", "name": "Warden's Pebble", "img": "systems/D35E/icons/items/magic/gems/Jewelry_07_pearl.png",
+      "slot": ["shield"], "rank": "least", "price": 400, "cl": 3, "aura": "faint divination",
+      "spells": [["alarm", "guidance"]],
+      "look": "A smooth white river stone with a single ring of blue around it.",
+      "text": "The shield tugs itself toward danger an instant before it strikes: the bearer gains a +1 insight bonus on Reflex saves.",
+      "effect": {
+        "changes": [["1", "savingThrows", "ref", "insight"]]
+      }
+    },
+    {
+      "key": "mirror-mica", "name": "Mirror Mica", "img": "systems/D35E/icons/items/magic/gems/Jewelry_13_diamond.png",
+      "slot": ["shield"], "rank": "lesser", "price": 1800, "cl": 5, "aura": "faint abjuration",
+      "spells": [["shield", "protection from arrows"]],
+      "look": "Thin leaves of silver mica, stacked like the pages of a tiny book, that throw back every light.",
+      "text": "Once per day, as an immediate action when a ray or a ranged attack targets the bearer, the bearer gains a +4 bonus to Armor Class against that attack.",
+      "effect": {
+        "contextNotes": [["Mirror Mica: 1/day, immediate action when a ray or ranged attack targets you: +4 AC against that attack", "misc", "ac"]],
+        "uses": { "per": "day", "max": 1 },
+        "activation": { "type": "immediate", "cost": 1 },
+        "effectNotes": "Mirror Mica: +4 AC against this ray or ranged attack."
+      }
+    },
+    {
+      "key": "aegis-beryl", "name": "Aegis Beryl", "img": "systems/D35E/icons/items/magic/gems/Jewelry_06_bluecrystal.png",
+      "slot": ["shield"], "rank": "greater", "price": 5000, "cl": 9, "aura": "moderate abjuration",
+      "spells": [["shield of faith"], ["shield other", "protection from energy"]],
+      "look": "A pale blue-green beryl that sheds a faint shimmer, like heat over a summer road.",
+      "text": "The bearer gains a +1 deflection bonus to Armor Class. Three times per day, as a swift action, the bearer can extend the shield's protection to an adjacent ally: the ally gains a +2 deflection bonus to Armor Class until the start of the bearer's next turn.",
+      "effect": {
+        "changes": [["1", "ac", "ac", "deflection"]],
+        "contextNotes": [["Aegis Beryl: 3/day, swift action: an adjacent ally gains +2 deflection AC until the start of your next turn", "misc", "ac"]],
+        "uses": { "per": "day", "max": 3 },
+        "activation": { "type": "swift", "cost": 1 },
+        "effectNotes": "Aegis Beryl: an adjacent ally gains +2 deflection AC until the start of your next turn."
+      }
+    }
+  ]
+}
