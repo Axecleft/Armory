@@ -17,6 +17,10 @@ const inD = (rows, r, key = "d") => rows.find((x) => x[key] && r >= x[key][0] &&
 const inGrade = (rows, grade, r) => rows.find((x) => x[grade] && r >= x[grade][0] && r <= x[grade][1]);
 /** An ability family, so "Slick" and "Slick, improved" count as one ("use the better"). */
 const family = (n) => normName(String(n).replace(/,\s*(improved|greater|light|moderate|heavy)$/i, "").replace(/\(\d+\)/, ""));
+/** Abilities that can't share an item: good and evil, law and chaos (epic "power" versions included). */
+const AXIS = { holy: "ge", unholy: "ge", axiomatic: "lc", anarchic: "lc" };
+const axisOf = (n) => { const k = normName(n).replace(/ power$/, ""); return AXIS[k] ? [AXIS[k], k] : null; };
+const opposed = (list, n) => { const a = axisOf(n); return !!a && list.some((x) => { const b = axisOf(x.name); return b && b[0] === a[0] && b[1] !== a[1]; }); };
 
 export class ArmoryGenerator {
   constructor(builder) { this.b = builder; this.t = builder.data.tables; }
@@ -42,6 +46,7 @@ export class ArmoryGenerator {
       if (row.name === "Bane") ab.foe = inD(this.t.baneFoes, d100()).foe;
       if (this.b.abilityProblem(facts, ab)) continue;               // reroll: wrong weapon or armor
       if (out.some((x) => normName(x.name) === normName(ab.name))) continue; // duplicate
+      if (opposed(out, ab.name)) continue; // holy with unholy, axiomatic with anarchic: reroll
       const cost = (r) => (r.bonus ?? 0) * 1000 + (r.gp ?? 0) / 10;
       const same = out.findIndex((x) => family(x.name) === family(ab.name));
       if (same >= 0) { // two versions of one ability: keep the better
@@ -94,6 +99,7 @@ export class ArmoryGenerator {
       const ab = { name: row.name };
       if (this.b.abilityProblem(facts, ab)) continue;
       if (out.some((x) => normName(x.name) === normName(ab.name))) continue;
+      if (opposed(out, ab.name)) continue;
       const same = out.findIndex((x) => family(x.name) === family(ab.name));
       if (same >= 0) { if ((this.b.tableRow(facts.kind, ab.name)?.bonus ?? 0) > (this.b.tableRow(facts.kind, out[same].name)?.bonus ?? 0)) out[same] = ab; pending--; continue; }
       out.push(ab); pending--;
@@ -101,7 +107,7 @@ export class ArmoryGenerator {
     if (nonepic) {
       const used = bonus + out.reduce((a, x) => a + (this.b.tableRow(facts.kind, x.name)?.bonus ?? 0), 0);
       const more = await this.rollAbilities(facts, nonepicTable, "major", nonepic, used, { limit: Infinity });
-      for (const m of more) if (!out.some((x) => family(x.name) === family(m.name))) out.push(m);
+      for (const m of more) if (!out.some((x) => family(x.name) === family(m.name)) && !opposed(out, m.name)) out.push(m);
     }
     return out;
   }
@@ -122,7 +128,7 @@ export class ArmoryGenerator {
       pickBase = this.weaponBase(kind === "ranged");
       baseDoc = await this.b.baseDoc(pickBase.base);
       facts = D.baseFacts(D.cleanCopy(baseDoc));
-      if (facts.kind === "ammo" && abilities) continue; // epic abilities go on the weapon, not single arrows
+      // Ammunition (01–10 on the ranged weapons table): keeps the epic abilities that suit it (the blasts, the "power" alignments, dread)
       if (!kind || (kind === "ranged") === !!facts.ranged) break;
     }
     const abs = abilities ? await this.rollEpicAbilities(facts, facts.ranged ? this.t.epicRangedAbilities : this.t.epicMeleeAbilities, facts.ranged ? this.t.rangedAbilities : this.t.meleeAbilities, abilities, bonus) : [];
@@ -237,6 +243,24 @@ export class ArmoryGenerator {
     return { base: { name: row.d35e }, masterwork: !!row.masterwork };
   }
 
+  /* ---------- special materials and double weapons on random magic arms ---------- */
+  /**
+   * The Armory's "Special material share" setting (default 5%, after the DMG's 96–100 on d%): a random magic weapon, ammunition,
+   * armor or shield is made of a special material that fits it (metal or wood). Returns the material's name or null.
+   */
+  randomMaterial(facts) {
+    const share = Number(this.setting?.("materialShare") ?? 5) || 0;
+    if (!(share > 0) || Math.random() * 100 >= share) return null;
+    const fits = this.b.data.materials.filter((m) => !this.b.materialProblem(facts, m));
+    return fits.length ? pick(fits).name : null;
+  }
+  /** A random double weapon's other end (SRD): 01–50 the same enhancement bonus; 51–100 one less, with no special abilities. */
+  otherEnd(facts, bonus) {
+    if (facts.kind !== "weapon" || !facts.double || !(bonus > 0)) return undefined;
+    const b2 = d100() <= 50 ? bonus : bonus - 1;
+    return b2 > 0 ? { bonus: b2, abilities: [] } : undefined;
+  }
+
   /* ---------- light and hints (Generation settings) ---------- */
   light(facts, abilities, bonus) {
     const hub = T();
@@ -311,6 +335,8 @@ export class ArmoryGenerator {
         const facts = roll.facts ?? D.baseFacts(D.cleanCopy(await this.b.baseDoc(roll.base)));
         const spec = {
           base: roll.base, bonus: roll.bonus ?? 0, abilities: roll.abilities ?? [], masterwork: roll.masterwork ?? magic,
+          material: magic ? this.randomMaterial(facts) ?? undefined : undefined,
+          second: magic ? this.otherEnd(facts, roll.bonus ?? 0) : undefined,
           quantity: roll.quantity ?? undefined, size: facts.kind === "ammo" ? undefined : this.size(),
           light: magic ? this.light(facts, roll.abilities ?? [], roll.bonus ?? 0) : null,
           hint: magic ? this.hint(facts) : false,

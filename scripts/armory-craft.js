@@ -7,6 +7,7 @@
  */
 import * as D from "./armory-d35e.js";
 import { ArmoryForge } from "./armory-forge.js";
+import { materialName } from "./armory-builder.js";
 
 const MOD = "axeclefts-armory";
 const esc = (v) => String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -16,7 +17,9 @@ const { gp, num, t } = D;
 const H = (s, d) => esc(t(s, d));
 const round2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
 const KINDS = [["weapon", /*t*/"Weapons"], ["armor", /*t*/"Armor"], ["shield", /*t*/"Shields"], ["ammo", /*t*/"Ammunition"]];
-const SLOTS = 4;
+const SLOTS = 4; // ability rows shown at first; another appears whenever every row is filled
+/** The ability values in the form, in row order (craft.ab0, craft.ab1…; p "sb" for a double weapon's other end). */
+const slotValues = (v, p = "ab") => Object.keys(v ?? {}).filter((k) => new RegExp(`^${p}\\d+$`).test(k)).sort((a, b) => Number(a.slice(2)) - Number(b.slice(2))).map((k) => v[k]).filter(Boolean);
 
 export class ArmoryCraft {
   constructor(api) { this.api = api; this.forge = new ArmoryForge(api); }
@@ -34,13 +37,13 @@ export class ArmoryCraft {
   baseSelect(name, sel, { blank = t("Choose a base item…") } = {}) {
     const B = this.forge.bases ?? {};
     return `<select name="craft.${name}">${opt("", blank, sel)}${KINDS.map(([k, label]) => `<optgroup label="${H(label)}" data-kind="${k}">${(B[k] ?? [])
-      .map((x) => opt(`${x.pack}|${x.id}`, x.name, sel, ` data-kind="${k}"`)).join("")}</optgroup>`).join("")}</select>`;
+      .map((x) => opt(`${x.pack}|${x.id}`, x.name, sel, ` data-kind="${k}"${x.double ? ' data-double="1"' : ""}`)).join("")}</optgroup>`).join("")}</select>`;
   }
   sizeSelect(sel) {
     return `<div class="form-group" data-craft-show="light"><label>${H("Size")}</label><select name="craft.size">${opt("med", t("Medium"), sel)}${opt("sm", t("Small (same price, half the weight)"), sel)}${opt("lg", t("Large (twice the base price and weight)"), sel)}</select></div>`;
   }
   materialSelect(sel) {
-    return `<select name="craft.material">${opt("", t("None (ordinary)"), sel)}${this.data.materials.map((m) => opt(m.name, m.name[0].toUpperCase() + m.name.slice(1), sel, ` data-kinds="${m.applies.join(" ")}"`)).join("")}</select>`;
+    return `<select name="craft.material">${opt("", t("None (ordinary)"), sel)}${this.data.materials.map((m) => opt(m.name, materialName(m, { cap: true }), sel, ` data-kinds="${m.applies.join(" ")}"`)).join("")}</select>`;
   }
   /**
    * Arms in the crafter's inventory that can be enchanted: masterwork items, and (1.14.9.19; DMG, Adding New Abilities) magic
@@ -61,11 +64,11 @@ export class ArmoryCraft {
       const qty = Number(s.quantity ?? 1) || 1;
       if (magicData || specMagic) {
         if (!specMagic || !spec?.base || s.cursed || s.intelligent?.enabled || i.flags?.world?.axecleftCurse) continue;
-        out.push({ id: i.id, name: i.name, kind: k, qty, magic: { bonus: Number(spec.bonus) || 0, abilities: spec.abilities ?? [] } });
+        out.push({ id: i.id, name: i.name, kind: k, qty, double: !!s.properties?.dbl, magic: { bonus: Number(spec.bonus) || 0, abilities: spec.abilities ?? [], second: spec.second ?? null } });
         continue;
       }
       const mw = s.masterwork || spec?.masterwork || (spec?.material && this.data.materials.find((m) => normName(m.name) === normName(spec.material))?.masterwork) || /masterwork/i.test(i.name);
-      if (mw) out.push({ id: i.id, name: i.name, kind: k, qty, magic: null });
+      if (mw) out.push({ id: i.id, name: i.name, kind: k, qty, double: !!s.properties?.dbl, magic: null });
     }
     return out;
   }
@@ -76,18 +79,19 @@ export class ArmoryCraft {
     const filter = () => {
       const k = getKind();
       section.querySelectorAll("option[data-kinds]").forEach((o) => { const fits = !k || o.dataset.kinds.split(" ").includes(k); o.hidden = !fits; o.disabled = !fits; });
-      for (const s of section.querySelectorAll('select[name^="craft.ab"], select[name="craft.material"]')) if (s.selectedOptions[0]?.disabled) s.value = "";
+      // Ability groups with nothing that fits (epic armor abilities on ammunition…) are hidden too
+      section.querySelectorAll('select[name^="craft.ab"] optgroup, select[name^="craft.sb"] optgroup').forEach((g) => { const none = [...g.querySelectorAll("option")].every((o) => o.hidden); g.hidden = none; g.style.display = none ? "none" : ""; });
+      for (const s of section.querySelectorAll('select[name^="craft.ab"], select[name^="craft.sb"]:not([name="craft.sbonus"]), select[name="craft.material"]')) if (s.selectedOptions[0]?.disabled) s.value = "";
       const show = (sel, on) => section.querySelectorAll(`[data-craft-show="${sel}"]`).forEach((x) => { x.style.display = on ? "" : "none"; });
       const src = section.querySelector('[name="craft.source"]')?.value;
       show("inv", src === "inventory"); show("catalog", src !== "inventory");
-      show("bane", [...section.querySelectorAll('select[name^="craft.ab"]')].some((s) => s.value === "srd:Bane"));
+      show("bane", [...section.querySelectorAll('select[name^="craft.ab"], select[name^="craft.sb"]')].some((s) => s.value === "srd:Bane"));
       show("ammo", k === "ammo");
       show("light", k !== "ammo");
       show("theme", section.querySelector('[name="craft.light"]')?.value === "on");
       const epic = section.querySelector('[name="craft.epic"]')?.checked;
       section.querySelectorAll("option[data-epic]").forEach((o) => { o.hidden = !epic; o.disabled = !epic; });
-      const b = section.querySelector('[name="craft.bonus"]');
-      if (b?.selectedOptions[0]?.disabled) b.value = "5";
+      for (const b of section.querySelectorAll('[name="craft.bonus"], [name="craft.sbonus"]')) if (b?.selectedOptions[0]?.disabled) b.value = "5";
     };
     section.addEventListener("change", filter);
     filter();
@@ -119,7 +123,7 @@ export class ArmoryCraft {
     const mw = built.craft.masterwork ? (m?.includesMasterwork ? Math.min(mwPrice, matCost) : parts.masterwork ?? mwPrice) : 0;
     const itemPrice = round2(((parts.base ?? facts.price ?? 0) + matCost - (m?.includesMasterwork ? mw : 0)) * qty);
     const { skill, dc } = this.craftFor(facts, built.data);
-    const checks = [{ key: "item", label: `${facts.name}${m ? ` (${m.name})` : ""}`, craft: skill, dc, price: itemPrice, raw: round2(itemPrice / 3) }];
+    const checks = [{ key: "item", label: `${built.baseShown ?? facts.name}${m ? ` (${materialName(m)})` : ""}`, craft: skill, dc, price: itemPrice, raw: round2(itemPrice / 3) }];
     if (mw) checks.push({ key: "masterwork", label: t("Masterwork component"), craft: skill, dc: this.C.craftDC.masterwork, price: round2(mw * qty), raw: round2((mw * qty) / 3) });
     return checks;
   }
@@ -130,7 +134,10 @@ export class ArmoryCraft {
     const src = v.source ?? (inv.length ? "inventory" : "buy");
     const abOpts = this.forge.abilityOptions();
     const groups = [...new Set(abOpts.map((o) => o.group))];
-    const abSelect = (i) => `<select name="craft.ab${i}">${opt("", t("None"), v[`ab${i}`])}${groups.map((g) => `<optgroup label="${esc(g)}">${abOpts.filter((o) => o.group === g).map((o) => opt(o.value, o.label, v[`ab${i}`], ` data-kinds="${o.kinds.join(" ")}"`)).join("")}</optgroup>`).join("")}</select>`;
+    // "ab": the item's abilities (the main end of a double weapon); "sb": a double weapon's other end
+    const abSelect = (i, p = "ab") => `<select name="craft.${p}${i}">${opt("", t("None"), v[`${p}${i}`])}${groups.map((g) => `<optgroup label="${esc(g)}">${abOpts.filter((o) => o.group === g).map((o) => opt(o.value, o.label, v[`${p}${i}`], ` data-kinds="${o.kinds.join(" ")}"`)).join("")}</optgroup>`).join("")}</select>`;
+    this.abRow = (i, p = "ab") => `<div class="form-group"><label>${H("Ability {n}", { n: i + 1 })}</label>${abSelect(i, p)}</div>`;
+    const rows = (p, min) => Array.from({ length: Math.max(min, slotValues(v, p).length + 1) }, (_, i) => this.abRow(i, p)).join("");
     const themes = Object.keys(this.data.generation.light.themes).map((k) => opt(k, k, v.theme)).join("");
     return `<p class="hint">${H("Craft Magic Arms and Armor (SRD): the base must be a masterwork item. Magic supplies cost half the base price in gp and 1/25 in XP; the masterwork item is the item cost. Caster level at least 3 × the enhancement bonus, and each ability's own caster level and spells.")}</p>
       <div class="form-group"><label>${H("Masterwork or magic item")}</label><select name="craft.source">${opt("inventory", actor?.name ? t("From {name}'s inventory", { name: actor.name }) : t("From the crafter's inventory"), src)}${opt("buy", t("Buy it (pay the item cost)"), src)}${opt("craft", t("Make it first with Craft"), src)}</select></div>
@@ -142,10 +149,15 @@ export class ArmoryCraft {
       <div class="form-group"><label>${H("Enhancement")}</label><select name="craft.bonus">${[1, 2, 3, 4, 5].map((n) => opt(n, `+${n}`, v.bonus ?? "1")).join("")}${Array.from({ length: 15 }, (_, i) => i + 6).map((n) => opt(n, t("+{n} (epic)", { n }), v.bonus, ' data-epic="1"')).join("")}</select>
         ${globalThis.AxecleftTreasure?.rules?.()?.epic ? `<label class="acr-cb" style="flex:0 0 auto;margin-left:8px"><input type="checkbox" name="craft.epic" ${v.epic ? "checked" : ""}> ${H("Epic")}</label>` : ""}</div>
       <fieldset><legend>${H("Special abilities")}</legend>
-        ${Array.from({ length: SLOTS }, (_, i) => `<div class="form-group"><label>${H("Ability {n}", { n: i + 1 })}</label>${abSelect(i)}</div>`).join("")}
+        <div data-craft-slots="ab">${rows("ab", SLOTS)}</div>
         <div class="form-group" data-craft-show="bane"><label>${H("Bane foe")}</label><select name="craft.foe">${this.data.tables.baneFoes.map((f) => opt(f.foe, f.foe, v.foe)).join("")}</select></div>
         <p class="hint">${H("SRD abilities carry their prerequisites in the Armory's data (psionic ones need Craft Psionic Arms and Armor, with powers in place of spells). Custom abilities (Shared Data or your own enhancement items) are read from their description:")}</p>
         ${globalThis.AxecleftCrafting?.prereqHelp?.("abilities") ?? ""}
+      </fieldset>
+      <fieldset data-craft-show="double"><legend>${H("Other end (double weapons)")}</legend>
+        <div class="form-group"><label>${H("Enhancement")}</label><select name="craft.sbonus">${opt("", t("None (masterwork)"), v.sbonus)}${opt("same", t("Same as the main end"), v.sbonus)}${[1, 2, 3, 4, 5].map((n) => opt(n, `+${n}`, v.sbonus)).join("")}${Array.from({ length: 15 }, (_, i) => i + 6).map((n) => opt(n, t("+{n} (epic)", { n }), v.sbonus, ' data-epic="1"')).join("")}</select></div>
+        <div data-craft-slots="sb">${rows("sb", 1)}</div>
+        <p class="hint">${H("SRD: each end of a double weapon is enchanted separately, at the price of a weapon of its own (gp, XP and time); its abilities need their own prerequisites. D35E keeps one set of enhancements per item, so the other end goes in the item's attack note and description.")}</p>
       </fieldset>
       <div class="form-group" data-craft-show="light"><label>${H("Sheds light")}</label><select name="craft.light">${opt("none", t("No"), v.light)}${opt("on", t("Yes"), v.light)}</select><span class="hint" style="flex:1">${H("SRD: the creator decides now; it can't be changed later.")}</span></div>
       <div class="form-group" data-craft-show="theme"><label>${H("Look")}</label><select name="craft.theme">${opt("", t("From its abilities (or neutral)"), v.theme)}${themes}</select></div>
@@ -185,7 +197,18 @@ export class ArmoryCraft {
       return section.querySelector('[name="craft.base"]')?.selectedOptions?.[0]?.dataset?.kind ?? null;
     });
     section.addEventListener("change", pieces); // after the filter, which shows the light rows again
-    pieces();
+    // Ability rows: another appears whenever every row is filled; the other end only for double weapons
+    const grow = () => {
+      for (const box of section.querySelectorAll("[data-craft-slots]")) {
+        const p = box.dataset.craftSlots, sels = [...box.querySelectorAll("select")];
+        if (sels.length && sels.every((x) => x.value) && this.abRow) box.insertAdjacentHTML("beforeend", this.abRow(sels.length, p));
+      }
+      const src = section.querySelector('[name="craft.source"]')?.value;
+      const dbl = src === "inventory" ? inv.find((i) => i.id === section.querySelector('[name="craft.inv"]')?.value)?.double : section.querySelector('[name="craft.base"]')?.selectedOptions?.[0]?.dataset?.double === "1";
+      section.querySelectorAll('[data-craft-show="double"]').forEach((x) => { x.style.display = dbl ? "" : "none"; });
+    };
+    section.addEventListener("change", grow);
+    pieces(); grow();
   }
   async magicEvaluate({ actor, values: v }) {
     await this.prepare();
@@ -210,8 +233,9 @@ export class ArmoryCraft {
       baseKind = this.catalogKind(v.base);
       material = v.material || null;
     }
-    const abilities = Array.from({ length: SLOTS }, (_, i) => v[`ab${i}`]).filter(Boolean);
-    const f = { kind: baseKind, base, baseKind, grade: "medium", bonus: String(Number(v.bonus) || 1), masterwork: true, material: material ?? "", epic: (!!v.epic || abilities.some((x) => /^srd:/.test(x) && (this.data.abilities.weapon[x.slice(4)]?.epic || this.data.abilities.armor[x.slice(4)]?.epic))) && !!globalThis.AxecleftTreasure?.rules?.()?.epic, // an epic ability makes it epic
+    const abilities = slotValues(v, "ab");
+    const sabilities = slotValues(v, "sb");
+    const f = { kind: baseKind, sbonus: v.sbonus || "none", sabilities, base, baseKind, grade: "medium", bonus: String(Number(v.bonus) || 1), masterwork: true, material: material ?? "", epic: (!!v.epic || abilities.some((x) => /^srd:/.test(x) && (this.data.abilities.weapon[x.slice(4)]?.epic || this.data.abilities.armor[x.slice(4)]?.epic))) && !!globalThis.AxecleftTreasure?.rules?.()?.epic, // an epic ability makes it epic
       size: src === "inventory" ? (spec0?.size ?? "med") : v.size || "med",
       abilities, foe: v.foe || this.data.tables.baneFoes[0].foe, light: v.light === "on" ? "on" : "none", theme: v.theme ?? "", color: "", anim: "", speed: 3, intensity: 4,
       bright: "", dim: "", hint: "no", identified: true, qty: Math.max(1, Math.min(50, Number(v.qty) || 50)), count: 1 };
@@ -224,7 +248,11 @@ export class ArmoryCraft {
       const twice = spec.abilities.filter((a) => have.has(normName(a.name)));
       if (twice.length) throw new Error(t("It already has {abilities}.", { abilities: twice.map((a) => a.name).join(", ") }));
       if (Number(spec.bonus) < upgrade.bonus) throw new Error(t("Its enhancement bonus can't go below +{n}.", { n: upgrade.bonus }));
-      if (Number(spec.bonus) === upgrade.bonus && !spec.abilities.length) throw new Error(t("Raise its enhancement bonus or add an ability."));
+      // A double weapon's other end: its bonus can only go up too, and its abilities stay
+      const os = upgrade.second ?? null, ns = spec.second ?? null;
+      const secondChanged = !!ns && ((Number(ns.bonus) || 0) > (Number(os?.bonus) || 0) || (ns.abilities ?? []).length > 0);
+      if (os || ns) spec.second = { bonus: Math.max(Number(os?.bonus) || 0, Number(ns?.bonus) || 0), abilities: [...(os?.abilities ?? []), ...(ns?.abilities ?? []).filter((a) => !(os?.abilities ?? []).some((o) => normName(o.name) === normName(a.name)))] };
+      if (Number(spec.bonus) === upgrade.bonus && !spec.abilities.length && !secondChanged) throw new Error(t("Raise its enhancement bonus or add an ability."));
       Object.assign(spec, { abilities: [...upgrade.abilities, ...spec.abilities], light: spec0.light ?? null, hint: spec0.hint ?? false, material: spec0.material ?? null,
         epic: spec.epic || spec0.epic || undefined, size: spec0.size });
       oldBuilt = await this.b.build({ ...spec0, identified: true, quantity: spec.quantity });
@@ -253,7 +281,8 @@ export class ArmoryCraft {
       summary: built.summary, consume, notes: [], requirements: [], checks: [], spells: [],
     };
     plan.data.system.identified = true;
-    if (src === "buy") { plan.itemCost = mundane; plan.itemCostLabel = t(material ? "Masterwork {item} ({material}), bought" : "Masterwork {item}, bought", { item: built.craft.facts.name, material }); }
+    if (src === "buy") { plan.itemCost = mundane; plan.itemCostLabel = t(material ? "Masterwork {item} ({material}), bought" : "Masterwork {item}, bought", { item: built.baseShown ?? built.craft.facts.name, material: material ? materialName(material) : "" }); }
+    for (const w of built.warnings ?? []) plan.notes.push(w);
     if (src === "craft") { plan.checks = this.craftChecks(built, qty); plan.raw = round2(plan.checks.reduce((s, c) => s + c.raw, 0)); plan.notes.push(t("The masterwork item is made with Craft first (raw materials ⅓ of its price); the magic is added when the checks succeed.")); }
     if (upgrade) plan.notes.push(t(ammo ? "{item} becomes {new} ({n} pieces); the cost is the difference in price (DMG, Adding New Abilities)." : "{item} becomes {new}; the cost is the difference in price (DMG, Adding New Abilities).", { item: actor.items.get(v.inv)?.name, new: built.name, n: qty }));
     else if (src === "inventory") plan.notes.push(t(ammo ? "{item} becomes the magic item ({n} pieces used)." : "{item} becomes the magic item.", { item: actor.items.get(v.inv)?.name, n: qty }));
@@ -261,6 +290,8 @@ export class ArmoryCraft {
     const bonus = Number(v.bonus) || 1;
     const why = [`3 × +${bonus} = ${3 * bonus}`];
     plan.casterLevel = Math.max(3 * bonus, 1);
+    const b2 = built.craft.second?.bonus ?? 0;
+    if (b2 > bonus) { why.push(t("other end {why}", { why: `3 × +${b2} = ${3 * b2}` })); plan.casterLevel = 3 * b2; }
     // An upgrade needs every prerequisite of the new item, old abilities included, as if it were made from scratch
     // (1.14.9.20: the crafter must work with the magic already in it without harming it)
     for (const a of built.craft.abilities) {
@@ -303,7 +334,8 @@ export class ArmoryCraft {
     }
     if (intelData) plan.intelData = intelData;
     plan.casterNote = t("item needs {why}", { why: why.join("; ") });
-    if (built.craft.facts.double) plan.notes.push(t("SRD: a double weapon counts as two weapons for cost, time, XP and abilities; enchant each head separately."));
+    if (built.craft.second) plan.notes.push(t("Double weapon: the other end ({other}) is priced as a weapon of its own and included in the cost, XP and time.", { other: built.craft.second.text }));
+    else if (built.craft.facts.double) plan.notes.push(t("SRD: a double weapon counts as two weapons for cost, time, XP and abilities; enchant each head separately."));
     if (v.light === "on" && !upgrade) plan.notes.push(t("Sheds light (decided at creation)."));
     return plan;
   }
@@ -400,6 +432,7 @@ export class ArmorySpecificCraft {
     return `<p class="hint">${H("Specific magic weapons, armor, shields and ammunition (Flame Tongue, Celestial Armor…) from your item compendiums, by the SRD statblock in each item's description: its caster level, spells and other prerequisites, and its cost (the masterwork item plus half the magic's price, and 1/25 of that in XP).")}</p>
       <div class="form-group"><label>${H("Kind")}</label><select name="craft.skind">${SPEC_KINDS.map(([x, l]) => opt(x, t(l), k)).join("")}</select></div>
       <div class="form-group"><label>${H("Item")}</label><input type="text" name="craft.sname" list="ac-specific" value="${esc(v.sname ?? "")}" placeholder="${H("Type to search")}"><datalist id="ac-specific"></datalist></div>
+      <div class="form-group" data-spec-qty><label>${H("How many")}</label><input type="number" name="craft.sqty" value="${esc(v.sqty ?? 1)}" min="1" max="50" step="1"><span class="hint" style="flex:1">${H("pieces; the cost, XP and time are for all of them")}</span></div>
       ${globalThis.AxecleftCrafting?.prereqHelp?.("arms") ?? ""}`;
   }
 
@@ -409,8 +442,9 @@ export class ArmorySpecificCraft {
       const dl = section.querySelector("#ac-specific");
       if (dl) dl.innerHTML = (this.list ?? []).filter((x) => x.kind === k).map((x) => `<option value="${esc(x.name)}">`).join("");
     };
-    section.querySelector('[name="craft.skind"]')?.addEventListener("change", () => { const n = section.querySelector('[name="craft.sname"]'); if (n) n.value = ""; fill(); });
-    fill();
+    const qty = () => { const k = section.querySelector('[name="craft.skind"]')?.value; section.querySelectorAll("[data-spec-qty]").forEach((x) => { x.style.display = k === "ammo" ? "" : "none"; }); };
+    section.querySelector('[name="craft.skind"]')?.addEventListener("change", () => { const n = section.querySelector('[name="craft.sname"]'); if (n) n.value = ""; fill(); qty(); });
+    fill(); qty();
   }
 
   async evaluate({ actor, values: v }) {
@@ -456,7 +490,7 @@ export class ArmorySpecificCraft {
       plan.casterLevel = Math.max(5, 3 * enh);
       plan.casterNote = `Craft Magic Arms and Armor 5${enh ? `; 3 × +${enh}` : ""}`;
       plan.requirements.push({ key: "line", label: t("Prerequisites"), ok: "warn", detail: t("no construction line in its description; the GM decides (see How requirements are found)"), waivable: true });
-      return plan;
+      return this.forQuantity(plan, hit.kind, v);
     }
     const creation = pre.feats.filter((f) => CRAFT_MIN[normName(f)] !== undefined || /^(craft|forge|scribe|brew)\b/i.test(f));
     plan.feat = creation.find((f) => !/epic/i.test(f)) ?? "Craft Magic Arms and Armor";
@@ -490,6 +524,18 @@ export class ArmorySpecificCraft {
       notes.push(t("Its statblock gives no Cost, so the whole price counts as magic (the SRD would charge the masterwork item at full price and only the rest at half)."));
     }
     plan.summary = `${t(SPEC_KINDS.find(([x]) => x === hit.kind)?.[2] ?? "Item")}${pre.cl ? t("; caster level {n}", { n: pre.cl }) : ""}${pre.text ? t("; prerequisites: {text}", { text: pre.text }) : ""}`;
+    return this.forQuantity(plan, hit.kind, v);
+  }
+
+  /** Specific magic ammunition (screaming bolts, slaying arrows) is priced per piece: several at once multiply the cost, XP and time. */
+  forQuantity(plan, kind, v) {
+    const n = kind === "ammo" ? Math.max(1, Math.min(50, Math.round(Number(v.sqty) || 1))) : 1;
+    if (n === 1) return plan;
+    const x = (k) => { if (Number(plan[k]) > 0) plan[k] = round2(plan[k] * n); };
+    ["market", "base", "itemCost", "xpExtra", "raw"].forEach(x);
+    plan.quantity = n;
+    if (plan.data?.system) plan.data.system.quantity = n;
+    plan.notes.push(t("{n} pieces: the price, cost, XP and time are for all of them.", { n }));
     return plan;
   }
 }

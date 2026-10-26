@@ -5,7 +5,7 @@
  * when you press Generate. A live preview shows the name, price and any rule the choices break.
  */
 import * as D from "./armory-d35e.js";
-import { abilityTitle } from "./armory-builder.js";
+import { abilityTitle, materialName } from "./armory-builder.js";
 
 const MOD = "axeclefts-armory";
 const T = () => globalThis.AxecleftTreasure;
@@ -24,7 +24,7 @@ const normName = (s) => String(s ?? "").toLowerCase().replace(/[’']/g, "'").re
 const d100 = () => 1 + Math.floor(Math.random() * 100);
 const pick = (l) => l[Math.floor(Math.random() * l.length)];
 const inGrade = (rows, grade, r) => rows.find((x) => x[grade] && r >= x[grade][0] && r <= x[grade][1]);
-const SLOTS = 4;
+const SLOTS = 4; // ability rows shown at first; another appears whenever every row is filled
 /** The builder's price part labels, translated when shown. */
 const PART_WORDS = [/*t*/"base", /*t*/"masterwork"]; // eslint-disable-line no-unused-vars
 const KINDS = [["weapon", /*t*/"Weapon"], ["armor", /*t*/"Armor"], ["shield", /*t*/"Shield"], ["ammo", /*t*/"Ammunition"]];
@@ -50,7 +50,7 @@ export class ArmoryForge {
       const pack = game.packs.get(id);
       if (!pack) continue;
       let index = [];
-      try { index = await D.enIndex(pack, { fields: ["type", "system.equipmentType", "system.subType", "system.enh", "system.armor.enh", "system.price", "system.weaponSubtype"] }); } catch (e) { continue; }
+      try { index = await D.enIndex(pack, { fields: ["type", "system.equipmentType", "system.subType", "system.enh", "system.armor.enh", "system.price", "system.weaponSubtype", "system.properties.dbl"] }); } catch (e) { continue; }
       for (const e of index) {
         const kind = D.armsKind(e);
         if (!kind || Number(e.system?.enh) > 0 || Number(e.system?.armor?.enh) > 0 || /\bunarmed\b|\bspikes?\b/i.test(e.name)) continue;
@@ -58,7 +58,7 @@ export class ArmoryForge {
         const key = `${kind}|${normName(e.name)}`;
         if (seen.has(key)) continue;
         seen.add(key);
-        out[kind].push({ pack: id, id: e._id, name: dn(e.name, e.display ?? e.name), en: e.name, label: pack.metadata?.label ?? id, ranged: e.system?.weaponSubtype === "ranged" }); // shown as named in this world
+        out[kind].push({ pack: id, id: e._id, name: dn(e.name, e.display ?? e.name), en: e.name, label: pack.metadata?.label ?? id, ranged: e.system?.weaponSubtype === "ranged", double: !!e.system?.properties?.dbl }); // shown as named in this world
       }
     }
     for (const k of Object.keys(out)) out[k].sort((a, b) => a.name.localeCompare(b.name));
@@ -77,6 +77,8 @@ export class ArmoryForge {
     // Materials made as enhancements (Shared Data's Mithral, Dragonhide, Bluewood) are superseded by the Material dropdown
     for (const m of this.data.materials) known.add(normName(m.name));
     ["bluewood", "dragonhide", "mithral", "adamantine", "darkwood", "intelligence"].forEach((n) => known.add(n));
+    // D35E's own epic enhancements that the Armory's SRD epic abilities cover (Dread of Undead is Dread against undead)
+    ["everdancing", "dread of undead"].forEach((n) => known.add(n));
     this.custom = items.filter((x) => !known.has(normName(x.name)) && ["weapon", "armor"].includes(x.entry?.system?.enhancementType))
       .map((x) => ({ name: x.name, type: x.entry.system.enhancementType, pack: x.packLabel }))
       .sort((a, b) => a.name.localeCompare(b.name));
@@ -141,11 +143,13 @@ export class ArmoryForge {
     if (!this.bases) return `<p class="hint">${H("Loading the Forge…")}</p>`;
     const r = (k, d) => recall(k, d);
     const kind = r("kind", "weapon");
-    const baseOpts = KINDS.map(([k, label]) => `<optgroup label="${H(label)}" data-kind="${k}">${(this.bases[k] ?? []).map((b) => opt(`${b.pack}|${b.id}`, b.name, r("base", ""), ` data-kind="${k}"`)).join("")}</optgroup>`).join("");
-    const mats = this.data.materials.map((m) => opt(m.name, `${m.name[0].toUpperCase()}${m.name.slice(1)}`, r("material", ""), ` data-kinds="${m.applies.join(" ")}"`)).join("");
+    const baseOpts = KINDS.map(([k, label]) => `<optgroup label="${H(label)}" data-kind="${k}">${(this.bases[k] ?? []).map((b) => opt(`${b.pack}|${b.id}`, b.name, r("base", ""), ` data-kind="${k}"${b.double ? ' data-double="1"' : ""}`)).join("")}</optgroup>`).join("");
+    const mats = this.data.materials.map((m) => opt(m.name, materialName(m, { cap: true }), r("material", ""), ` data-kinds="${m.applies.join(" ")}"`)).join("");
     const abOpts = this.abilityOptions();
     const groups = [...new Set(abOpts.map((o) => o.group))];
-    const abSelect = (i) => `<select name="forge.ab${i}">${opt("", t("None"))}${opt("random", t("Random (by grade)"))}${T()?.rules?.()?.psionics !== false ? opt("randompsi", t("Random psionic (by grade)")) : ""}${groups.map((g) => `<optgroup label="${esc(g)}">${abOpts.filter((o) => o.group === g).map((o) => opt(o.value, o.label, "", ` data-kinds="${o.kinds.join(" ")}"`)).join("")}</optgroup>`).join("")}</select>`;
+    // One ability dropdown: "ab" for the item (the main end of a double weapon), "sb" for a double weapon's other end
+    const abSelect = (i, p = "ab") => `<select name="forge.${p}${i}">${opt("", t("None"))}${opt("random", t("Random (by grade)"))}${T()?.rules?.()?.psionics !== false ? opt("randompsi", t("Random psionic (by grade)")) : ""}${groups.map((g) => `<optgroup label="${esc(g)}">${abOpts.filter((o) => o.group === g).map((o) => opt(o.value, o.label, "", ` data-kinds="${o.kinds.join(" ")}"`)).join("")}</optgroup>`).join("")}</select>`;
+    this.abRow = (i, p = "ab") => `<div class="form-group"><label>${H("Ability {n}", { n: i + 1 })}</label>${abSelect(i, p)}</div>`;
     const foes = this.data.tables.baneFoes.map((f) => opt(f.foe, f.foe, "")).join("");
     const L = this.data.generation.light;
     const themes = Object.keys(L.themes).map((k) => opt(k, k, "")).join("");
@@ -161,9 +165,14 @@ export class ArmoryForge {
       <div class="form-group"><label>${H("Material")}</label><select name="forge.material">${opt("", t("None (ordinary)"), r("material", ""))}${opt("random", t("Random (one that fits)"), r("material", ""))}${mats}</select></div>
       <div class="form-group"><label>${H("Size")}</label><select name="forge.size">${opt("med", t("Medium"), r("size", "med"))}${opt("sm", t("Small (same price, half the weight)"), r("size", "med"))}${opt("lg", t("Large (twice the base price and weight)"), r("size", "med"))}${opt("random", t("Random (Generation settings)"), r("size", "med"))}</select></div>
       <fieldset><legend>${H("Special abilities")}</legend>
-        ${Array.from({ length: SLOTS }, (_, i) => `<div class="form-group"><label>${H("Ability {n}", { n: i + 1 })}</label>${abSelect(i)}</div>`).join("")}
+        <div data-forge-slots="ab">${Array.from({ length: SLOTS }, (_, i) => this.abRow(i)).join("")}</div>
         <div class="form-group" data-forge="bane"><label>${H("Bane foe")}</label><select name="forge.foe">${opt("random", t("Random (SRD table)"))}${foes}</select></div>
-        <p class="hint">${H("Each ability needs at least +1; bonus plus abilities can't pass +10 unless epic items are allowed. Abilities that don't fit the base (keen on a mace, returning on a longsword) are refused.")}</p>
+        <p class="hint">${H("Another ability row appears when every row is filled. Each ability needs at least +1; past +10 in all (the SRD limit unless epic items are allowed) the item is still made, with a warning. Abilities that don't fit the base (keen on a mace, returning on a longsword) are refused.")}</p>
+      </fieldset>
+      <fieldset data-forge="second"><legend>${H("Other end (double weapons)")}</legend>
+        <div class="form-group"><label>${H("Enhancement")}</label><select name="forge.sbonus">${opt("random", t("Random (SRD: half the time the same bonus, else one less and no abilities)"), r("sbonus", "random"))}${opt("none", t("None (masterwork)"), r("sbonus", "random"))}${opt("same", t("Same as the main end"), r("sbonus", "random"))}${[1, 2, 3, 4, 5].map((n) => opt(n, `+${n}`, r("sbonus", "random"))).join("")}${Array.from({ length: 15 }, (_, i) => i + 6).map((n) => opt(n, t("+{n} (epic)", { n }), r("sbonus", "random"), ' data-epic="1"')).join("")}</select></div>
+        <div data-forge-slots="sb">${this.abRow(0, "sb")}</div>
+        <p class="hint">${H("SRD: each end of a double weapon is enchanted separately and priced as a weapon of its own. D35E keeps one set of enhancements per item, so the other end's bonus and abilities go in the item's attack note and description.")}</p>
       </fieldset>
       <details class="atg-sec" data-sec="forge-extras" ${r("sec.extras", "0") === "1" ? "open" : ""}><summary>${H("Light, inscription and more")} <small data-forge="extras-note"></small></summary>
         <div class="form-group"><label>${H("Light")}</label><select name="forge.light">${opt("settings", t("By Generation settings (random)"), r("light", "settings"))}${opt("none", t("None"), r("light", "settings"))}${opt("on", t("Sheds light"), r("light", "settings"))}</select></div>
@@ -187,7 +196,15 @@ export class ArmoryForge {
     if (!section || !this.bases) return;
     const el = (n) => section.querySelector(`[name="forge.${n}"]`);
     const show = (sel, on) => section.querySelectorAll(`[data-forge="${sel}"]`).forEach((x) => { x.style.display = on ? "" : "none"; });
+    // Ability rows: another appears whenever every row is filled
+    const grow = () => {
+      for (const box of section.querySelectorAll("[data-forge-slots]")) {
+        const p = box.dataset.forgeSlots, sels = [...box.querySelectorAll("select")];
+        if (sels.length && sels.every((x) => x.value) && this.abRow) box.insertAdjacentHTML("beforeend", this.abRow(sels.length, p));
+      }
+    };
     const filter = () => {
+      grow();
       const kind = el("kind").value;
       // Base items, materials and abilities that fit the kind
       section.querySelectorAll('select[name="forge.base"] optgroup').forEach((g) => { g.style.display = kind === "random" || g.dataset.kind === kind ? "" : "none"; });
@@ -198,8 +215,13 @@ export class ArmoryForge {
       section.querySelectorAll("option[data-epic]").forEach((o) => { o.hidden = !epic; o.disabled = !epic; });
       if (el("bonus").selectedOptions[0]?.disabled) el("bonus").value = "5";
       section.querySelectorAll("option[data-kinds]").forEach((o) => { const fits = !k || o.dataset.kinds.split(" ").includes(k); o.hidden = !fits; o.disabled = !fits; });
-      for (const s of section.querySelectorAll('select[name^="forge.ab"], select[name="forge.material"]')) if (s.selectedOptions[0]?.disabled) s.value = "";
-      show("bane", [...section.querySelectorAll('select[name^="forge.ab"]')].some((s) => s.value === "srd:Bane"));
+      // Ability groups with nothing that fits (epic armor abilities on ammunition…) are hidden too
+      section.querySelectorAll('select[name^="forge.ab"] optgroup, select[name^="forge.sb"] optgroup').forEach((g) => { const none = [...g.querySelectorAll("option")].every((o) => o.hidden); g.hidden = none; g.style.display = none ? "none" : ""; });
+      for (const s of section.querySelectorAll('select[name^="forge.ab"], select[name^="forge.sb"], select[name="forge.material"]')) if (s.selectedOptions[0]?.disabled) s.value = s.name === "forge.sbonus" ? "5" : "";
+      show("bane", [...section.querySelectorAll('select[name^="forge.ab"], select[name^="forge.sb"]')].some((s) => s.value === "srd:Bane"));
+      // A double weapon's other end: for a chosen double weapon, or a random weapon (used if it comes out double)
+      const dbl = el("base").selectedOptions[0]?.dataset.double === "1";
+      show("second", dbl || (!el("base").value && (kind === "weapon" || kind === "random")));
       show("light", el("light").value === "on");
       show("custom-light", el("light").value === "on" && el("theme").value === "custom");
       show("ammo", k === "ammo" || (kind === "ammo"));
@@ -217,7 +239,7 @@ export class ArmoryForge {
     };
     let tmo = null;
     const changed = (ev) => {
-      if (ev?.target?.name) { const k = ev.target.name.slice(6); if (["kind", "base", "grade", "bonus", "material", "light", "intel", "size"].includes(k)) remember(k, ev.target.value); if (k === "masterwork" || k === "epic") remember(k, ev.target.checked ? "1" : "0"); }
+      if (ev?.target?.name) { const k = ev.target.name.slice(6); if (["kind", "base", "grade", "bonus", "material", "light", "intel", "size", "sbonus"].includes(k)) remember(k, ev.target.value); if (k === "masterwork" || k === "epic") remember(k, ev.target.checked ? "1" : "0"); }
       filter();
       clearTimeout(tmo); tmo = setTimeout(() => this.preview(section), 250);
     };
@@ -236,7 +258,8 @@ export class ArmoryForge {
     return {
       kind: v("kind"), base: v("base") ? { pack, id } : null, baseKind: root.querySelector('[name="forge.base"]')?.selectedOptions?.[0]?.dataset.kind ?? null,
       grade: v("grade") || "medium", bonus: v("bonus"), size: v("size") || "med", masterwork: c("masterwork"), epic: c("epic"), material: v("material"),
-      abilities: Array.from({ length: SLOTS }, (_, i) => v(`ab${i}`)).filter(Boolean), foe: v("foe"),
+      abilities: [...root.querySelectorAll('select[name^="forge.ab"]')].map((x) => x.value).filter(Boolean), foe: v("foe"),
+      sbonus: v("sbonus") || "random", sabilities: [...root.querySelectorAll('select[name^="forge.sb"]:not([name="forge.sbonus"])')].map((x) => x.value).filter(Boolean),
       light: v("light"), theme: v("theme"), color: v("color"), anim: v("anim"), speed: Number(v("speed")) || 3, intensity: Number(v("intensity")) || 4,
       intel: v("intel") || "settings", ialign: v("ialign"), icap: v("icap"), ipurpose: v("ipurpose") || "rule", idedicated: v("idedicated"),
       ilesser: [0, 1, 2, 3].map((i) => v(`il${i}`)), igreater: [0, 1, 2].map((i) => v(`ig${i}`)),
@@ -245,7 +268,7 @@ export class ArmoryForge {
   }
   hasRandom(f) {
     return f.kind === "random" || !f.base || f.bonus === "random" || f.material === "random" || f.size === "random" || f.abilities.some((a) => a === "random" || a === "randompsi") || f.light === "settings" || f.hint === "settings" || ["settings", "random", "choose"].includes(f.intel)
-      || (f.abilities.includes("srd:Bane") && f.foe === "random");
+      || (f.abilities.includes("srd:Bane") && f.foe === "random") || f.sbonus === "random" || (f.sabilities ?? []).some((a) => a === "random" || a === "randompsi");
   }
 
   /**
@@ -314,6 +337,35 @@ export class ArmoryForge {
       const rolled = await this.g.rollAbilities(facts, table, f.grade, normal, bonus + chosen.reduce((s, x) => s + (this.b.tableRow(kind, x.name)?.bonus ?? 0), 0), { limit: f.epic ? Infinity : 10 });
       for (const r of rolled) if (!chosen.some((c) => normName(c.name) === normName(r.name))) chosen.push(r);
     }
+    // A double weapon's other end (SRD: enchanted separately). Random (SRD): half the time the same bonus, else one less and no abilities.
+    let second = null;
+    if (kind === "weapon" && facts.double) {
+      const sb = f.sbonus ?? "none";
+      const sab = f.sabilities ?? [];
+      let b2 = sb === "none" ? 0 : sb === "same" ? bonus : sb === "random" ? null : Number(sb) || 0;
+      let randomNoAbilities = false;
+      if (b2 === null) { if (d100() <= 50) b2 = bonus; else { b2 = Math.max(0, bonus - 1); randomNoAbilities = true; } }
+      const abs2 = [];
+      if (!randomNoAbilities || sab.some((a) => !/^random/.test(a))) {
+        for (const a of sab) {
+          if (a === "random" || a === "randompsi") continue;
+          if (a.startsWith("custom:")) { abs2.push({ d35e: a.slice(7), name: a.slice(7) }); continue; }
+          const ab = { name: a.slice(4) };
+          if (ab.name === "Bane") ab.foe = f.foe === "random" ? pick(tb.baneFoes).foe : f.foe;
+          abs2.push(ab);
+        }
+        const nr = randomNoAbilities ? 0 : sab.filter((a) => a === "random" || a === "randompsi").length;
+        if (nr) {
+          if (b2 < 1) b2 = 1;
+          const table = facts.ranged ? tb.rangedAbilities : tb.meleeAbilities;
+          const used = b2 + abs2.reduce((s, x) => s + (this.b.tableRow(kind, x.name)?.bonus ?? 0), 0);
+          const grade = epicGrade ? "major" : f.grade;
+          for (const r of await this.g.rollAbilities(facts, table, grade, nr, used, { limit: f.epic ? Infinity : 10 })) if (!abs2.some((c) => normName(c.name) === normName(r.name))) abs2.push(r);
+        }
+      }
+      if (abs2.length && b2 < 1) b2 = 1;
+      if (b2 > 0 || abs2.length) second = { bonus: b2, abilities: abs2 };
+    }
     // Material: Random picks one that fits this base
     let material = f.material === "random" ? null : f.material || null;
     if (f.material === "random") {
@@ -337,7 +389,7 @@ export class ArmoryForge {
     }
     const hint = f.hint === "yes" ? true : f.hint === "no" ? false : magic ? this.g.hint(facts) : false;
     const size = kind === "ammo" ? undefined : f.size === "random" ? this.g.size() : f.size || "med";
-    const spec = { base, bonus, abilities: chosen, masterwork: f.masterwork, size, epic: f.epic || undefined, material, light, hint, identified: f.identified || undefined,
+    const spec = { base, bonus, abilities: chosen, second: second ?? undefined, masterwork: f.masterwork, size, epic: f.epic || undefined, material, light, hint, identified: f.identified || undefined,
       quantity: kind === "ammo" ? f.qty : undefined };
     return { spec, facts, rename };
   }
@@ -352,7 +404,7 @@ export class ArmoryForge {
         if (rename) this.g.renameBase(built, rename.to, rename.price, facts);
         await this.applyIntel(built, facts, spec, f);
         return { name: built.quantity > 1 ? `${built.name} (${built.quantity})` : built.name, data: built.data,
-          summary: `${t("Forge: {summary}", { summary: built.summary })}; ${gp(built.price)}${built.quantity > 1 ? t(" each") : ""}${spec.light ? t("; sheds light") : ""}` };
+          summary: `${t("Forge: {summary}", { summary: built.summary })}; ${gp(built.price)}${built.quantity > 1 ? t(" each") : ""}${spec.light ? t("; sheds light") : ""}${(built.warnings ?? []).length ? ` (${built.warnings.join(" ")})` : ""}` };
       } catch (err) { lastErr = err; }
     }
     throw lastErr ?? new Error(t("Could not make an item with these choices."));
@@ -372,7 +424,7 @@ export class ArmoryForge {
       if (rename) this.g.renameBase(built, rename.to, rename.price, facts);
       if (f.intel === "choose") await this.applyIntel(built, facts, spec, f); // a sample roll for anything left Random
       const parts = (built.data.flags?.[MOD]?.price ?? []).map(([l, n]) => `${t(l)} ${gp(n)}`).join(" + ");
-      box.innerHTML = `<strong>${esc(built.name)}</strong>${built.quantity > 1 ? ` (${built.quantity})` : ""}: ${esc(gp(built.price))}${built.quantity > 1 ? H(" each") : ""}<br><small>${esc(built.summary)}${parts ? ` — ${esc(parts)}` : ""}${built.data.system?.identified === false ? H("; players see \"{name}\" until identified", { name: built.data.system.unidentified?.name }) : ""}</small>`;
+      box.innerHTML = `<strong>${esc(built.name)}</strong>${built.quantity > 1 ? ` (${built.quantity})` : ""}: ${esc(gp(built.price))}${built.quantity > 1 ? H(" each") : ""}<br><small>${esc(built.summary)}${parts ? ` — ${esc(parts)}` : ""}${built.data.system?.identified === false ? H("; players see \"{name}\" until identified", { name: built.data.system.unidentified?.name }) : ""}</small>${(built.warnings ?? []).map((w) => `<br><span style="color:var(--color-level-warning,#c80)"><i class="fas fa-triangle-exclamation"></i> ${esc(w)}</span>`).join("")}`;
     } catch (err) {
       box.innerHTML = `<span style="color:var(--color-level-error,#c33)"><i class="fas fa-triangle-exclamation"></i> ${esc(err.message)}</span>`;
     }

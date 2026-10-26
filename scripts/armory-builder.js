@@ -31,6 +31,18 @@ export function abilityTitle(name) {
   return title(base.replace(/\((\d+)\)/, "$1").replace(/\s+/g, " ").trim()).replace(/(?<=\S) (De|Of|The) /g, (m, w) => ` ${w.toLowerCase()} `); // "Coup de Grace"
 }
 /** "Humanoids (orc)" -> "Orc"; "Undead" -> "Undead"; "Outsiders (evil)" -> "Evil Outsider". */
+/** A special material's name in the world's language (word file: "Cold Iron": "fer froid"), lower case for running text; { cap } for lists. */
+export function materialName(m, { cap = false } = {}) {
+  const en = title(m?.name ?? m ?? "");
+  const w = String(D.W(en, D.hasT(en) ? D.t(en) : null)?.text ?? en);
+  const s = /^en\b/i.test(globalThis.AxecleftTools?.i18n?.lang ?? "en") ? en.toLowerCase() : w.toLowerCase();
+  return cap ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+}
+/** A special material's effects in the world's language (armory.json's English, translated in the language file). */
+export const materialEffects = (m) => t(m?.effects ?? "");
+/** An ability's title in the world's language: the language file's, else the word file's, else the English. */
+const shownWord = (en) => (D.hasT(en) ? D.t(en) : String(D.W(en)?.text ?? en));
+
 export function foeTitle(foe) {
   const m = String(foe).match(/^(\w[\w ]*?)s?\s*\((\w+)\)$/i);
   if (m) return /humanoid/i.test(m[1]) ? title(m[2]) : `${title(m[2])} ${title(m[1].replace(/s$/, ""))}`;
@@ -109,9 +121,10 @@ export class ArmoryBuilder {
   materialProblem(facts, m) {
     if (!m) return null;
     const k = facts.kind;
-    if (!m.applies.includes(k)) return t(k === "ammo" ? "{material} can't be used for ammunition" : k === "armor" ? "{material} can't be used for armor" : k === "shield" ? "{material} can't be used for shields" : "{material} can't be used for weapons", { material: m.name });
-    if (m.metalOnly && !facts.metal) return t("{item} has no metal parts to make of {material}", { item: facts.name, material: m.name.toLowerCase() });
-    if (m.woodOnly && !facts.wooden) return t("{item} isn't made of wood", { item: facts.name });
+    if (!m.applies.includes(k)) return t(k === "ammo" ? "{material} can't be used for ammunition" : k === "armor" ? "{material} can't be used for armor" : k === "shield" ? "{material} can't be used for shields" : "{material} can't be used for weapons", { material: materialName(m, { cap: true }) });
+    const item = D.shownBaseName(String(facts.en || facts.name || "").replace(/^masterwork\s+/i, ""), facts.name);
+    if (m.metalOnly && !facts.metal) return t("{item} has no metal parts to make of {material}", { item, material: materialName(m) });
+    if (m.woodOnly && !facts.wooden) return t("{item} isn't made of wood", { item });
     return null;
   }
 
@@ -120,7 +133,7 @@ export class ArmoryBuilder {
   /**
    * SRD price. Returns { each, mundaneEach, parts: [[label, gp]] } — per piece for ammunition (a magic batch is 50).
    */
-  price(facts, { masterwork, material, bonus = 0, abilityCosts = [], quantity = 1 }) {
+  price(facts, { masterwork, material, bonus = 0, abilityCosts = [], quantity = 1, allowEpic = true, second = null }) {
     const k = facts.kind, ammo = k === "ammo", weaponish = k === "weapon" || ammo;
     const base = facts.price, parts = [["base", base]];
     const m = material ? this.materials.get(normName(material)) : null;
@@ -144,25 +157,36 @@ export class ArmoryBuilder {
     const eff = bonus + abilityCosts.reduce((a, c) => a + c.bonus, 0);
     const flat = abilityCosts.reduce((a, c) => a + c.gp, 0);
     // SRD epic magic items (enhancement above +5 or total above +10): the square of the total × 20,000 gp (weapons) or × 10,000 gp (armor)
-    const epic = bonus > 5 || eff > 10 || abilityCosts.some((c) => c.epic);
+    // A total past +10 without epic items allowed (a house rule the GM chose): priced by the normal formula
+    const epic = bonus > 5 || (eff > 10 && allowEpic) || abilityCosts.some((c) => c.epic);
     let magic = (eff > 0 ? eff * eff * (weaponish ? 2000 : 1000) * (epic ? 10 : 1) : 0) + flat;
     if (m && mp.magic && eff > 0) magic += mp.magic; // cold iron: enhancing costs 2,000 gp more
     if (magic) parts.push([t("magic ({what})", { what: `+${eff}${epic ? t(", epic") : ""}${flat ? t(" and {gp}", { gp: gp(flat) }) : ""}` }), magic]);
-    const each = ammo ? mundaneEach + magic / 50 : mundaneEach + magic; // magic ammunition is priced per 50
-    return { each: Math.round(each * 100) / 100, mundaneEach: Math.round(mundaneEach * 100) / 100, parts, effective: eff };
+    // A double weapon's other end (SRD): its own bonus and abilities, priced like a second weapon's magic
+    let magic2 = 0;
+    if (second && !ammo && second.eff > 0) {
+      magic2 = second.eff * second.eff * 2000 * (second.epic ? 10 : 1) + second.flat + (m && mp.magic ? mp.magic : 0);
+      parts.push([t("other end: magic ({what})", { what: `+${second.eff}${second.epic ? t(", epic") : ""}${second.flat ? t(" and {gp}", { gp: gp(second.flat) }) : ""}` }), magic2]);
+    }
+    const each = ammo ? mundaneEach + magic / 50 : mundaneEach + magic + magic2; // magic ammunition is priced per 50
+    return { each: Math.round(each * 100) / 100, mundaneEach: Math.round(mundaneEach * 100) / 100, parts, effective: eff, epic };
   }
 
   /* ---------- the build ---------- */
 
   /**
-   * spec: { base, masterwork?, material?, bonus?, abilities?: [{ name, foe?, level?, d35e? }], quantity?, size? ("sm" | "med" | "lg"), light?, hint?, identified?, note? }
-   * Returns { data, name, price, summary }. Throws an Error explaining any rule it breaks.
+   * spec: { base, masterwork?, material?, bonus?, abilities?: [{ name, foe?, level?, d35e? }], quantity?, size? ("sm" | "med" | "lg"), light?, hint?, identified?, note?,
+   *         second?: { bonus, abilities } (a double weapon's other end) }
+   * Returns { data, name, price, summary, warnings }. Throws an Error explaining any rule it breaks; rules the GM may bend
+   * (a total past +10 without epic items) are made anyway and reported in warnings.
    */
   async build(spec) {
     const baseDoc = await this.baseDoc(spec.base);
     if (!baseDoc) throw new Error(t("Base item not found."));
     const data = D.cleanCopy(baseDoc);
     const facts = D.baseFacts(data);
+    facts.en = String(D.enName(baseDoc) || facts.name || "");
+    const warnings = [];
     if (!facts.kind) throw new Error(t("{item} is not a weapon, armor, shield or ammunition.", { item: data.name }));
     if (facts.enh > 0) throw new Error(t("{item} is already magic; choose a mundane base item.", { item: data.name }));
     const k = facts.kind;
@@ -183,7 +207,7 @@ export class ArmoryBuilder {
     if (abilities.length && bonus < 1) throw new Error(t("A special ability needs at least a +1 enhancement bonus."));
     const epicOK = !!spec.epic; // the GM allows epic items (past +5 bonus or +10 total)
     if (bonus > 5 && !epicOK) throw new Error(t("Enhancement bonuses go up to +5 (allow epic items to go higher)."));
-    const masterwork = !!(spec.masterwork || bonus > 0 || abilities.length || m?.masterwork);
+    const masterwork = !!(spec.masterwork || bonus > 0 || abilities.length || m?.masterwork || Number(spec.second?.bonus) > 0);
 
     // Special abilities: D35E enhancement copies at the right level
     const enhancements = [], costs = [], words = { prefix: [], suffix: [] }, shown = { prefix: [], suffix: [] }, abilityNotes = [];
@@ -245,7 +269,10 @@ export class ArmoryBuilder {
     }
     const eff = bonus + costs.reduce((a, c) => a + c.bonus, 0);
     if (costs.some((c) => c.epic) && !epicOK) throw new Error(t("Epic special abilities make an epic item (allow epic items)."));
-    if (eff > 10 && !epicOK) throw new Error(t("Enhancement bonus and abilities total +{n}; the most is +10 (allow epic items to go higher).", { n: eff }));
+    // Past +10 without epic items: the SRD's limit, but the GM's to bend (made anyway, with a warning, at the normal price)
+    if (eff > 10 && !epicOK) warnings.push(t("Enhancement bonus and abilities total +{n}, past the SRD limit of +10; made anyway (house rule) and priced by the normal formula.", { n: eff }));
+    // A double weapon's other end (SRD: each end is enchanted separately)
+    const second = spec.second && (Number(spec.second.bonus) > 0 || (spec.second.abilities ?? []).length) ? await this.otherEnd(facts, spec.second, epicOK, warnings) : null;
 
     // Base enhancement bonus: D35E's "+1 Weapon/Armor Enhancement" item at the bonus, plus the item's own field
     if (bonus > 0 && k !== "ammo") {
@@ -269,41 +296,49 @@ export class ArmoryBuilder {
 
     // Price
     const quantity = Math.max(1, Math.round(Number(spec.quantity) || (k === "ammo" && eff > 0 ? 50 : facts.quantity)));
-    const pr = this.price(facts, { masterwork, material: m?.name, bonus, abilityCosts: costs, quantity });
+    const pr = this.price(facts, { masterwork, material: m?.name, bonus, abilityCosts: costs, quantity, allowEpic: epicOK, second });
+    const epicItem = pr.epic || !!second?.epic;
     D.setPrice(data, pr.each);
     D.setQuantity(data, quantity);
 
     // Names: the full one, and what players see before it is identified
     const matWord = m ? title(m.name) : "";
     const mwWord = masterwork && !m?.masterwork && !eff ? MW_WORD : ""; // adamantine, mithral, darkwood, dragonhide are masterwork by nature
-    const baseName = String(facts.name ?? "").replace(/^masterwork\s+/i, ""); // "Masterwork Longsword" from an inventory is a Longsword
     const baseEn = String(D.enName(baseDoc) || facts.name || "").replace(/^masterwork\s+/i, "");
+    // "Masterwork Longsword" from an inventory is a Longsword; an untranslated copy takes Babele's name ("Épée longue")
+    const baseName = D.shownBaseName(baseEn, String(facts.name ?? "").replace(/^masterwork\s+/i, ""));
     const sizeWord = size ? SIZES[size].label : "";
     // The name in this world's language (word order and agreement from its grammar file), and the English one for matching
     const parts = (lang) => (lang === "en"
       ? { bonus: bonus ? `+${bonus}` : "", adj: words.prefix, masterwork: mwWord, material: matWord, base: baseEn, of: words.suffix, size: sizeWord }
       : { bonus: bonus ? `+${bonus}` : "", adj: shown.prefix, masterwork: mwWord ? D.W(mwWord, D.t(mwWord)) : "", material: matWord ? D.W(matWord, D.t(matWord)) : "", base: D.W(baseEn, baseName), of: shown.suffix, size: sizeWord ? D.W(sizeWord, D.t(sizeWord)) : "" });
-    const name = D.N(ARMS_NAME, parts());
-    const nameEn = D.N(ARMS_NAME, parts("en"), { lang: "en" });
+    let name = D.N(ARMS_NAME, parts());
+    let nameEn = D.N(ARMS_NAME, parts("en"), { lang: "en" });
+    if (second) { name = t("{name} (other end {other})", { name, other: second.text }); nameEn = `${nameEn} (other end ${second.textEn})`; }
     const plain = (lang) => ({ ...parts(lang), masterwork: masterwork && !m?.masterwork ? (lang === "en" ? MW_WORD : D.W(MW_WORD, D.t(MW_WORD))) : "" });
     const plainName = D.N(PLAIN_ARMS_NAME, plain());
-    const magic = eff > 0;
+    const magic = eff > 0 || !!second;
     D.setIdentity(data, { name, unidentifiedName: magic ? plainName : name, unidentifiedPrice: magic ? pr.mundaneEach : pr.each, identified: spec.identified ?? !magic });
 
     // Description
     const baseDesc = D.descriptionOf(baseDoc);
     const lines = [];
-    if (magic || m || masterwork) lines.push(`<p><strong>${esc(name)}</strong>${quantity > 1 ? ` (${quantity})` : ""}: ${esc(this.summary(facts, { bonus, m, masterwork, abilityNotes }))}. ${esc(t(k === "ammo" ? "Price {price} each." : "Price {price}.", { price: gp(pr.each) }))}</p>`);
+    const summary = this.summary(facts, { bonus, m, masterwork, abilityNotes, epic: epicItem, second });
+    if (magic || m || masterwork) lines.push(`<p><strong>${esc(name)}</strong>${quantity > 1 ? ` (${quantity})` : ""}: ${esc(summary)}. ${esc(t(k === "ammo" ? "Price {price} each." : "Price {price}.", { price: gp(pr.each) }))}</p>`);
+    if (second) lines.push(`<p><em>${esc(t("A double weapon: its other end is {other}. D35E gives an item one set of enhancements, so the other end's bonus and abilities are in its attack note; add them when attacking with that end.", { other: second.text }))}</em></p>`);
     if (spec.hint) lines.push(`<p><em>${esc(abilityNotes.length ? t("A design or inscription on it hints at its power: {abilities}.", { abilities: abilityNotes.map((a) => a.title).join(", ").toLowerCase() }) : t("A design or inscription on it hints at its power."))}</em></p>`);
     if (spec.light) lines.push(`<p><em>${esc(t("It sheds light ({bright} ft. bright, {dim} ft. dim).", { bright: spec.light.bright, dim: spec.light.dim }))}</em></p>`);
     if (k === "ammo" && abilityNotes.length) lines.push(`<p><em>${esc(t("The abilities' extra damage is rolled with the ammunition; damage that only applies against some foes is in its attack note."))}</em></p>`);
     for (const a of abilityNotes) lines.push(`<h3>${esc(a.title)}</h3>${a.html || ""}`);
-    if (m) lines.push(`<h3>${esc(title(m.name))}</h3><p>${esc(m.effects)}.</p>`);
+    const mainKeys = new Set(abilityNotes.map((a) => normName(a.en)));
+    for (const a of second?.abilities ?? []) if (!mainKeys.has(normName(a.en))) lines.push(`<h3>${esc(t("{ability} (other end)", { ability: a.title }))}</h3>${a.html || ""}`);
+    if (m) lines.push(`<h3>${esc(materialName(m, { cap: true }))}</h3><p>${esc(materialEffects(m))}.</p>`);
     if (spec.note) lines.push(`<p>${esc(spec.note)}</p>`);
     if (baseDesc) lines.push(`<hr>${baseDesc}`);
-    const unidLines = [m ? `<p>${esc(t("Made of {material}: {effects}.", { material: m.name.toLowerCase(), effects: m.effects }))}</p>` : "", spec.light ? `<p><em>${esc(t("It sheds light."))}</em></p>` : "", spec.hint ? `<p><em>${esc(t("A design or inscription on it hints at some power."))}</em></p>` : "", baseDesc].filter(Boolean).join("");
+    const unidLines = [m ? `<p>${esc(t("Made of {material}: {effects}.", { material: materialName(m), effects: materialEffects(m) }))}</p>` : "", spec.light ? `<p><em>${esc(t("It sheds light."))}</em></p>` : "", spec.hint ? `<p><em>${esc(t("A design or inscription on it hints at some power."))}</em></p>` : "", baseDesc].filter(Boolean).join("");
     D.setDescription(data, lines.join(""), magic ? unidLines : null);
     if (spec.light) D.setLight(data, spec.light);
+    if (second) D.addAttackNote(data, t("Other end: {other} (+{n} on attack and damage rolls with that end instead of the main end's bonus)", { other: second.text, n: second.bonus }));
 
     data.flags ??= {};
     foundry.utils.setProperty(data, "flags.world.axecleftEn", nameEn); // its English identity (Axecleft's Tools 8)
@@ -312,12 +347,63 @@ export class ArmoryBuilder {
     const psionic = abilityNotes.some((a) => a.psionic);
     if (psionic) { data.system.psionic = true; data.flags[MOD].psionic = true; }
     // SRD epic magic items (enhancement above +5, total above +10, or an epic special ability): marked epic (the shared Epic items switch)
-    if (bonus > 5 || eff > 10 || costs.some((c) => c.epic)) { data.system.epic = true; data.flags[MOD].epic = true; }
+    if (epicItem) { data.system.epic = true; data.flags[MOD].epic = true; }
     // For crafting: the SRD splits the price into the base price (the magic) and the item cost (masterwork item and material)
     const magicEach = Math.round((pr.each - pr.mundaneEach) * 100) / 100;
-    const craft = { facts, mundaneEach: pr.mundaneEach, magicEach, parts: pr.parts, casterLevel: Math.max(3 * bonus, ...abilityNotes.map((a) => a.craft?.cl ?? 0), 0),
-      abilities: abilityNotes.map((a) => ({ title: a.title, en: a.en ?? a.title, craft: a.craft ?? null, html: a.html ?? "" })), material: m?.name ?? null, masterwork, bonus };
-    return { data, name, nameEn, baseEn, price: pr.each, quantity, effective: eff, craft, psionic, summary: this.summary(facts, { bonus, m, masterwork, abilityNotes }) };
+    // The other end's abilities count for prerequisites too (each needs its caster level and spells)
+    const secondAbs = (second?.abilities ?? []).filter((a) => !mainKeys.has(normName(a.en)));
+    const craft = { facts, mundaneEach: pr.mundaneEach, magicEach, parts: pr.parts, casterLevel: Math.max(3 * bonus, 3 * (second?.bonus ?? 0), ...abilityNotes.map((a) => a.craft?.cl ?? 0), ...secondAbs.map((a) => a.craft?.cl ?? 0), 0),
+      abilities: [...abilityNotes, ...secondAbs].map((a) => ({ title: a.title, en: a.en ?? a.title, craft: a.craft ?? null, html: a.html ?? "" })), material: m?.name ?? null, masterwork, bonus,
+      second: second ? { bonus: second.bonus, effective: second.eff, text: second.text } : null };
+    return { data, name, nameEn, baseEn, baseShown: baseName, price: pr.each, quantity, effective: eff, craft, psionic, summary, warnings };
+  }
+
+  /**
+   * A double weapon's other end (SRD: double weapons have separate magical bonuses for their two ends): its bonus and abilities,
+   * checked like the main end's, with their price. spec2: { bonus, abilities: [{ name, foe?, d35e? }] }.
+   * Returns { bonus, eff, flat, epic, abilities: [{ title, en, html, cost, craft }], text, textEn }.
+   */
+  async otherEnd(facts, spec2, epicOK, warnings = []) {
+    if (!facts.double) throw new Error(t("{item} isn't a double weapon; only a double weapon has another end to enchant.", { item: D.shownBaseName(facts.en, facts.name) }));
+    const bonus = Math.max(0, Math.round(Number(spec2.bonus) || 0));
+    const list = (spec2.abilities ?? []).filter((a) => a?.name || a?.d35e);
+    if (list.length && bonus < 1) throw new Error(t("The other end's special abilities need at least a +1 enhancement bonus on that end."));
+    if (bonus > 5 && !epicOK) throw new Error(t("Enhancement bonuses go up to +5 (allow epic items to go higher)."));
+    const abilities = [], seen = new Set();
+    for (const ab of list) {
+      const label = ab.name ?? ab.d35e;
+      if (seen.has(normName(label))) throw new Error(t("{ability} is listed twice.", { ability: label }));
+      seen.add(normName(label));
+      const problem = this.abilityProblem(facts, ab);
+      if (problem) throw new Error(problem);
+      const rule = this.abilityRule("weapon", label);
+      let cost, html = "", en, foe = null;
+      if (rule) {
+        if (rule.key === "Bane") foe = (ab.foe ? this.data.tables.baneFoes.find((f) => normName(f.foe) === normName(ab.foe)) : null) ?? this.data.tables.baneFoes[0];
+        const row = this.tableRow("weapon", rule.key === "Bane" ? "Bane" : rule.key);
+        cost = row ? { bonus: row.bonus ?? 0, gp: row.gp ?? 0 } : { bonus: Number(rule.build?.enhIncrease) || 0, gp: Number(rule.build?.price) || 0 };
+        const doc = foe ? await this.enhancementDoc(foe.d35e) : rule.d35e ? await this.enhancementDoc(rule.d35e) : null;
+        html = doc ? D.descriptionOf(doc) : rule.build?.description ?? "";
+        en = foe ? `${foeTitle(foe.foe)} Bane` : abilityTitle(rule.key);
+      } else {
+        const doc = await this.enhancementDoc(label);
+        if (!doc) throw new Error(t("Enhancement \"{ability}\" not found.", { ability: label }));
+        const enh = D.enhancementCopy(doc, ab.level ?? 1);
+        cost = D.enhancementCost(enh);
+        html = D.descriptionOf(enh);
+        en = label;
+      }
+      cost.epic = !!rule?.epic;
+      abilities.push({ title: shownWord(en), en, html, cost, craft: rule?.craft ?? null });
+    }
+    if (abilities.some((a) => a.cost.epic) && !epicOK) throw new Error(t("Epic special abilities make an epic item (allow epic items)."));
+    const eff = bonus + abilities.reduce((s, a) => s + a.cost.bonus, 0);
+    const flat = abilities.reduce((s, a) => s + a.cost.gp, 0);
+    if (eff > 10 && !epicOK) warnings.push(t("The other end totals +{n}, past the SRD limit of +10; made anyway (house rule) and priced by the normal formula.", { n: eff }));
+    const epic = bonus > 5 || (eff > 10 && epicOK) || abilities.some((a) => a.cost.epic);
+    const text = [bonus ? `+${bonus}` : "", abilities.map((a) => a.title.toLowerCase()).join(", ")].filter(Boolean).join(" ");
+    const textEn = [bonus ? `+${bonus}` : "", abilities.map((a) => a.en.toLowerCase()).join(", ")].filter(Boolean).join(" ");
+    return { bonus, eff, flat, epic, abilities, text, textEn };
   }
 
   /** The SRD ability table row for a name (bonus or gp), any grade. */
@@ -328,13 +414,15 @@ export class ArmoryBuilder {
     return null;
   }
 
-  summary(facts, { bonus, m, masterwork, abilityNotes }) {
+  summary(facts, { bonus, m, masterwork, abilityNotes, epic = null, second = null }) {
     const kind = t(KIND_WORD[facts.kind] ?? facts.kind);
     const bits = [];
-    if (bonus) bits.push(t(bonus > 5 || bonus + abilityNotes.reduce((a, n) => a + (n.cost.bonus ?? 0), 0) > 10 || abilityNotes.some((n) => n.cost?.epic) ? "+{n} epic {kind}" : "+{n} {kind}", { n: bonus, kind }));
+    const isEpic = epic ?? (bonus > 5 || bonus + abilityNotes.reduce((a, n) => a + (n.cost.bonus ?? 0), 0) > 10 || abilityNotes.some((n) => n.cost?.epic));
+    if (bonus) bits.push(t(isEpic ? "+{n} epic {kind}" : "+{n} {kind}", { n: bonus, kind }));
     else bits.push(masterwork ? t("masterwork {kind}", { kind }) : kind);
     if (abilityNotes.length) bits.push(abilityNotes.map((a) => `${a.title.toLowerCase()} (${a.cost.bonus ? `+${a.cost.bonus}` : gp(a.cost.gp)})`).join(", "));
-    if (m) bits.push(m.name.toLowerCase());
+    if (second) bits.push(t("other end {other}", { other: second.text }));
+    if (m) bits.push(materialName(m));
     return bits.join("; ");
   }
 }

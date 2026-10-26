@@ -22,6 +22,32 @@ export const gp = (n) => t("{n} gp", { n: num(Math.round((Number(n) || 0) * 100)
 
 /** An item's English name (Axecleft's Tools 8: Babele's original name, an English name the user gave it), else its name. */
 export const enName = (x, opts = {}) => globalThis.AxecleftTools?.enName?.(x, opts) ?? x?.name ?? "";
+/** The name Babele gives an English item name in D35E's arms compendiums ("Longsword" -> "Épée longue"), or null. */
+export function babeleName(en, packs = ["D35E.weapons-and-ammo", "D35E.armors-and-shields"]) {
+  const b = globalThis.game?.babele;
+  if (!b || !en) return null;
+  for (const id of packs) {
+    try {
+      const tc = b.translatedCompendiumFor?.(id) ?? b.mappedCompendiumFor?.(id) ?? b.packs?.get?.(id);
+      const tr = tc?.translations;
+      const hit = tr && !Array.isArray(tr) ? tr[en]?.name : null;
+      if (hit) return hit;
+    } catch (e) { /* no translation */ }
+  }
+  return null;
+}
+/** A base item's name as this world shows it: the word file's entry, else Babele's name, else the name it has. */
+export function shownBaseName(en, given = null) {
+  const lang = globalThis.AxecleftTools?.i18n?.lang ?? "en";
+  if (/^en\b/i.test(lang)) return String(given || en || "");
+  const translated = given && en && given !== en ? given : babeleName(en) ?? given ?? en;
+  return String(W(en, translated)?.text ?? translated ?? en ?? "");
+}
+/** Add a line to a weapon's attack note (shown when it attacks). */
+export function addAttackNote(data, line) {
+  const s = data.system ?? (data.system = {});
+  s.attackNotes = [String(s.attackNotes ?? "").trim(), line].filter(Boolean).join("\n");
+}
 /** A compendium index with English names (display: the shown name). */
 export const enIndex = async (pack, opts = {}) => (globalThis.AxecleftTools?.enIndex ? globalThis.AxecleftTools.enIndex(pack, opts) : [...await pack.getIndex(opts)]);
 

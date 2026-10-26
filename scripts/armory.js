@@ -63,6 +63,10 @@ Hooks.once("init", () => {
     name: /*t*/"Psionic share of magic arms and armor (%)", scope: "world", config: true, type: Number, default: 10, range: { min: 0, max: 100, step: 5 },
     hint: /*t*/"House rule, while Psionics is on (Treasure Generator → Generation settings): this share of random magic weapons, armor and shields that get special abilities roll them on the SRD psionic ability tables instead. 0 = none.",
   });
+  game.settings.register(MOD, "materialShare", {
+    name: /*t*/"Special material share of random magic arms (%)", scope: "world", config: true, type: Number, default: 5, range: { min: 0, max: 100, step: 1 },
+    hint: /*t*/"This share of random magic weapons, ammunition, armor and shields is made of a special material that fits it (adamantine, cold iron, alchemical silver, darkwood, mithral, dragonhide), priced by the SRD. The core rules give 96–100 on d% (5%). 0 = none.",
+  });
   api.loaded = foundry.utils.fetchJsonWithTimeout(`modules/${MOD}/data/armory.json`)
     .then((data) => {
       api.data = data;
@@ -86,6 +90,6 @@ Hooks.once("init", () => {
     .catch((err) => console.error(`${MOD} | could not load data/armory.json`, err));
 });
 
-api.setting = (k) => { try { return game.settings.get(MOD, k); } catch (e) { return { psionicShare: 10 }[k]; } };
+api.setting = (k) => { try { return game.settings.get(MOD, k); } catch (e) { return { psionicShare: 10, materialShare: 5 }[k]; } };
 api.build = async (spec) => { await api.loaded; return api.builder.build(spec); };
 api.generate = async (category, opts = {}) => { await api.loaded; return api.generator.generate(category, opts); };

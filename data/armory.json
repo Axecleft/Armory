@@ -7005,7 +7005,8 @@
     "applies": [
      "melee",
      "ranged",
-     "thrown"
+     "thrown",
+     "ammo"
     ],
     "epic": true,
     "build": {
@@ -7034,7 +7035,8 @@
     "applies": [
      "melee",
      "ranged",
-     "thrown"
+     "thrown",
+     "ammo"
     ],
     "epic": true,
     "build": {
@@ -7063,7 +7065,8 @@
     "applies": [
      "melee",
      "ranged",
-     "thrown"
+     "thrown",
+     "ammo"
     ],
     "epic": true,
     "build": {
@@ -7119,7 +7122,8 @@
     "applies": [
      "melee",
      "ranged",
-     "thrown"
+     "thrown",
+     "ammo"
     ],
     "epic": true,
     "build": {
@@ -7143,7 +7147,7 @@
     }
    },
    "Everdancing": {
-    "d35e": null,
+    "d35e": "Everdancing",
     "level": 1,
     "applies": [
      "melee"
@@ -7175,7 +7179,8 @@
     "applies": [
      "melee",
      "ranged",
-     "thrown"
+     "thrown",
+     "ammo"
     ],
     "epic": true,
     "build": {
@@ -7204,7 +7209,8 @@
     "applies": [
      "melee",
      "ranged",
-     "thrown"
+     "thrown",
+     "ammo"
     ],
     "epic": true,
     "build": {
@@ -7233,7 +7239,8 @@
     "applies": [
      "melee",
      "ranged",
-     "thrown"
+     "thrown",
+     "ammo"
     ],
     "epic": true,
     "build": {
@@ -7262,7 +7269,8 @@
     "applies": [
      "melee",
      "ranged",
-     "thrown"
+     "thrown",
+     "ammo"
     ],
     "epic": true,
     "build": {
@@ -7321,7 +7329,8 @@
     "applies": [
      "melee",
      "ranged",
-     "thrown"
+     "thrown",
+     "ammo"
     ],
     "epic": true,
     "build": {
@@ -7404,7 +7413,8 @@
     "applies": [
      "melee",
      "ranged",
-     "thrown"
+     "thrown",
+     "ammo"
     ],
     "epic": true,
     "build": {
