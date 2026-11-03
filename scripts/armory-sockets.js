@@ -491,10 +491,29 @@ export function registerSockets(api) {
       module: MOD, key: "socket-crystals", label: /*t*/"Socket crystals", icon: "fas fa-gem", order: 20.7, magic: true, feat: "Craft Magic Arms and Armor",
       prepare: () => S.prepare(), content: (ctx) => S.craftContent(ctx), evaluate: (ctx) => S.craftEvaluate(ctx),
     });
+    globalThis.AxecleftCrafting?.registerTour?.({ module: MOD, key: "socket-crystals", label: /*t*/"Socket crystals",
+      title: /*t*/"Crafting: Socket crystals", description: /*t*/"Make socket crystals to set into magic arms and armor.",
+      intro: /*t*/"Socket crystals are set into a magic weapon, armor or shield by its owner (one per item) and can be taken out again.",
+      steps: [
+        { id: "crystal", field: "craft.crystal", title: /*t*/"Crystal", content: /*t*/"The crystal to make. Its requirements come from its own entry; crystals in your item compendiums are listed too." },
+        { id: "qty", field: "craft.cquantity", title: /*t*/"Quantity", content: /*t*/"How many to make." },
+      ] });
     globalThis.AxecleftTreasure?.registerTab?.({
       module: MOD, name: "sockets", title: /*t*/"Crystals", icon: "fas fa-gem", order: 41,
       prepare: () => S.prepare(), content: () => S.tabContent(), wire: (section) => S.tabWire(section), generate: (form) => S.tabGenerate(form), generateTitle: () => t("Crystals"),
     });
+    // A tour of the tab (Axecleft's Tools 9.7)
+    const hub = globalThis.AxecleftTreasure, tab = `t-${MOD}-sockets`;
+    if (hub?.tourOpen) globalThis.AxecleftTools?.registerTour?.({
+      module: MOD, id: "crystals", app: "axecleft-treasure-generator", tab, open: hub.tourOpen(tab),
+      title: /*t*/"Treasure Generator: Crystals", description: /*t*/"Make socket crystals, set into a magic weapon, armor or shield.",
+      steps: [
+        hub.tourTabStep(tab, /*t*/"Crystals", /*t*/"Socket crystals are set into a magic weapon, armor or shield by its owner, one per item. The Armory's are homebrew examples; crystals in your item compendiums are listed too."),
+        { id: "choice", field: "sockets.choice", title: /*t*/"Crystal", content: /*t*/"A specific crystal (its slot, rank and price are shown), or a random one of any kind or for a weapon, armor or shield." },
+        { id: "count", field: "sockets.count", title: /*t*/"How many", content: /*t*/"How many crystals to make for each target." },
+        { id: "identified", field: "sockets.identified", title: /*t*/"Identified", content: /*t*/"Ticked, players see the crystal's name; otherwise it shows as \"Socket crystal\" until identified." },
+        ...hub.tourFooter(),
+      ] });
   });
   // Foundry v11/v12 sheets (and D35E's classic sheets on v13+)
   Hooks.on("getItemSheetHeaderButtons", (sheet, buttons) => {

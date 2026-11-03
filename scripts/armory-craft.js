@@ -561,5 +561,43 @@ export function registerCrafting(api) {
     module: MOD, key: "arms", label: /*t*/"Arms and armor (Craft)", icon: "fas fa-hammer", order: 21, magic: false,
     prepare: () => craft.prepare(), content: (ctx) => craft.mundaneContent(ctx), wire: (s) => craft.mundaneWire(s), evaluate: (ctx) => craft.mundaneEvaluate(ctx),
   });
+  registerCraftTours(C);
   return craft;
+}
+
+/** Tours of the Armory's crafting tabs (Axecleft's Tools 9.7, Crafting 1.96): Tour Management, or the Crafting window's ⋮ menu. */
+function registerCraftTours(C) {
+  if (!C.registerTour) return;
+  C.registerTour({ module: MOD, key: "magic-arms", label: /*t*/"Magic arms and armor", next: [`${MOD}.craft-specific-arms`],
+    title: /*t*/"Crafting: Magic arms and armor", description: /*t*/"Enchant a masterwork weapon, armor, shield or ammunition, or add to a magic one (Craft Magic Arms and Armor).",
+    intro: /*t*/"Add an enhancement bonus and special abilities to a masterwork weapon, armor, shield or ammunition, or upgrade a magic one. Magic supplies cost half the magic's price in gp and 1/25 in XP.",
+    steps: [
+      { id: "source", field: "craft.source", title: /*t*/"Masterwork or magic item", content: /*t*/"Where the base comes from: buy it, take it from the crafter's (or another character's) inventory, or make it first with Craft. A magic item from the inventory is upgraded: its magic is kept and you add to it." },
+      { id: "inv", field: "craft.inv", title: /*t*/"Item", content: /*t*/"Shown when Masterwork or magic item is set to an inventory: the masterwork or magic item to enchant. Only magic items the Armory made can be upgraded." },
+      { id: "base", field: "craft.base", title: /*t*/"Base item", content: /*t*/"When buying it or making it first: the weapon, armor, shield or ammunition, and its special material." },
+      { id: "bonus", field: "craft.bonus", title: /*t*/"Enhancement", content: /*t*/"+1 to +5 (epic bonuses past +5 with Epic ticked, while Epic items is on). The caster level must be at least 3 × the bonus." },
+      { id: "abilities", sel: "[data-craft-slots=ab]", title: /*t*/"Special abilities", content: /*t*/"Each row is an ability; another row appears whenever every row is filled. Each brings its own prerequisites (spells, feats, caster level) into the plan. Psionic abilities need Craft Psionic Arms and Armor." },
+      { id: "double", sel: "[data-craft-show=double]", title: /*t*/"Other end (double weapons)", content: /*t*/"Shown for a double weapon: the other end's enhancement and abilities, priced as a weapon of its own." },
+      { id: "light", field: "craft.light", title: /*t*/"Sheds light", content: /*t*/"SRD: the creator decides now whether it sheds light; it can't be changed later. Look sets its color." },
+      { id: "intel", field: "craft.intel", title: /*t*/"Intelligent", content: /*t*/"Shown with D35E 3.1 or later (which has intelligent items): make it intelligent (caster level 15; it takes your alignment). Its mind and powers are rolled when the GM approves, and their price is added." },
+      { id: "qty", field: "craft.qty", title: /*t*/"Pieces", content: /*t*/"Shown for ammunition: magic ammunition is made 50 at a time; fewer pieces cost proportionally less." },
+      { id: "help", sel: "details.acr-help", title: /*t*/"How requirements are found", content: /*t*/"Open this to see how crafting reads an item's requirements from the SRD construction line at the end of its description, so you can make your own items craftable." },
+      { id: "help", sel: "details.acr-help", title: /*t*/"How requirements are found", content: /*t*/"Open this to see how crafting reads an item's requirements from the SRD construction line at the end of its description, so you can make your own items craftable." },
+    ] });
+  C.registerTour({ module: MOD, key: "specific-arms", label: /*t*/"Specific magic arms", next: [`${MOD}.craft-arms`],
+    title: /*t*/"Crafting: Specific magic arms", description: /*t*/"Make a specific magic weapon, armor, shield or ammunition from your item compendiums.",
+    intro: /*t*/"Specific magic arms (Flame Tongue, Celestial Armor…) from your item compendiums. The requirements come from the SRD statblock in the item's description.",
+    steps: [
+      { id: "kind", field: "craft.skind", title: /*t*/"Kind", content: /*t*/"Weapons, armor and shields, or ammunition." },
+      { id: "name", field: "craft.sname", title: /*t*/"Item", content: /*t*/"Type to search. Cost: the masterwork item plus half of the magic's price in gp, and 1/25 in XP; a Cost line in the statblock replaces it." },
+      { id: "qty", field: "craft.sqty", title: /*t*/"How many", content: /*t*/"Shown for ammunition: up to 50 pieces, priced per piece, so the cost, XP and time are for all of them." },
+    ] });
+  C.registerTour({ module: MOD, key: "arms", label: /*t*/"Arms and armor (Craft)", next: [`${MOD}.craft-socket-crystals`],
+    title: /*t*/"Crafting: Arms and armor (Craft)", description: /*t*/"Make mundane or masterwork weapons, armor, shields and ammunition with the Craft skill.",
+    intro: /*t*/"Make mundane weapons, armor, shields and ammunition with Craft (weaponsmithing, armorsmithing or bowmaking). Raw materials cost a third of the price; the DC comes from the SRD Craft table.",
+    steps: [
+      { id: "base", field: "craft.base", title: /*t*/"Item", content: /*t*/"The weapon, armor, shield or ammunition to make, and its special material." },
+      { id: "masterwork", field: "craft.masterwork", title: /*t*/"Masterwork", content: /*t*/"Make it masterwork: a separate component with its own check (DC 20). Adamantine, mithral, darkwood and dragonhide items always are." },
+      { id: "qty", field: "craft.qty", title: /*t*/"Pieces", content: /*t*/"Shown for ammunition: how many pieces to make." },
+    ] });
 }

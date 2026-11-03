@@ -121,7 +121,8 @@ export class ArmoryForge {
         <div class="form-group"><label>${H("Mind")}</label>${sel("icap", "capabilities")}</div>
         ${[0, 1, 2, 3].map((i) => `<div class="form-group" data-forge-il="${i}"><label>${H("Lesser power {n}", { n: i + 1 })}</label>${sel(`il${i}`, "lesser")}</div>`).join("")}
         ${[0, 1, 2].map((i) => `<div class="form-group" data-forge-ig="${i}"><label>${H("Greater power {n}", { n: i + 1 })}</label>${sel(`ig${i}`, "greater")}</div>`).join("")}
-        <div class="form-group"><label>${H("Special purpose")}</label><select name="forge.ipurpose">${opt("rule", t("By Generation settings"), "")}${opt("none", t("None"), "")}${opt("random", t("Random"), "")}${I.options("purpose").map((o) => opt(o.value, o.label, "")).join("")}</select></div>
+        <div class="form-group"><label>${H("Special purpose")}</label><select name="forge.ipurpose">${opt("rule", t("By Generation settings"), "")}${opt("none", t("None"), "")}${opt("random", t("Random"), "")}${I.options("purpose").map((o) => opt(o.value, o.label, "")).join("")}${opt("custom", t("Your own…"), "")}</select></div>
+        <div class="form-group" data-forge="intel-purpose-text"><label>${H("Your purpose")}</label><input type="text" name="forge.ipurposeText" placeholder="${H("e.g. Defend the town of Hommlet")}"><p class="hint">${H("Used for Your own…, and when the roll gives the GM's choice. Blank: the item says the GM chooses.")}</p></div>
         <div class="form-group" data-forge="intel-dedicated"><label>${H("Dedicated power")}</label>${sel("idedicated", "dedicated")}</div>
         <p class="hint">${H("The mind sets how many lesser and greater powers it has. Prices follow the SRD and are added to the item's price.")}</p>
       </div>`;
@@ -133,7 +134,7 @@ export class ArmoryForge {
     if (!(spec.bonus > 0 || (spec.abilities ?? []).length)) return; // only magic items can be intelligent
     if (f.intel === "settings") return this.g.maybeIntelligent(built, facts, spec.bonus);
     const choice = { abilities: (built.craft?.abilities ?? []).map((a) => ({ name: a.title })), bonus: spec.bonus, effective: built.effective };
-    if (f.intel === "choose") Object.assign(choice, { alignment: f.ialign || null, capabilities: f.icap, lesser: f.ilesser, greater: f.igreater, purpose: f.ipurpose, dedicated: f.idedicated });
+    if (f.intel === "choose") Object.assign(choice, { alignment: f.ialign || null, capabilities: f.icap, lesser: f.ilesser, greater: f.igreater, purpose: f.ipurpose, purposeText: f.ipurposeText, dedicated: f.idedicated });
     I.apply(built, await I.roll(choice));
   }
 
@@ -233,6 +234,7 @@ export class ArmoryForge {
       section.querySelectorAll("[data-forge-il]").forEach((x) => { x.style.display = intel === "choose" && Number(x.dataset.forgeIl) < nl ? "" : "none"; });
       section.querySelectorAll("[data-forge-ig]").forEach((x) => { x.style.display = intel === "choose" && Number(x.dataset.forgeIg) < ng ? "" : "none"; });
       show("intel-dedicated", intel === "choose" && el("ipurpose")?.value !== "none");
+      show("intel-purpose-text", intel === "choose" && el("ipurpose")?.value !== "none");
       const note = section.querySelector('[data-forge="extras-note"]');
       if (note) { const n = Number(el("count").value) || 1; note.textContent = `(${t("light {light}", { light: el("light").selectedOptions[0]?.text.toLowerCase() })}; ${t(el("identified").checked ? "identified" : "unidentified")}; ${t(n > 1 ? "{n} items" : "{n} item", { n })})`; }
       T()?.refreshSize?.();
@@ -261,7 +263,7 @@ export class ArmoryForge {
       abilities: [...root.querySelectorAll('select[name^="forge.ab"]')].map((x) => x.value).filter(Boolean), foe: v("foe"),
       sbonus: v("sbonus") || "random", sabilities: [...root.querySelectorAll('select[name^="forge.sb"]:not([name="forge.sbonus"])')].map((x) => x.value).filter(Boolean),
       light: v("light"), theme: v("theme"), color: v("color"), anim: v("anim"), speed: Number(v("speed")) || 3, intensity: Number(v("intensity")) || 4,
-      intel: v("intel") || "settings", ialign: v("ialign"), icap: v("icap"), ipurpose: v("ipurpose") || "rule", idedicated: v("idedicated"),
+      intel: v("intel") || "settings", ialign: v("ialign"), icap: v("icap"), ipurpose: v("ipurpose") || "rule", ipurposeText: v("ipurposeText"), idedicated: v("idedicated"),
       ilesser: [0, 1, 2, 3].map((i) => v(`il${i}`)), igreater: [0, 1, 2].map((i) => v(`ig${i}`)),
       bright: v("bright"), dim: v("dim"), hint: v("hint"), identified: c("identified"), qty: Math.max(1, Number(v("qty")) || 50), count: Math.min(10, Math.max(1, Number(v("count")) || 1)),
     };
@@ -457,4 +459,36 @@ export function registerForge(api) {
     generate: (form) => forge.generate(form),
     generateTitle: () => t("Forge"),
   });
+  registerForgeTour(hub);
+}
+
+/** A tour of the Forge tab (Axecleft's Tools 9.7): Configure Settings → Tour Management, or the window's ⋮ menu. */
+function registerForgeTour(hub) {
+  const R = globalThis.AxecleftTools?.registerTour;
+  if (!R || !hub.tourOpen) return;
+  const tab = `t-${MOD}-forge`;
+  R({ module: MOD, id: "forge", app: "axecleft-treasure-generator", tab, open: hub.tourOpen(tab), next: [`${MOD}.crystals`],
+    title: /*t*/"Treasure Generator: Forge", description: /*t*/"Make weapons, armor, shields and ammunition by hand, part by part.",
+    steps: [
+      hub.tourTabStep(tab, /*t*/"Forge", /*t*/"The Forge makes weapons, armor, shields and ammunition by hand. Any choice can be Random: random parts are rolled on the SRD tables for the grade you pick. Prices follow the SRD."),
+      { id: "kind", field: "forge.kind", title: /*t*/"Kind", content: /*t*/"Weapon, armor, shield or ammunition, or Random. The lists below only offer what fits." },
+      { id: "base", field: "forge.base", title: /*t*/"Base item", content: /*t*/"The mundane item it starts from (a longsword, chainmail…), from your item sources, or Random from the SRD tables." },
+      { id: "grade", field: "forge.grade", title: /*t*/"Grade", content: /*t*/"Minor, medium or major (and epic while Epic items is on): the SRD table used for a Random bonus and Random abilities." },
+      { id: "bonus", field: "forge.bonus", title: /*t*/"Enhancement", content: /*t*/"None (a mundane or masterwork item), +1 to +5, or Random by grade. While Epic items is on, an Epic box allows bonuses past +5 at the SRD's epic prices." },
+      { id: "masterwork", field: "forge.masterwork", title: /*t*/"Masterwork", content: /*t*/"Masterwork quality. Always on for an item with a bonus, abilities or a material that is masterwork by nature." },
+      { id: "material", field: "forge.material", title: /*t*/"Material", content: /*t*/"A special material (adamantine, cold iron, mithral, darkwood…), Random (one that fits), or none. Only materials that suit the item are offered; prices follow the SRD." },
+      { id: "size", field: "forge.size", title: /*t*/"Size", content: /*t*/"Medium, Small (same price, half the weight) or Large (twice the base price and weight)." },
+      { id: "abilities", sel: "[data-forge-slots=ab]", title: /*t*/"Special abilities", content: /*t*/"Each row is an ability: a chosen one, Random by grade, or Random psionic. Another row appears whenever every row is filled. Bane asks for its foe.\nEach ability needs at least +1; past +10 in all the item is still made, with a warning. Abilities that don't fit the base item are refused." },
+      { id: "second", sel: "[data-forge=second]", title: /*t*/"Other end (double weapons)", content: /*t*/"Shown for a double weapon: the other end's own enhancement and abilities. SRD: each end is enchanted and priced separately." },
+      { id: "extras", sel: "[data-sec=forge-extras] > summary", title: /*t*/"Light, inscription and more", content: /*t*/"Click this heading to open the less common choices." },
+      { id: "light", field: "forge.light", title: /*t*/"Light", content: /*t*/"Whether it sheds light: by Generation settings (random), never, or always, with its look, color and radius. SRD: the creator decides when it is made." },
+      { id: "intel", field: "forge.intel", title: /*t*/"Intelligent", content: /*t*/"Shown when D35E's Intelligent Item Tables compendium is available: make it intelligent, with its mind, alignment, powers and special purpose chosen or rolled. Their SRD prices are added." },
+      { id: "purpose", field: "forge.ipurpose", title: /*t*/"Special purpose", content: /*t*/"For an intelligent item: by Generation settings, none, random, one of D35E's purposes, or Your own… with a Your purpose box. What you write becomes the item's purpose, and also replaces \"A purpose of the GM's choice\" when that is rolled." },
+      { id: "cursed", field: "forge.cursed", title: /*t*/"Cursed", content: /*t*/"Give it a curse from the SRD tables (or your own), or none." },
+      { id: "hint", field: "forge.hint", title: /*t*/"Inscription hint", content: /*t*/"A word or symbol on the item that hints at its power: by Generation settings, yes or no." },
+      { id: "identified", field: "forge.identified", title: /*t*/"Identified", content: /*t*/"Magic items start unidentified. Tick to hand it over identified." },
+      { id: "count", field: "forge.count", title: /*t*/"Items to make", content: /*t*/"How many items for each target; Random parts are rolled for each. Ammunition also has a box for its number of pieces." },
+      { id: "preview", sel: "[data-forge=preview]", title: /*t*/"Preview", content: /*t*/"The item's name, price and what was chosen, with any warning." },
+      ...hub.tourFooter(),
+    ] });
 }
