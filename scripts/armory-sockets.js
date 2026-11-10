@@ -511,7 +511,7 @@ export function registerSockets(api) {
         hub.tourTabStep(tab, /*t*/"Crystals", /*t*/"Socket crystals are set into a magic weapon, armor or shield by its owner, one per item. The Armory's are homebrew examples; crystals in your item compendiums are listed too."),
         { id: "choice", field: "sockets.choice", title: /*t*/"Crystal", content: /*t*/"A specific crystal (its slot, rank and price are shown), or a random one of any kind or for a weapon, armor or shield." },
         { id: "count", field: "sockets.count", title: /*t*/"How many", content: /*t*/"How many crystals to make for each target." },
-        { id: "identified", field: "sockets.identified", title: /*t*/"Identified", content: /*t*/"Ticked, players see the crystal's name; otherwise it shows as \"Socket crystal\" until identified." },
+        { id: "identified", field: "sockets.identified", title: /*t*/"Identified", content: [/*t*/"Players see the crystal's name (otherwise \"Socket crystal\" until identified)"] },
         ...hub.tourFooter(),
       ] });
   });

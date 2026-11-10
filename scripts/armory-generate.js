@@ -304,8 +304,9 @@ export class ArmoryGenerator {
   }
   hint(facts) {
     const hub = T();
-    if (!hub?.genChance || facts.kind === "armor" || facts.kind === "shield" || facts.kind === "ammo") return false;
-    return hub.genChance("hints", facts.ranged ? "ranged" : "melee");
+    if (!hub?.genChance || facts.kind === "ammo") return false;
+    // Armor and shields too (Generation settings; DMG 30%, not in the SRD), suggested by Gilgalad (1.14.9.36)
+    return hub.genChance("hints", facts.kind === "armor" || facts.kind === "shield" ? "armor" : facts.ranged ? "ranged" : "melee");
   }
 
   /* ---------- whole items for the Treasure Generator and merchants ---------- */

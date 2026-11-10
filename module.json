@@ -2,9 +2,9 @@
   "id": "axeclefts-armory",
   "title": "Axecleft's Armory",
   "description": "3.5 SRD weapons, armor, shields and ammunition for the D35E system: mundane, masterwork, special material and magic, built from the system's own items and enhancements and priced by the SRD. Supplies arms to the shared Axecleft Treasure and Merchant Generators. Builder, random generation, the Forge tab, SRD crafting, intelligent items and sizes.",
-  "version": "1.14.9.35",
+  "version": "1.14.9.37",
   "manifest": "https://github.com/Axecleft/Armory/releases/latest/download/module.json",
-  "download": "https://github.com/Axecleft/Armory/releases/download/1.14.9.35/module.zip",
+  "download": "https://github.com/Axecleft/Armory/releases/download/1.14.9.37/module.zip",
   "url": "https://github.com/Axecleft/Armory",
   "compatibility": {
     "minimum": "13",
@@ -28,25 +28,52 @@
     ],
     "recommends": [
       {
+        "id": "axecleft-gemstones",
+        "type": "module",
+        "manifest": "https://github.com/Axecleft/Axeclefts-Gemstones/releases/latest/download/module.json",
+        "reason": "Gems, art objects and jewelry for treasure and merchants"
+      },
+      {
         "id": "axeclefts-curios",
         "type": "module",
         "manifest": "https://github.com/Axecleft/Curios/releases/latest/download/module.json",
-        "reason": "Potions, scrolls, wands, rings and wondrous items",
-        "compatibility": {}
+        "reason": "Potions, scrolls, wands, rings and wondrous items"
       },
       {
         "id": "traps-and-poisons",
         "type": "module",
         "manifest": "https://github.com/Axecleft/Traps-and-Poisons/releases/latest/download/module.json",
-        "reason": "Traps, poisons, diseases and crafting.",
-        "compatibility": {}
+        "reason": "Traps, poisons, diseases and crafting."
       },
       {
-        "id": "axecleft-gemstones",
+        "id": "axeclefts-adventurers-minions",
         "type": "module",
-        "manifest": "https://github.com/Axecleft/Axeclefts-Gemstones/releases/latest/download/module.json",
-        "reason": "Gems, art objects and jewelry for treasure and merchants",
-        "compatibility": {}
+        "manifest": "https://github.com/Axecleft/Axeclefts-Adventurers-Minions/releases/latest/download/module.json",
+        "reason": "Build characters, NPCs, creatures and encounters"
+      },
+      {
+        "id": "axeclefts-hoards",
+        "type": "module",
+        "manifest": "https://github.com/Axecleft/Axeclefts-Hoard-Editor/releases/latest/download/module.json",
+        "reason": "Build, save and share out treasure hoards (a Hoards tab in the Treasure Generator)"
+      },
+      {
+        "id": "axeclefts-printable-sheets",
+        "type": "module",
+        "manifest": "https://github.com/Axecleft/Axeclefts-Printable-Sheets/releases/latest/download/module.json",
+        "reason": "Print paper character sheets, stat blocks and spellbooks"
+      },
+      {
+        "id": "axeclefts-voodoo",
+        "type": "module",
+        "manifest": "https://github.com/Axecleft/Axeclefts-VooDoo/releases/latest/download/module.json",
+        "reason": "A character sheet for your players' phones"
+      },
+      {
+        "id": "axeclefts-tool-suite",
+        "type": "module",
+        "manifest": "https://github.com/Axecleft/Axecleft-s-Tools-Suite/releases/latest/download/module.json",
+        "reason": "Turn the suite's modules on and off and check them for updates"
       }
     ]
   },

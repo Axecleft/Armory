@@ -21,6 +21,23 @@ const opt = (v, label, sel, extra = "") => `<option value="${esc(v)}"${String(v)
 const { gp, t } = D;
 const H = (s, d) => esc(t(s, d));
 const normName = (s) => String(s ?? "").toLowerCase().replace(/[’']/g, "'").replace(/[^a-z0-9']+/g, " ").trim();
+/**
+ * An ability with no D35E enhancement for Babele to translate (the SRD psionic and epic abilities, armor ghost touch):
+ * the language file's title ("Bodyfeeder": "…"), else the word file's word made into a title
+ * ("d'ingestion corporelle (adj)" → "Ingestion corporelle"; "dissipateur/dissipatrice/…" → "Dissipatrice", as D35E's "Dansante"), else English.
+ */
+const ownTitle = (k) => {
+  const en = abilityTitle(k), tr = t(en);
+  if (tr && tr !== en) return tr;
+  const A = globalThis.AxecleftTools;
+  if (!A?.word || game.i18n?.lang === "en") return en;
+  const found = (w) => w && (w.forms || (w.text && normName(w.text) !== normName(k) && normName(w.text) !== normName(en)));
+  const w = [A.word(k), A.word(en)].find(found); // "Power resistance (13)" is "Power Resistance 13" in the word file
+  if (!w) return en;
+  let s = String((w.forms ? w.forms.f : w.text) ?? "").trim();
+  if (w.role) s = s.replace(/^(de|del|do|da|di)\s+|^d['’]/i, "");
+  return s.charAt(0).toLocaleUpperCase() + s.slice(1);
+};
 const d100 = () => 1 + Math.floor(Math.random() * 100);
 const pick = (l) => l[Math.floor(Math.random() * l.length)];
 const inGrade = (rows, grade, r) => rows.find((x) => x[grade] && r >= x[grade][0] && r <= x[grade][1]);
@@ -100,7 +117,7 @@ export class ArmoryForge {
     // In a translated world: the enhancement's translated name; the English one added when D35E's item covers several grades ("Défense (Light Fortification)")
     const label = (k, o) => {
       const en = o.d35e ?? k, shown = this.shownAb?.get(normName(en));
-      return !shown ? abilityTitle(k) : normName(en) === normName(k) ? shown : `${shown} (${abilityTitle(k)})`;
+      return !shown ? ownTitle(k) : normName(en) === normName(k) ? shown : `${shown} (${abilityTitle(k)})`;
     };
     for (const [k, o] of Object.entries(w)) if (ok(o)) out.push({ value: `srd:${k}`, label: label(k, o), kinds: wKinds(o), group: t(o.psionic ? "SRD psionic weapon abilities" : o.epic ? "SRD epic weapon abilities" : "SRD weapon abilities") });
     for (const [k, o] of Object.entries(a)) if (ok(o)) out.push({ value: `srd:${k}`, label: label(k, o), kinds: o.applies.filter((x) => x === "armor" || x === "shield"), group: t(o.psionic ? "SRD psionic armor and shield abilities" : o.epic ? "SRD epic armor and shield abilities" : "SRD armor and shield abilities") });

@@ -1,5 +1,18 @@
 # Axecleft's Armory — changelog
 
+## 1.14.9.37
+
+- **One link installs the whole suite.** Every Axecleft module now recommends all the others (Gemstones, Armory, Curios, Traps, Adventurers and Minions, Hoard Editor, Printable Sheets, VooDoo and the Tools Suite manager), so installing any one of them offers to install the rest.
+- Ships Axecleft's Tools 9.74: **Help on hover**. In a window that has a tour, turn on **Help on hover** in its ⋮ menu and rest the mouse on a part of the window to see that part's tour text.
+- French: the Forge's and Crafting's ability dropdowns showed the SRD psionic and epic abilities (and armor ghost touch) in English, as D35E has no enhancement for Babele to translate. They now take the language file's title when there is one, else the word from the word file made into a title ("d'ingestion corporelle" → *Ingestion corporelle*). Spotted by Gilgalad.
+
+## 1.14.9.36
+
+- Tours reuse the windows' own sentences where they said the same thing (Axecleft's Tools 9.73: a tour step can be built from several texts), so a translator translates each once. Asked by Gilgalad.
+- Suggested by Gilgalad: random magic **armor and shields** can carry an **inscription hint** (Generation settings, default 30%: the DMG's figure; the SRD gives none). The Forge's *Inscription hint* works on armor and shields too.
+- Ships the Treasure Generator 9.997: **Epic share of the extra items** on its own line in Generation settings; the **chance of each custom curse** (Lists tab), with how weights work on the Custom Curses page (asked by Gilgalad); inscription hint % for armor and shields and for other magic items. Ships the Crafting engine 1.98: the crafting window closes once a request is sent (a VooDoo phone shows its Chat), and the end of a craft (finished, failed, materials ruined) is posted at the bottom of the chat with a notification.
+- French: Gilgalad's fifth translation file.
+
 ## 1.14.9.35
 
 - Suggested by Gilgalad: a rolled **special purpose** takes the place of a power, as the SRD has it (two percentages in Generation settings: items with greater powers, default 100%, and items with only lesser powers, default 0%; your settings carry over), and shop types can sell **items by Shop tag**, including tags of your own (`Shop: Statue`), and only **gems or art objects named** with your words (a diamond merchant). Treasure Generator 9.996 and Merchant Generator 7.96.
